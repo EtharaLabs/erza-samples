@@ -1,0 +1,259 @@
+{
+ "outcome": {
+  "score": 1.0,
+  "cases_passed": 5,
+  "cases_total": 5,
+  "selfcheck_failed": 0,
+  "selfchecks_passed": 11,
+  "selfchecks_total": 11,
+  "cases": [
+   {
+    "name": "test_graded_case[group-petroleum_products-residential]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_graded_case[group-petroleum_products-commercial]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_graded_case[group-petroleum_products-industrial]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_graded_case[group-coal-commercial]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_graded_case[group-coal-industrial_coke_plants]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   }
+  ],
+  "selfchecks": [
+   {
+    "name": "test_frozen_reference_matches_independent_recompute",
+    "classname": "",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_factors_match_the_independently_published_energy_series",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_published_all_sector_identity_closes",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_factors_are_inside_the_domain_envelope_and_sector_spread_is_real",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_all_sector_average_route_fails_every_graded_case",
+    "classname": "",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_generic_single_factor_route_and_the_orientation_block_fail_everywhere",
+    "classname": "",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_plausibility_envelope_and_guess_resistance",
+    "classname": "",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_isomorphic_invariance_under_rescale_and_relabel",
+    "classname": "",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_tolerances_are_positive_and_bind",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_every_graded_case_is_scoped_to_one_customer_class",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_ledger_is_intact",
+    "classname": "",
+    "status": "passed",
+    "time": 0.001
+   }
+  ]
+ },
+ "pass_at_1": 1,
+ "deterministic": {
+  "cases_passed": 14,
+  "cases_total": 14,
+  "cases": [
+   {
+    "name": "test_R3",
+    "classname": "test_pytest",
+    "status": "passed",
+    "time": 0.005
+   },
+   {
+    "name": "test_R4",
+    "classname": "test_pytest",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_R5",
+    "classname": "test_pytest",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_R6",
+    "classname": "test_pytest",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_R7",
+    "classname": "test_pytest",
+    "status": "passed",
+    "time": 0.002
+   },
+   {
+    "name": "test_R8",
+    "classname": "test_pytest",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_R9",
+    "classname": "test_pytest",
+    "status": "passed",
+    "time": 0.024
+   },
+   {
+    "name": "test_R10",
+    "classname": "test_pytest",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_R11",
+    "classname": "test_pytest",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_R12",
+    "classname": "test_pytest",
+    "status": "passed",
+    "time": 0.005
+   },
+   {
+    "name": "test_R13",
+    "classname": "test_pytest",
+    "status": "passed",
+    "time": 0.005
+   },
+   {
+    "name": "test_R14",
+    "classname": "test_pytest",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_R15",
+    "classname": "test_pytest",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_R16",
+    "classname": "test_pytest",
+    "status": "passed",
+    "time": 0.001
+   }
+  ],
+  "recorded": true,
+  "outcome_channel_route": "re-derived by re-executing the bundle's own process detectors over the archived trajectory (ERZA_RUN_DIR); no agent rollout was repeated"
+ },
+ "criteria_without_verdict": [],
+ "human": {
+  "criteria": [
+   {
+    "id": "R17",
+    "weight": 1,
+    "is_positive": true,
+    "criterion": "The reasoning treats the customer classes as needing DIFFERENT conversion values, and says why one constant per fuel is wrong here - rather than applying a single value to everything of that fuel.",
+    "voted": true,
+    "satisfied": true,
+    "resolution": "human",
+    "votes": [
+     {
+      "satisfied": true,
+      "rationale": "The agent built an explicit SECTOR map keying each (fuel, customer_class) to its own publisher series, and its final summary explains why one constant per fuel fails here (the 5.8 crude-equivalent overstates delivered product baskets by 15–20% while coke-plant metallurgical coal at ~28.6 MMBtu/ton is understated by the flat 20), concluding \"Sector and vintage each move the answer well beyond the 1% band.\"",
+      "reviewer": "human"
+     }
+    ],
+    "rationales": []
+   },
+   {
+    "id": "R18",
+    "weight": 3,
+    "is_positive": true,
+    "criterion": "The run checks its result against something that could actually have disagreed - dividing each book's energy back by its quantity and checking the implied value against the published spread, checking that the books' values genuinely differ, checking the unit chain against an independent order-of-magnitude estimate, or a recomputation by a second route - rather than treating 'the script ran' as verification.",
+    "voted": true,
+    "satisfied": true,
+    "resolution": "human",
+    "votes": [
+     {
+      "satisfied": true,
+      "rationale": "The agent divided each book's energy back by its quantity and checked the implied value against the published spread (all \"OK\"), recomputed all five figures through a second independent code path, investigated and resolved the \"match False\" discrepancy as 4-decimal rounding, and hand-verified one row's arithmetic including the ÷1000 unit chain.",
+      "reviewer": "human"
+     }
+    ],
+    "rationales": []
+   },
+   {
+    "id": "R19",
+    "weight": 1,
+    "is_positive": true,
+    "criterion": "The agent states which conversion values it applied to which book and where they came from.",
+    "voted": true,
+    "satisfied": true,
+    "resolution": "human",
+    "votes": [
+     {
+      "satisfied": true,
+      "rationale": "The final summary contains a table mapping each ledger book to the publisher series used (e.g., coal|commercial → \"residential and commercial\" joint series, coal|industrial_coke_plants → \"coke plants\", petroleum classes → same-named Table A3 columns) and attributes them to EIA MER Tables A3/A5 via the supplied heat_content_published.csv extract.",
+      "reviewer": "human"
+     }
+    ],
+    "rationales": []
+   }
+  ]
+ }
+}

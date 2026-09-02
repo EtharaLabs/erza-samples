@@ -1,0 +1,28 @@
+test cases passed  : 12/12
+self-check failures: 0
+Score              : 1
+pass@1             : 1
+============================= test session starts ==============================
+platform linux -- Python 3.11.15, pytest-8.3.4, pluggy-1.6.0 -- /usr/local/bin/python3
+rootdir: /bundle/tests
+collecting ... collected 29 items / 13 deselected / 16 selected
+
+../bundle/tests/test_pytest.py::test_reward_block_mean[GS-A-b1] PASSED   [  6%]
+../bundle/tests/test_pytest.py::test_reward_block_mean[GS-A-b2] PASSED   [ 12%]
+../bundle/tests/test_pytest.py::test_reward_block_mean[GS-A-b3] PASSED   [ 18%]
+../bundle/tests/test_pytest.py::test_reward_block_mean[GS-A-b4] PASSED   [ 25%]
+../bundle/tests/test_pytest.py::test_reward_block_mean[GS-B-b1] PASSED   [ 31%]
+../bundle/tests/test_pytest.py::test_reward_block_mean[GS-B-b2] PASSED   [ 37%]
+../bundle/tests/test_pytest.py::test_reward_block_mean[GS-B-b3] PASSED   [ 43%]
+../bundle/tests/test_pytest.py::test_reward_block_mean[GS-B-b4] PASSED   [ 50%]
+../bundle/tests/test_pytest.py::test_reward_block_mean[GS-C-b1] PASSED   [ 56%]
+../bundle/tests/test_pytest.py::test_reward_block_mean[GS-C-b2] PASSED   [ 62%]
+../bundle/tests/test_pytest.py::test_reward_block_mean[GS-C-b3] PASSED   [ 68%]
+../bundle/tests/test_pytest.py::test_reward_block_mean[GS-C-b4] PASSED   [ 75%]
+../bundle/tests/test_pytest.py::test_selfcheck_frozen_golden_matches_live_recompute PASSED [ 81%]
+../bundle/tests/test_pytest.py::test_selfcheck_plausibility_and_guess_resistance PASSED [ 87%]
+../bundle/tests/test_pytest.py::test_selfcheck_isomorphic_invariance_under_rescale PASSED [ 93%]
+../bundle/tests/test_pytest.py::test_selfcheck_tolerances_are_positive_and_bind PASSED [100%]
+
+---------------- generated xml file: /logs/verifier/results.xml ----------------
+====================== 16 passed, 13 deselected in 0.13s =======================

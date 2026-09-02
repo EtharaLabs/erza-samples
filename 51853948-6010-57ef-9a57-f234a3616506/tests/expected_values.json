@@ -1,0 +1,177 @@
+{
+  "method": "discharge from the gauge's expanded shift-adjusted stage-discharge rating (linear interpolation between rating points on gage height); block value is the time-weighted mean discharge over the closed 6 h interval, trapezoidal in time",
+  "seed": 20260727,
+  "freeze_tol_cfs": 1e-06,
+  "published_precision_ambiguity_note": "MEASURED 2026-07-28, not asserted. Axis tested: the interpolation convention between tabulated rating points. The oracle reads the USGS EXSA table by linear interpolation on gage height; interpolating log-log between the same two bracketing rows is equally defensible for a power-law rating. Result: the spread is EXACTLY ZERO on all 12 blocks, because all 237 sampled gage heights in stage_series.csv land on a tabulated rating point, so no interpolation route is ever exercised. The convention therefore cannot fail correct work here. Tolerances are 0.2% of reference (e.g. 17.624371 cfs on 8812.185417).",
+  "published_precision_ambiguity_mean_discharge_cfs_maxabs": 0.0,
+  "ref_GS-A_b1_mean_discharge_cfs": 8812.185416666667,
+  "tolerance_GS-A_b1_mean_discharge_cfs_abs": 17.624371,
+  "ref_GS-A_b2_mean_discharge_cfs": 9721.99625,
+  "tolerance_GS-A_b2_mean_discharge_cfs_abs": 19.443993,
+  "ref_GS-A_b3_mean_discharge_cfs": 10370.837291666667,
+  "tolerance_GS-A_b3_mean_discharge_cfs_abs": 20.741675,
+  "ref_GS-A_b4_mean_discharge_cfs": 10850.816875,
+  "tolerance_GS-A_b4_mean_discharge_cfs_abs": 21.701634,
+  "ref_GS-B_b1_mean_discharge_cfs": 117659.5176,
+  "tolerance_GS-B_b1_mean_discharge_cfs_abs": 235.319035,
+  "ref_GS-B_b2_mean_discharge_cfs": 137834.3756521739,
+  "tolerance_GS-B_b2_mean_discharge_cfs_abs": 275.668751,
+  "ref_GS-B_b3_mean_discharge_cfs": 156347.64934782608,
+  "tolerance_GS-B_b3_mean_discharge_cfs_abs": 312.695299,
+  "ref_GS-B_b4_mean_discharge_cfs": 164427.47625,
+  "tolerance_GS-B_b4_mean_discharge_cfs_abs": 328.854953,
+  "ref_GS-C_b1_mean_discharge_cfs": 6239.519375,
+  "tolerance_GS-C_b1_mean_discharge_cfs_abs": 12.479039,
+  "ref_GS-C_b2_mean_discharge_cfs": 6711.226875,
+  "tolerance_GS-C_b2_mean_discharge_cfs_abs": 13.422454,
+  "ref_GS-C_b3_mean_discharge_cfs": 7360.83875,
+  "tolerance_GS-C_b3_mean_discharge_cfs_abs": 14.721678,
+  "ref_GS-C_b4_mean_discharge_cfs": 8452.708958333333,
+  "tolerance_GS-C_b4_mean_discharge_cfs_abs": 16.905418,
+  "items": [
+    {
+      "gauge_id": "GS-A",
+      "blockkey": "b1",
+      "start_utc": "2026-04-17T13:00:00Z",
+      "end_utc": "2026-04-17T19:00:00Z",
+      "ref_mean_discharge_cfs": 8812.185416666667,
+      "tolerance_cfs": 17.624371
+    },
+    {
+      "gauge_id": "GS-A",
+      "blockkey": "b2",
+      "start_utc": "2026-04-17T19:00:00Z",
+      "end_utc": "2026-04-18T01:00:00Z",
+      "ref_mean_discharge_cfs": 9721.99625,
+      "tolerance_cfs": 19.443993
+    },
+    {
+      "gauge_id": "GS-A",
+      "blockkey": "b3",
+      "start_utc": "2026-04-18T01:00:00Z",
+      "end_utc": "2026-04-18T07:00:00Z",
+      "ref_mean_discharge_cfs": 10370.837291666667,
+      "tolerance_cfs": 20.741675
+    },
+    {
+      "gauge_id": "GS-A",
+      "blockkey": "b4",
+      "start_utc": "2026-04-18T07:00:00Z",
+      "end_utc": "2026-04-18T13:00:00Z",
+      "ref_mean_discharge_cfs": 10850.816875,
+      "tolerance_cfs": 21.701634
+    },
+    {
+      "gauge_id": "GS-B",
+      "blockkey": "b1",
+      "start_utc": "2026-04-18T06:45:00Z",
+      "end_utc": "2026-04-18T13:00:00Z",
+      "ref_mean_discharge_cfs": 117659.5176,
+      "tolerance_cfs": 235.319035
+    },
+    {
+      "gauge_id": "GS-B",
+      "blockkey": "b2",
+      "start_utc": "2026-04-18T13:00:00Z",
+      "end_utc": "2026-04-18T18:45:00Z",
+      "ref_mean_discharge_cfs": 137834.3756521739,
+      "tolerance_cfs": 275.668751
+    },
+    {
+      "gauge_id": "GS-B",
+      "blockkey": "b3",
+      "start_utc": "2026-04-18T18:45:00Z",
+      "end_utc": "2026-04-19T00:30:00Z",
+      "ref_mean_discharge_cfs": 156347.64934782608,
+      "tolerance_cfs": 312.695299
+    },
+    {
+      "gauge_id": "GS-B",
+      "blockkey": "b4",
+      "start_utc": "2026-04-19T00:30:00Z",
+      "end_utc": "2026-04-19T06:30:00Z",
+      "ref_mean_discharge_cfs": 164427.47625,
+      "tolerance_cfs": 328.854953
+    },
+    {
+      "gauge_id": "GS-C",
+      "blockkey": "b1",
+      "start_utc": "2026-04-22T15:30:00Z",
+      "end_utc": "2026-04-22T21:30:00Z",
+      "ref_mean_discharge_cfs": 6239.519375,
+      "tolerance_cfs": 12.479039
+    },
+    {
+      "gauge_id": "GS-C",
+      "blockkey": "b2",
+      "start_utc": "2026-04-22T21:30:00Z",
+      "end_utc": "2026-04-23T03:30:00Z",
+      "ref_mean_discharge_cfs": 6711.226875,
+      "tolerance_cfs": 13.422454
+    },
+    {
+      "gauge_id": "GS-C",
+      "blockkey": "b3",
+      "start_utc": "2026-04-23T03:30:00Z",
+      "end_utc": "2026-04-23T09:30:00Z",
+      "ref_mean_discharge_cfs": 7360.83875,
+      "tolerance_cfs": 14.721678
+    },
+    {
+      "gauge_id": "GS-C",
+      "blockkey": "b4",
+      "start_utc": "2026-04-23T09:30:00Z",
+      "end_utc": "2026-04-23T15:30:00Z",
+      "ref_mean_discharge_cfs": 8452.708958333333,
+      "tolerance_cfs": 16.905418
+    }
+  ],
+  "gauge_detail": [
+    {
+      "gauge_id": "GS-A",
+      "n_samples": 97,
+      "stage_min_ft": 6.71,
+      "stage_max_ft": 8.07
+    },
+    {
+      "gauge_id": "GS-B",
+      "n_samples": 95,
+      "stage_min_ft": 13.07,
+      "stage_max_ft": 17.86
+    },
+    {
+      "gauge_id": "GS-C",
+      "n_samples": 97,
+      "stage_min_ft": 4.37,
+      "stage_max_ft": 5.29
+    }
+  ],
+  "control_gaps": {
+    "power_law_b2_from_recent_measurement": {
+      "description": "fit Q = C*h^2 through the single supplied recent measurement and evaluate it at each reported stage",
+      "no_skill_route": true,
+      "mean_discharge_cfs_gap_over_tol": 41.77,
+      "note": "worst (smallest) separation over all 12 blocks, in tolerance units. NEAREST REAL COMPETITOR: the standard published stage-discharge form Q = C(h-e)^b anchored on a real measurement - what a competent hydrologist without the table actually does, and the route the recall probe showed the model takes unprompted. Not a strawman."
+    },
+    "linear_scale_from_recent_measurement": {
+      "description": "scale the single supplied recent measurement linearly in gage height",
+      "no_skill_route": true,
+      "mean_discharge_cfs_gap_over_tol": 3.057,
+      "note": "worst (smallest) separation over all 12 blocks, in tolerance units."
+    },
+    "report_recent_measurement_throughout": {
+      "description": "report the supplied recent discharge measurement for every block",
+      "no_skill_route": true,
+      "mean_discharge_cfs_gap_over_tol": 32.55,
+      "note": "worst (smallest) separation over all 12 blocks, in tolerance units."
+    }
+  },
+  "convention_variants": {
+    "arithmetic_mean_of_samples": {
+      "description": "rate through the correct table but average the samples arithmetically instead of weighting by elapsed time",
+      "worst_deviation_over_tol": 0.027,
+      "must_not_false_fail": true,
+      "note": "V-06 evidence: a defensible alternative reduction convention. It stays inside tolerance on every block, so pinning the trapezoidal rule in the prompt costs the no-skill arm nothing and the reduction step is NOT part of the lever. The lever is the rating table alone."
+    }
+  }
+}

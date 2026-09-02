@@ -1,0 +1,117 @@
+{
+  "task_name": "c59f8b2a-0606-5f02-bed5-52937e5ab468",
+  "rollout_name": "c59f8b2a-0606-5f02-bed5-52937e5ab468__492c7726",
+  "scores": {
+    "score": 0.0
+  },
+  "agent": "codex-acp",
+  "agent_name": "@agentclientprotocol/codex-acp",
+  "model": "openai/gpt-5.6-sol",
+  "skill_mode": "no-skill",
+  "skill_source": "none",
+  "requested_skills_dir": null,
+  "effective_skills_dir": null,
+  "skills_sandbox_dir": null,
+  "include_task_skills": false,
+  "n_tool_calls": 6,
+  "n_skill_invocations": 0,
+  "n_prompts": 1,
+  "agent_result": {
+    "n_tool_calls": 6,
+    "n_skill_invocations": 0,
+    "n_prompts": 1,
+    "n_input_tokens": 92261,
+    "n_output_tokens": 3141,
+    "n_cache_read_tokens": 73216,
+    "n_cache_creation_tokens": 0,
+    "total_tokens": 95402,
+    "cost_usd": 0.226063,
+    "usage_source": "provider_response",
+    "price_source": "litellm"
+  },
+  "final_metrics": {
+    "total_prompt_tokens": 92261,
+    "total_completion_tokens": 3141,
+    "total_cached_tokens": 73216,
+    "total_cost_usd": 0.226063
+  },
+  "trajectory_summary": {
+    "steps": 11,
+    "tool_call_steps": 6,
+    "user_message_steps": 1,
+    "agent_message_steps": 4,
+    "agent_thought_steps": 0,
+    "other_steps": 0,
+    "event_type_counts": {
+      "user_message": 1,
+      "agent_message": 4,
+      "tool_call": 6
+    },
+    "tool_call_status_counts": {
+      "failed": 1,
+      "completed": 5
+    },
+    "partial_trajectory": false,
+    "trajectory_source": "acp"
+  },
+  "usage_tracking": {
+    "requested": "auto",
+    "status": "enabled",
+    "environment": "docker",
+    "endpoint_kind": "host",
+    "usage_source": "provider_response"
+  },
+  "error": null,
+  "error_category": null,
+  "verifier_error": null,
+  "verifier_error_category": null,
+  "export_error": null,
+  "idle_timeout_info": null,
+  "agent_timeout_info": null,
+  "sandbox_startup_info": null,
+  "transport_error_info": null,
+  "verifier_timeout_info": null,
+  "api_error_info": null,
+  "suspected_api_error_info": null,
+  "partial_trajectory": false,
+  "trajectory_source": "acp",
+  "started_at": "2026-08-19 20:03:47.416901",
+  "finished_at": "2026-08-19 20:05:54.885746",
+  "timing": {
+    "environment_setup": 2.5,
+    "agent_setup": 3.1,
+    "agent_execution": 90.0,
+    "verifier": 3.7,
+    "total": 127.5
+  },
+  "scenes": [
+    {
+      "name": "default",
+      "skills_dir": null,
+      "roles": [
+        {
+          "name": "agent",
+          "agent": "codex-acp",
+          "model": "openai/gpt-5.6-sol",
+          "reasoning_effort": null,
+          "timeout_sec": null,
+          "idle_timeout_sec": null,
+          "skills_dir": null,
+          "capabilities": null,
+          "env_keys": []
+        }
+      ],
+      "turns": [
+        {
+          "role": "agent",
+          "has_prompt": false
+        }
+      ]
+    }
+  ],
+  "loop": {
+    "strategy": "single-shot"
+  },
+  "task_digest": "sha256:26ceb059e8c14486db013a87f312994048416304e6d8aa53089612d5412e59bf",
+  "sandbox_id": null
+}

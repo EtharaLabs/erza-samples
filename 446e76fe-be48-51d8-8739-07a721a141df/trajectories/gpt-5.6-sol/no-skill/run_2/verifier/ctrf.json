@@ -1,0 +1,80 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.3.2"
+        },
+        "summary": {
+            "tests": 6,
+            "passed": 4,
+            "failed": 2,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1787148379.984018,
+            "stop": 1787148382.311136
+        },
+        "tests": [
+            {
+                "name": "::test_wood_anderson_calibration",
+                "status": "passed",
+                "duration": 1.5515827087219805,
+                "start": 1787148380.24591,
+                "stop": 1787148381.7978823,
+                "retries": 0,
+                "file_path": "../tests/test_outputs.py"
+            },
+            {
+                "name": "::test_golden_matches_independent_recompute",
+                "status": "passed",
+                "duration": 0.22302321018651128,
+                "start": 1787148381.7982824,
+                "stop": 1787148382.021629,
+                "retries": 0,
+                "file_path": "../tests/test_outputs.py"
+            },
+            {
+                "name": "::test_plausible",
+                "status": "passed",
+                "duration": 0.0004419179167598486,
+                "start": 1787148382.0219412,
+                "stop": 1787148382.0225515,
+                "retries": 0,
+                "file_path": "../tests/test_outputs.py"
+            },
+            {
+                "name": "::test_local_magnitude",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0004587508738040924,
+                "start": 1787148382.022701,
+                "stop": 1787148382.0498748,
+                "retries": 0,
+                "file_path": "../tests/test_outputs.py",
+                "trace": "derived = {'amp_mm': 962.9377577515166, 'ml': 5.217864227181392, 'r_km': 27.173831235215985}\ncfg = {'attractor_gap_mw_minus_ml': 0.0321, 'attractor_gap_note': \"This is now a RISK measure, not a lever. Under the predec...because the guardrail that detects a catalogue value reaching the answer needs its arithmetic to stay checkable.', ...}\nml = 4.39\n\n    def test_local_magnitude(derived, cfg, ml):\n        ref = derived[\"ml\"]\n        tol = float(cfg[\"tolerance_ml_abs\"])\n        err = abs(ml - ref)\n>       assert err <= tol, f\"ML {ml:.3f} off reference {ref:.3f} by {err:.3f} (tol {tol})\"\nE       AssertionError: ML 4.390 off reference 5.218 by 0.828 (tol 0.3)\nE       assert 0.8278642271813927 <= 0.3\n\n/tests/test_outputs.py:132: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "::test_not_the_velocity_form",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.1630416247062385,
+                "start": 1787148382.050203,
+                "stop": 1787148382.2150633,
+                "retries": 0,
+                "file_path": "../tests/test_outputs.py",
+                "trace": "derived = {'amp_mm': 962.9377577515166, 'ml': 5.217864227181392, 'r_km': 27.173831235215985}\ncfg = {'attractor_gap_mw_minus_ml': 0.0321, 'attractor_gap_note': \"This is now a RISK measure, not a lever. Under the predec...because the guardrail that detects a catalogue value reaching the answer needs its arithmetic to stay checkable.', ...}\nml = 4.39\n\n    def test_not_the_velocity_form(derived, cfg, ml):\n        \"\"\"The dominant wrong path is named, not merely hoped against.\n    \n        The one-zero (velocity) WA understates ML by log10(2*pi*f) ~ 0.80 on this record,\n        which is 2.65x tolerance \u2014 so this is implied by test_local_magnitude. It is stated\n        separately so the failure message names the cause instead of just the distance.\n        \"\"\"\n        wrong = math.log10(_wa_amplitude_mm() / (2 * math.pi * 0.9958)) + _log_a0(\n            _hypocentral_km())\n        tol = float(cfg[\"tolerance_ml_abs\"])\n>       assert abs(ml - wrong) > tol, (\n            f\"ML {ml:.3f} matches the ONE-ZERO Wood-Anderson value {wrong:.3f}. The WA \"\n            \"responds to displacement and carries two zeros at the origin; one zero is the \"\n            \"velocity form and understates the amplitude by |2*pi*f|.\")\nE       AssertionError: ML 4.390 matches the ONE-ZERO Wood-Anderson value 4.422. The WA responds to displacement and carries two zeros at the origin; one zero is the velocity form and understates the amplitude by |2*pi*f|.\nE       assert 0.0315122368838372 > 0.3\nE        +  where 0.0315122368838372 = abs((4.39 - 4.421512236883837))\n\n/tests/test_outputs.py:145: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "::test_isomorphic_invariance",
+                "status": "passed",
+                "duration": 0.09560904186218977,
+                "start": 1787148382.2151988,
+                "stop": 1787148382.3110468,
+                "retries": 0,
+                "file_path": "../tests/test_outputs.py"
+            }
+        ]
+    }
+}

@@ -1,0 +1,105 @@
+{
+  "output_path": "/root/results.json",
+  "blocks": [
+    {
+      "block_id": "b1",
+      "start_utc": "2026-04-17T13:00:00Z",
+      "end_utc": "2026-04-17T19:00:00Z",
+      "gauge_id": "GS-A"
+    },
+    {
+      "block_id": "b2",
+      "start_utc": "2026-04-17T19:00:00Z",
+      "end_utc": "2026-04-18T01:00:00Z",
+      "gauge_id": "GS-A"
+    },
+    {
+      "block_id": "b3",
+      "start_utc": "2026-04-18T01:00:00Z",
+      "end_utc": "2026-04-18T07:00:00Z",
+      "gauge_id": "GS-A"
+    },
+    {
+      "block_id": "b4",
+      "start_utc": "2026-04-18T07:00:00Z",
+      "end_utc": "2026-04-18T13:00:00Z",
+      "gauge_id": "GS-A"
+    },
+    {
+      "block_id": "b1",
+      "start_utc": "2026-04-18T06:45:00Z",
+      "end_utc": "2026-04-18T13:00:00Z",
+      "gauge_id": "GS-B"
+    },
+    {
+      "block_id": "b2",
+      "start_utc": "2026-04-18T13:00:00Z",
+      "end_utc": "2026-04-18T18:45:00Z",
+      "gauge_id": "GS-B"
+    },
+    {
+      "block_id": "b3",
+      "start_utc": "2026-04-18T18:45:00Z",
+      "end_utc": "2026-04-19T00:30:00Z",
+      "gauge_id": "GS-B"
+    },
+    {
+      "block_id": "b4",
+      "start_utc": "2026-04-19T00:30:00Z",
+      "end_utc": "2026-04-19T06:30:00Z",
+      "gauge_id": "GS-B"
+    },
+    {
+      "block_id": "b1",
+      "start_utc": "2026-04-22T15:30:00Z",
+      "end_utc": "2026-04-22T21:30:00Z",
+      "gauge_id": "GS-C"
+    },
+    {
+      "block_id": "b2",
+      "start_utc": "2026-04-22T21:30:00Z",
+      "end_utc": "2026-04-23T03:30:00Z",
+      "gauge_id": "GS-C"
+    },
+    {
+      "block_id": "b3",
+      "start_utc": "2026-04-23T03:30:00Z",
+      "end_utc": "2026-04-23T09:30:00Z",
+      "gauge_id": "GS-C"
+    },
+    {
+      "block_id": "b4",
+      "start_utc": "2026-04-23T09:30:00Z",
+      "end_utc": "2026-04-23T15:30:00Z",
+      "gauge_id": "GS-C"
+    }
+  ],
+  "output_contract": {
+    "block_mean_discharge_cfs": {
+      "<gauge_id>": {
+        "<block_id>": "number, mean discharge in cubic feet per second"
+      }
+    }
+  },
+  "method_note": "For each gauge and each listed block, report the time-weighted mean discharge over the closed interval [start_utc, end_utc], using the trapezoidal rule in time over the reported instants that fall in the interval, both endpoints included.",
+  "decoy_reference": {
+    "note": "Shown for orientation only. One recent published discharge measurement at each gauge, with the gage height observed at the same instant.",
+    "recent_discharge_measurement": {
+      "GS-A": {
+        "gage_height_ft": 11.85,
+        "discharge_cfs": 19200.0,
+        "observed_utc": "2026-04-07T13:00:00Z"
+      },
+      "GS-B": {
+        "gage_height_ft": 12.51,
+        "discharge_cfs": 110000.0,
+        "observed_utc": "2026-04-08T06:45:00Z"
+      },
+      "GS-C": {
+        "gage_height_ft": 3.98,
+        "discharge_cfs": 4460.0,
+        "observed_utc": "2026-04-12T15:30:00Z"
+      }
+    }
+  }
+}

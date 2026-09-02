@@ -1,0 +1,56 @@
+fuel,consuming_sector,year,heat_content,unit
+coal,coke plants,2011,26.299,million Btu per short ton
+coal,coke plants,2012,28.636,million Btu per short ton
+coal,coke plants,2013,28.705,million Btu per short ton
+coal,coke plants,2014,28.458,million Btu per short ton
+coal,coke plants,2015,28.526,million Btu per short ton
+coal,coke plants,2016,28.608,million Btu per short ton
+coal,coke plants,2017,28.673,million Btu per short ton
+coal,coke plants,2018,28.608,million Btu per short ton
+coal,coke plants,2019,28.629,million Btu per short ton
+coal,coke plants,2020,28.717,million Btu per short ton
+coal,coke plants,2021,28.666,million Btu per short ton
+coal,residential and commercial,2011,22.099,million Btu per short ton
+coal,residential and commercial,2012,21.3,million Btu per short ton
+coal,residential and commercial,2013,21.233,million Btu per short ton
+coal,residential and commercial,2014,21.307,million Btu per short ton
+coal,residential and commercial,2015,20.699,million Btu per short ton
+coal,residential and commercial,2016,20.078,million Btu per short ton
+coal,residential and commercial,2017,19.467,million Btu per short ton
+coal,residential and commercial,2018,19.269,million Btu per short ton
+coal,residential and commercial,2019,19.084,million Btu per short ton
+coal,residential and commercial,2020,18.297,million Btu per short ton
+coal,residential and commercial,2021,18.399,million Btu per short ton
+petroleum_products,commercial,2011,5.176,million Btu per barrel
+petroleum_products,commercial,2012,5.126,million Btu per barrel
+petroleum_products,commercial,2013,5.053,million Btu per barrel
+petroleum_products,commercial,2014,5.016,million Btu per barrel
+petroleum_products,commercial,2015,5.05,million Btu per barrel
+petroleum_products,commercial,2016,5.022,million Btu per barrel
+petroleum_products,commercial,2017,5.006,million Btu per barrel
+petroleum_products,commercial,2018,4.971,million Btu per barrel
+petroleum_products,commercial,2019,4.962,million Btu per barrel
+petroleum_products,commercial,2020,4.889,million Btu per barrel
+petroleum_products,commercial,2021,4.909,million Btu per barrel
+petroleum_products,industrial,2011,4.887,million Btu per barrel
+petroleum_products,industrial,2012,4.843,million Btu per barrel
+petroleum_products,industrial,2013,4.801,million Btu per barrel
+petroleum_products,industrial,2014,4.804,million Btu per barrel
+petroleum_products,industrial,2015,4.767,million Btu per barrel
+petroleum_products,industrial,2016,4.799,million Btu per barrel
+petroleum_products,industrial,2017,4.769,million Btu per barrel
+petroleum_products,industrial,2018,4.664,million Btu per barrel
+petroleum_products,industrial,2019,4.646,million Btu per barrel
+petroleum_products,industrial,2020,4.534,million Btu per barrel
+petroleum_products,industrial,2021,4.524,million Btu per barrel
+petroleum_products,residential,2011,4.657,million Btu per barrel
+petroleum_products,residential,2012,4.714,million Btu per barrel
+petroleum_products,residential,2013,4.648,million Btu per barrel
+petroleum_products,residential,2014,4.664,million Btu per barrel
+petroleum_products,residential,2015,4.721,million Btu per barrel
+petroleum_products,residential,2016,4.631,million Btu per barrel
+petroleum_products,residential,2017,4.623,million Btu per barrel
+petroleum_products,residential,2018,4.62,million Btu per barrel
+petroleum_products,residential,2019,4.54,million Btu per barrel
+petroleum_products,residential,2020,4.536,million Btu per barrel
+petroleum_products,residential,2021,4.611,million Btu per barrel

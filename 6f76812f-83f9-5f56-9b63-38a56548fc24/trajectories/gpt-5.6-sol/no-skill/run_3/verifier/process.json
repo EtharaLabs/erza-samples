@@ -1,0 +1,265 @@
+{
+ "outcome": {
+  "score": 0.0,
+  "cases_passed": 0,
+  "cases_total": 12,
+  "selfcheck_failed": 0,
+  "selfchecks_passed": 4,
+  "selfchecks_total": 4,
+  "cases": [
+   {
+    "name": "test_arc_mean_vtec[RX-1-SV-K]",
+    "classname": "",
+    "status": "failed",
+    "time": 0.001
+   },
+   {
+    "name": "test_arc_mean_vtec[RX-1-SV-P]",
+    "classname": "",
+    "status": "failed",
+    "time": 0.001
+   },
+   {
+    "name": "test_arc_mean_vtec[RX-1-SV-R]",
+    "classname": "",
+    "status": "failed",
+    "time": 0.0
+   },
+   {
+    "name": "test_arc_mean_vtec[RX-1-SV-W]",
+    "classname": "",
+    "status": "failed",
+    "time": 0.0
+   },
+   {
+    "name": "test_arc_mean_vtec[RX-2-SV-M]",
+    "classname": "",
+    "status": "failed",
+    "time": 0.0
+   },
+   {
+    "name": "test_arc_mean_vtec[RX-2-SV-R]",
+    "classname": "",
+    "status": "failed",
+    "time": 0.001
+   },
+   {
+    "name": "test_arc_mean_vtec[RX-2-SV-T]",
+    "classname": "",
+    "status": "failed",
+    "time": 0.0
+   },
+   {
+    "name": "test_arc_mean_vtec[RX-2-SV-W]",
+    "classname": "",
+    "status": "failed",
+    "time": 0.0
+   },
+   {
+    "name": "test_arc_mean_vtec[RX-3-SV-K]",
+    "classname": "",
+    "status": "failed",
+    "time": 0.0
+   },
+   {
+    "name": "test_arc_mean_vtec[RX-3-SV-M]",
+    "classname": "",
+    "status": "failed",
+    "time": 0.0
+   },
+   {
+    "name": "test_arc_mean_vtec[RX-3-SV-P]",
+    "classname": "",
+    "status": "failed",
+    "time": 0.0
+   },
+   {
+    "name": "test_arc_mean_vtec[RX-3-SV-T]",
+    "classname": "",
+    "status": "failed",
+    "time": 0.0
+   }
+  ],
+  "selfchecks": [
+   {
+    "name": "test_frozen_reference_matches_live_recompute",
+    "classname": "",
+    "status": "passed",
+    "time": 0.004
+   },
+   {
+    "name": "test_plausibility_and_guess_resistance",
+    "classname": "",
+    "status": "passed",
+    "time": 0.002
+   },
+   {
+    "name": "test_isomorphic_invariance_under_relabel_and_rescale",
+    "classname": "",
+    "status": "passed",
+    "time": 0.002
+   },
+   {
+    "name": "test_tolerances_are_positive_and_bind",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   }
+  ]
+ },
+ "pass_at_1": 0,
+ "deterministic": {
+  "cases_passed": 13,
+  "cases_total": 15,
+  "cases": [
+   {
+    "name": "test_R3",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.007
+   },
+   {
+    "name": "test_R4",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_R5",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_R6",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.172
+   },
+   {
+    "name": "test_R7",
+    "classname": "test_output",
+    "status": "failed",
+    "time": 0.001
+   },
+   {
+    "name": "test_R8",
+    "classname": "test_output",
+    "status": "failed",
+    "time": 0.001
+   },
+   {
+    "name": "test_R9",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 8.013
+   },
+   {
+    "name": "test_R10",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_R11",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_R12",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_R14",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_R15",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_R16",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_R17",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_R13",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.001
+   }
+  ],
+  "recorded": true,
+  "outcome_channel_route": "re-derived by re-executing the bundle's own process detectors over the archived trajectory (ERZA_RUN_DIR); no agent rollout was repeated"
+ },
+ "criteria_without_verdict": [],
+ "human": {
+  "criteria": [
+   {
+    "id": "R18",
+    "weight": 3,
+    "is_positive": true,
+    "criterion": "The reasoning distinguishes the arcs whose ordered pair is published directly from those whose pair has to be assembled from other rows, rather than treating every arc as the same lookup.",
+    "voted": true,
+    "satisfied": false,
+    "resolution": "human",
+    "votes": [
+     {
+      "satisfied": false,
+      "rationale": "The agent never accessed any bias product table; it fitted per-arc constants from the observations themselves, so it never distinguished directly published ordered pairs from pairs requiring chain assembly — no lookup precedence reasoning appears anywhere.",
+      "reviewer": "human"
+     }
+    ],
+    "rationales": []
+   },
+   {
+    "id": "R19",
+    "weight": 3,
+    "is_positive": true,
+    "criterion": "The reasoning checks the calibrated result against a physical expectation - vertical content positive and of order tens of TECU, a nanosecond of uncorrected delay worth several TECU - rather than reporting whatever came out.",
+    "voted": true,
+    "satisfied": false,
+    "resolution": "human",
+    "votes": [
+     {
+      "satisfied": false,
+      "rationale": "The agent's validation step only checked JSON structure (12 arcs, matching keys); it never articulated a physical plausibility check on the calibrated output such as positivity, tens-of-TECU magnitude, or the TECU-per-nanosecond scale of a residual sign/side error.",
+      "reviewer": "human"
+     }
+    ],
+    "rationales": []
+   },
+   {
+    "id": "R20",
+    "weight": 1,
+    "is_positive": true,
+    "criterion": "The agent states which instrumental values it applied and where they came from.",
+    "voted": true,
+    "satisfied": true,
+    "resolution": "human",
+    "votes": [
+     {
+      "satisfied": true,
+      "rationale": "The agent explicitly listed the applied corrections in the SLANT_BIAS_TECU dictionary and stated their origin — constants recovered from its shared station-time ionosphere regression, rounded to one decimal (\"I'll use those recovered constants\") — so the values applied and their provenance are stated, even though the provenance is a self-fit rather than a published product.",
+      "reviewer": "human"
+     }
+    ],
+    "rationales": []
+   }
+  ]
+ }
+}

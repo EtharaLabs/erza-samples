@@ -1,0 +1,86 @@
+{
+  "tolerance_year_fraction_abs": 1e-10,
+  "tolerance_accrued_interest_abs": 1e-08,
+  "reference_library": "QuantLib 1.43 (build-time oracle; forbidden at runtime)",
+  "golden": {
+    "INST01": {
+      "year_fraction": 0.5,
+      "accrued_interest": 25000.0
+    },
+    "INST02": {
+      "year_fraction": 0.49722222222222223,
+      "accrued_interest": 44750.0
+    },
+    "INST03": {
+      "year_fraction": 0.25,
+      "accrued_interest": 7500.0
+    },
+    "INST04": {
+      "year_fraction": 0.5055555555555555,
+      "accrued_interest": 60666.666666666664
+    },
+    "INST05": {
+      "year_fraction": 0.5,
+      "accrued_interest": 18750.0
+    },
+    "INST06": {
+      "year_fraction": 0.5083333333333333,
+      "accrued_interest": 34947.916666666664
+    },
+    "INST07": {
+      "year_fraction": 1.0027397260273974,
+      "accrued_interest": 50136.98630136987
+    },
+    "INST08": {
+      "year_fraction": 0.49772438056740775,
+      "accrued_interest": 49772.43805674078
+    },
+    "INST09": {
+      "year_fraction": 0.25170297177932477,
+      "accrued_interest": 13214.406018414553
+    },
+    "INST10": {
+      "year_fraction": 0.16847826086956522,
+      "accrued_interest": 4043.478260869565
+    },
+    "INST11": {
+      "year_fraction": 0.10869565217391304,
+      "accrued_interest": 10760.86956521739
+    }
+  },
+  "control_gaps": {
+    "naive_days_over_365": {
+      "worst_abs_yf_gap": 0.0069634703,
+      "worst_abs_yf_gap_over_tol": 69634703.2,
+      "on_instrument": "INST06",
+      "note": "Strawman baseline: days/365 everywhere, ignoring the basis field entirely. Recorded to bound the floor, not as a competing method."
+    },
+    "naive_30_360_no_eom_rules": {
+      "worst_abs_yf_gap": 0.0055555556,
+      "worst_abs_yf_gap_over_tol": 55555555.56,
+      "on_instrument": "INST01",
+      "note": "NEAREST REAL COMPETITOR. 30/360 without the last-day-of-February and 31->30 cascade is the textbook 'Bond Basis' most non-specialist implementations produce, and it is a defensible reading of an under-specified 30/360 - not a strawman."
+    },
+    "naive_actact_calendar_denom": {
+      "worst_abs_yf_gap": 0.0013847528,
+      "worst_abs_yf_gap_over_tol": 13847528.29,
+      "on_instrument": "INST10",
+      "note": "REAL COMPETITOR. ACT/ACT with a plain calendar-year 365/366 denominator is the published ACT/ACT ICMA-vs-ISDA confusion; a competent analyst reaches it by applying the ICMA period rule to an ISDA instrument."
+    },
+    "naive_isda_as_365f": {
+      "worst_abs_yf_gap": 0.0009057564,
+      "worst_abs_yf_gap_over_tol": 9057564.19,
+      "on_instrument": "INST08",
+      "note": "REAL COMPETITOR. Collapsing ACT/ACT ISDA to Actual/365 Fixed is the single most common documented convention slip in fixed-income analytics."
+    },
+    "naive_360_for_365_mixup": {
+      "worst_abs_yf_gap": 0.0139269406,
+      "worst_abs_yf_gap_over_tol": 139269406.39,
+      "on_instrument": "INST07",
+      "note": "Strawman baseline: /360 where /365 is specified. Recorded to bound the floor."
+    }
+  },
+  "method": "ISDA 2006 Sec 4.16 day-count fractions: 30/360 US Bond Basis (Feb-EOM + 31->30 ordered cascade), 30E/360 (unconditional 31->30), ACT/360, ACT/365 Fixed, ACT/ACT ISDA (leap-day-splitting: days in leap years over 366 plus days in non-leap years over 365), ACT/ACT ICMA (period-based denominator = frequency * days-in-reference-period); accrued = notional * annual_coupon_rate * year_fraction",
+  "published_precision_ambiguity_note": "MEASURED, not asserted. ISDA 2006 section 4.16 fully specifies every basis here - the day counts and denominators are defined exactly, so there is no rounding or tabulation ambiguity of the kind that bites a standard quoting values to N decimals. The residual spread between two faithful implementations is floating-point only: verifier/test_outputs.py::test_golden_recomputes_from_inputs re-derives every golden from the shipped dates with an independent hand implementation of the six bases and agrees with the QuantLib-baked ledger to <= 1e-12 on year_fraction. The graded tolerance is 1e-10, i.e. at least 100x that band, so no faithful reading of the convention can fail on precision.",
+  "published_precision_ambiguity_year_fraction_maxabs": 1e-12
+}

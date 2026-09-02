@@ -1,0 +1,127 @@
+schema_version = "1.3"
+
+[task]
+id   = "20840ce0-eeb4-5848-afda-c600b281a77a"
+slug = "information-return-brecord-emission"
+name = "Information Return Brecord Emission"
+lever = "agency-standard-methodology-selection"
+# lever bound 2026-08-31. the record must be built to the exact field positions a published agency transmission specification fixes; a plausible delimited or mis-offset rendering is rejected
+
+[metadata]
+author_name = "Erza"
+difficulty = "hard"
+difficulty_explanation = "Rendering a payee's details as one line of text is not hard. Rendering it as the line a government transmission channel will accept is, because the channel does not read the line - it slices it at absolute character positions it holds internally, and a field that starts one position from where the published layout puts it arrives as a different field, taking every field after it along. The published layout is a table of some fifty rows, and the part of it that is widely reproduced is the opening: the record type, the year, the identification number, the block of payment amount fields. The part that decides this task is the interior and the tail - two reserved runs of sixteen and forty positions that sit between fields that look adjacent, a second name line most payees do not use, a return-specific block that differs from the neighbouring return type's block by a single position, and an indicator whose code is 2 where every other indicator in the same block uses 1. Most of the graded weight therefore sits past the payment amounts, where an implementation written from recall drifts. Nothing about the record can be recovered from the payee data: the data says what to write, never where, and there is no example record anywhere in the inputs from which a position could be counted off. A submission that places the opening correctly and packs the rest of the record on without the reserved runs is a well-formed line of the right length that fails eight of the ten graded field groups."
+category = "office-white-collar"
+subcategory = "tax-information-reporting"
+category_confidence = "high"
+task_type = ["formatting", "transformation"]
+modality = ["json", "document"]
+interface = ["terminal", "python"]
+skill_type = ["file-format-knowledge", "domain-procedure"]
+tags = [
+  "information-returns",
+  "positional-layout",
+  "regulatory-transmission",
+  "payee-detail-record",
+  "byte-exact-output",
+]
+
+[verifier]
+score_family = "fractional"
+type = "test-script"
+timeout_sec = 300.0
+
+[verifier.hardening]
+cleanup_conftests = true
+
+[agent]
+timeout_sec = 1800.0
+
+[environment]
+network_mode = "no-network"
+build_timeout_sec = 900.0
+os = "linux"
+cpus = 2
+memory_mb = 4096
+storage_mb = 8192
+gpus = 0
+
+[provenance]
+recipe    = "authoring.task_id.v1"
+namespace = "c53e8f3b-526f-52c0-a04e-89e2269b237d"
+canonical_content_hash = "21a9dab7ac6ad5b4b2e3940ecce70c6c92658e44f8c202d1735b4a87ed3f12b2"
+# RESEALED 2026-08-19 over the shipped bytes: human-channel landing (loader ACP fallback), criterion revisions, and shipped weight-0 evidence. Same construction.
+source_slug     = "information-return-brecord-emission"
+source_origin   = "original"
+provenance_date = "2026-08-04"
+
+# canonical_content_hash — SEALED 2026-08-13 against the layout shipped today, under the
+# authoring batch contract signed 872ad169 (slot S03). This bundle predates the seal
+# convention; this is its first seal, closing the gap named in its trajectories/
+# PROVENANCE.md.
+#
+# Construction: sha256 over the newline-joined "relpath:sha256" lines of this
+# bundle's manifest, sorted by relpath, UTF-8 encoded, no trailing newline.
+# relpath is POSIX-style and relative to this bundle directory, so the hash is
+# path-independent.
+#
+# Scope: every regular file shipped in this bundle (21 files), recursively.
+# Exclusions:
+#   * trajectories/ in full - run records, not task content, and they change
+#     every time the grid is re-run;
+#   * task.toml itself - it carries this hash, so including it would make the
+#     field self-referential and impossible to verify;
+#   * transient artifacts that are never shipped: __pycache__/, *.pyc, .DS_Store.
+#
+# Verify with: python3 verify_seal.py <path to this repository>   (the checker
+# ships with the erza harness, at the harness root).
+#
+# STABLE IDENTIFIER - THE TASK ID IS NOT DERIVED FROM THE VALUE ABOVE.
+# [task] id, this bundle's directory name and its run-record task ids are
+# load-bearing identifiers referenced across the repo and inside the records
+# under trajectories/. They were minted once and are deliberately not re-derived
+# at first seal; the id names the task, the hash certifies the bytes.
+#
+# provenance_date is the first verifiable appearance of these bytes in the
+# samples history (commit 8c7de87, 2026-08-04); the authoring date is earlier
+# but not byte-recoverable, so the later, stricter bound is recorded.
+
+# RESEAL 2026-08-31 - PROCESS-CHANNEL VOCABULARY AND AUTHOR ATTRIBUTION.
+# The process channel's second lane is named `human` throughout: rubrics.json
+# `channel`, the verifier records under trajectories/, score.py and report.py.
+# author_name reads "Erza",
+# and the prose in TRUTH.md, test.sh and trajectory.py names a human reviewer.
+#
+# NO RUN WAS RE-EXECUTED AND NO RECORDED SCORE MOVED. The graded outcome module
+# (test_output.py / test_pytest.py), checks.py, conftest.py and
+# expected_values.json are byte-identical to the pre-change bundle; test.sh
+# changed only in a comment; score.py and report.py are offline tooling that
+# test.sh never invokes. All 120 recorded `outcome` blocks under trajectories/
+# are unchanged, and the published paired figures recompute to the same values
+# from the shipped bytes.
+#
+# canonical_content_hash re-sealed over those bytes:
+#   was 901bcddec73babcf7d58a57c28dcc813bf2c21f7992b4ba2d86d3a587d16ed3a
+#   now bc8b1c63e1d118b8a25c4b479a2f6ed231224ff92eb74dd68f6d9844cdcdc00f
+
+# RECIPE LABEL, 2026-08-31. The `recipe` field above reads
+# `authoring.task_id.v1`. It is a descriptive provenance label and is not an
+# input to any derivation: this bundle's [task] id was minted once and is
+# deliberately never re-derived, as harness/verify_seal.py states in its
+# CONSTRUCTION note. No verifier reads this field. The label was renamed on
+# 2026-08-31 without re-minting; the id it names is unchanged and remains the
+# load-bearing identifier referenced across the repo and inside the records
+# under trajectories/.
+
+# RESEAL 2026-09-02 - AUTHORING VOCABULARY.
+# TRUTH.md line 17 renamed the cited authoring standard so the doctrine
+# reference now reads `HUMAN-AUTHOR-TO-30.md`. No other file changed.
+# The 2026-08-31 reseal note above was edited to drop a sentence describing
+# a removed grader-side module; task.toml is not under the seal and that edit
+# does not affect the hash.
+#
+# NO RUN WAS RE-EXECUTED AND NO RECORDED SCORE MOVED.
+#
+# canonical_content_hash re-sealed over those bytes:
+#   was bc8b1c63e1d118b8a25c4b479a2f6ed231224ff92eb74dd68f6d9844cdcdc00f
+#   now 21a9dab7ac6ad5b4b2e3940ecce70c6c92658e44f8c202d1735b4a87ed3f12b2

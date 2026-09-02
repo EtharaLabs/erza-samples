@@ -1,0 +1,10 @@
+{
+ "agent_launcher": "/opt/benchflow/bin/codex-acp",
+ "clamped_at": "2026-08-19T14:08:27Z",
+ "container": "6f76812f-83f9-5f56-9b63-38a56548fc24__fb471ddd-main-1",
+ "model_bridge": "REACHED_UPSTREAM",
+ "model_bridge_alt": "BLOCKED_BY_NETWORK:ConnectionRefusedError",
+ "upstream_1": "BLOCKED_BY_NETWORK:TimeoutError",
+ "upstream_2": "BLOCKED_BY_NETWORK:TimeoutError",
+ "verdict": "CLAMPED"
+}

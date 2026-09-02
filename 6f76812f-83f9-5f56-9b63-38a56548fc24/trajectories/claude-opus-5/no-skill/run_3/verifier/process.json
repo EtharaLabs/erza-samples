@@ -1,0 +1,266 @@
+{
+ "outcome": {
+  "score": 0.0,
+  "cases_passed": 0,
+  "cases_total": 12,
+  "selfcheck_failed": 0,
+  "cases": [
+   {
+    "name": "test_score_arc_mean_vtec[RX-1-SV-K]",
+    "classname": "",
+    "status": "failed",
+    "time": 0.0
+   },
+   {
+    "name": "test_score_arc_mean_vtec[RX-1-SV-P]",
+    "classname": "",
+    "status": "failed",
+    "time": 0.0
+   },
+   {
+    "name": "test_score_arc_mean_vtec[RX-1-SV-R]",
+    "classname": "",
+    "status": "failed",
+    "time": 0.0
+   },
+   {
+    "name": "test_score_arc_mean_vtec[RX-1-SV-W]",
+    "classname": "",
+    "status": "failed",
+    "time": 0.0
+   },
+   {
+    "name": "test_score_arc_mean_vtec[RX-2-SV-M]",
+    "classname": "",
+    "status": "failed",
+    "time": 0.0
+   },
+   {
+    "name": "test_score_arc_mean_vtec[RX-2-SV-R]",
+    "classname": "",
+    "status": "failed",
+    "time": 0.0
+   },
+   {
+    "name": "test_score_arc_mean_vtec[RX-2-SV-T]",
+    "classname": "",
+    "status": "failed",
+    "time": 0.0
+   },
+   {
+    "name": "test_score_arc_mean_vtec[RX-2-SV-W]",
+    "classname": "",
+    "status": "failed",
+    "time": 0.0
+   },
+   {
+    "name": "test_score_arc_mean_vtec[RX-3-SV-K]",
+    "classname": "",
+    "status": "failed",
+    "time": 0.0
+   },
+   {
+    "name": "test_score_arc_mean_vtec[RX-3-SV-M]",
+    "classname": "",
+    "status": "failed",
+    "time": 0.0
+   },
+   {
+    "name": "test_score_arc_mean_vtec[RX-3-SV-P]",
+    "classname": "",
+    "status": "failed",
+    "time": 0.0
+   },
+   {
+    "name": "test_score_arc_mean_vtec[RX-3-SV-T]",
+    "classname": "",
+    "status": "failed",
+    "time": 0.0
+   },
+   {
+    "name": "test_selfcheck_frozen_reference_matches_live_recompute",
+    "classname": "",
+    "status": "passed",
+    "time": 0.002
+   },
+   {
+    "name": "test_selfcheck_plausibility_and_guess_resistance",
+    "classname": "",
+    "status": "passed",
+    "time": 0.002
+   },
+   {
+    "name": "test_selfcheck_isomorphic_invariance_under_relabel_and_rescale",
+    "classname": "",
+    "status": "passed",
+    "time": 0.002
+   },
+   {
+    "name": "test_selfcheck_tolerances_are_positive_and_bind",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_selfcheck_graded_case_count_is_pinned",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   }
+  ]
+ },
+ "deterministic": {
+  "cases_passed": 13,
+  "cases_total": 15,
+  "cases": [
+   {
+    "name": "test_R3",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.007
+   },
+   {
+    "name": "test_R4",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_R5",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_R6",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.348
+   },
+   {
+    "name": "test_R7",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.003
+   },
+   {
+    "name": "test_R8",
+    "classname": "test_output",
+    "status": "failed",
+    "time": 0.003
+   },
+   {
+    "name": "test_R9",
+    "classname": "test_output",
+    "status": "failed",
+    "time": 2.386
+   },
+   {
+    "name": "test_R10",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.003
+   },
+   {
+    "name": "test_R11",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_R12",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_R14",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_R15",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.005
+   },
+   {
+    "name": "test_R16",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.002
+   },
+   {
+    "name": "test_R17",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_R13",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.002
+   }
+  ],
+  "recorded": true,
+  "outcome_channel_route": "re-derived by re-executing the bundle's own process detectors over the archived trajectory (ERZA_RUN_DIR); no agent rollout was repeated"
+ },
+ "criteria_without_verdict": [],
+ "human": {
+  "criteria": [
+   {
+    "id": "R18",
+    "weight": 3,
+    "is_positive": true,
+    "criterion": "The reasoning distinguishes the arcs whose ordered pair is published directly from those whose pair has to be assembled from other rows, rather than treating every arc as the same lookup.",
+    "voted": true,
+    "satisfied": false,
+    "resolution": "human",
+    "votes": [
+     {
+      "satisfied": false,
+      "rationale": "The agent never obtained or used any bias product, so it never performed the direct-row vs. chained-row resolution at all; every arc got the same \"no bias available\" treatment. No distinction between published-pair arcs and chain-assembled arcs appears anywhere in the trajectory.",
+      "reviewer": "human"
+     }
+    ],
+    "rationales": []
+   },
+   {
+    "id": "R19",
+    "weight": 3,
+    "is_positive": true,
+    "criterion": "The reasoning checks the calibrated result against a physical expectation - vertical content positive and of order tens of TECU, a nanosecond of uncorrected delay worth several TECU - rather than reporting whatever came out.",
+    "voted": true,
+    "satisfied": true,
+    "resolution": "human",
+    "votes": [
+     {
+      "satisfied": true,
+      "rationale": "The agent explicitly computed the physical sensitivity (2.85 TECU per ns of DCB, step [34]) and checked its output against the positivity expectation, flagging RX-2/SV-W at −0.059 TECU as contradicting \"vertical content is positive\" and diagnosing it as uncorrected bias showing through — a genuine physical sanity check rather than silent reporting.",
+      "reviewer": "human"
+     }
+    ],
+    "rationales": []
+   },
+   {
+    "id": "R20",
+    "weight": 1,
+    "is_positive": true,
+    "criterion": "The agent states which instrumental values it applied and where they came from.",
+    "voted": true,
+    "satisfied": true,
+    "resolution": "human",
+    "votes": [
+     {
+      "satisfied": true,
+      "rationale": "The agent stated transparently, both in a code comment (\"DCB term NOT removed - unavailable\") and in its final report, that it applied no instrumental values because no bias product exists in the container and no network access was available — an explicit account of which instrumental values were applied (none) and why.",
+      "reviewer": "human"
+     }
+    ],
+    "rationales": []
+   }
+  ]
+ }
+}

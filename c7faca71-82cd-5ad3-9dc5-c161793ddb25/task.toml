@@ -1,0 +1,115 @@
+schema_version = "1.3"
+
+[task]
+id   = "c7faca71-82cd-5ad3-9dc5-c161793ddb25"
+slug = "flight-duty-period-legality"
+name = "Flight Duty Period Legality"
+lever = "agency-standard-methodology-selection"
+# lever bound 2026-08-31. legality is decided by published regulatory ceiling tables rather than by arithmetic on clock times
+
+[metadata]
+author_name = "Erza"
+difficulty = "hard"
+difficulty_explanation = "Subtracting one clock time from another is arithmetic. Deciding whether a published crew pairing is inside its legal ceilings is not, because the ceiling on the duty period is not a number but a cell of a two-way matrix indexed by report time and segment count, the matrix has irregular row boundaries, its ten rows carry arbitrary half-hour values with no generating relation, and a second matrix with different row boundaries replaces it once the crew is augmented. Nothing in the roster determines those cells: the pairings carry no compliance labels, so no schedule pins a cell from either side, and the values cannot be interpolated, extrapolated or inferred from the data supplied. Around the matrix sit six further ceilings drawn from separate paragraphs - flight time, two rolling duty totals, a rolling flight total, the rest immediately before report and the longest duty-free period in the previous week - and the answer is the tightest of the seven, so an analysis that stops at the headline ceiling is wrong on the pairings where something else governs. Two published relief provisions cut the other way: one that removes a scheduled accommodation rest from the duty period only when a six-part conjunction holds, and one that enlarges the ceiling only for circumstances that arise after a schedule is set and therefore never applies here. Reading the matrix as a flat duty-day figure misses every one of the fifty-one graded figures. The roster itself is synthetic, so the graded figures are properties of this extract and are not published anywhere."
+category = "office-white-collar"
+subcategory = "aviation-regulatory-compliance"
+category_confidence = "high"
+task_type = ["verification", "analysis"]
+modality = ["csv", "json"]
+interface = ["terminal", "python"]
+skill_type = ["domain-procedure", "evaluation-protocol"]
+tags = [
+  "crew-scheduling",
+  "duty-time",
+  "regulatory-compliance",
+  "air-carrier",
+  "constraint-checking",
+  "roster-audit",
+]
+
+[verifier]
+score_family = "fractional"
+type = "test-script"
+timeout_sec = 300.0
+
+[verifier.hardening]
+cleanup_conftests = true
+
+[agent]
+timeout_sec = 1800.0
+
+[environment]
+network_mode = "no-network"
+build_timeout_sec = 900.0
+os = "linux"
+cpus = 2
+memory_mb = 4096
+storage_mb = 8192
+gpus = 0
+
+[provenance]
+recipe    = "authoring.task_id.v1"
+namespace = "c53e8f3b-526f-52c0-a04e-89e2269b237d"
+canonical_content_hash = "400ce285ba30556ad0a3432ecc6cd7be0f1a9f4c64f4ad4fe0e06e31564705de"
+# RESEALED 2026-08-19 over the shipped bytes: human-channel landing (loader ACP fallback), criterion revisions, and shipped weight-0 evidence. Same construction.
+source_slug     = "flight-duty-period-legality"
+source_origin   = "original"
+provenance_date = "2026-08-04"
+
+# canonical_content_hash — SEALED 2026-08-13 against the layout shipped today, under the
+# authoring batch contract signed 872ad169 (slot S04). This bundle predates the seal
+# convention; this is its first seal, closing the gap named in its trajectories/
+# PROVENANCE.md.
+#
+# Construction: sha256 over the newline-joined "relpath:sha256" lines of this
+# bundle's manifest, sorted by relpath, UTF-8 encoded, no trailing newline.
+# relpath is POSIX-style and relative to this bundle directory, so the hash is
+# path-independent.
+#
+# Scope: every regular file shipped in this bundle (22 files), recursively.
+# Exclusions:
+#   * trajectories/ in full - run records, not task content, and they change
+#     every time the grid is re-run;
+#   * task.toml itself - it carries this hash, so including it would make the
+#     field self-referential and impossible to verify;
+#   * transient artifacts that are never shipped: __pycache__/, *.pyc, .DS_Store.
+#
+# Verify with: python3 verify_seal.py <path to this repository>   (the checker
+# ships with the erza harness, at the harness root).
+#
+# STABLE IDENTIFIER - THE TASK ID IS NOT DERIVED FROM THE VALUE ABOVE.
+# [task] id, this bundle's directory name and its run-record task ids are
+# load-bearing identifiers referenced across the repo and inside the records
+# under trajectories/. They were minted once and are deliberately not re-derived
+# at first seal; the id names the task, the hash certifies the bytes.
+#
+# provenance_date is the first verifiable appearance of these bytes in the
+# samples history (commit 8c7de87, 2026-08-04); the authoring date is earlier
+# but not byte-recoverable, so the later, stricter bound is recorded.
+
+# RESEAL 2026-08-31 - PROCESS-CHANNEL VOCABULARY AND AUTHOR ATTRIBUTION.
+# The process channel's second lane is named `human` throughout: rubrics.json
+# `channel`, the verifier records under trajectories/, score.py and report.py.
+# author_name reads "Erza",
+# and the prose in TRUTH.md, test.sh and trajectory.py names a human reviewer.
+#
+# NO RUN WAS RE-EXECUTED AND NO RECORDED SCORE MOVED. The graded outcome module
+# (test_output.py / test_pytest.py), checks.py, conftest.py and
+# expected_values.json are byte-identical to the pre-change bundle; test.sh
+# changed only in a comment; score.py and report.py are offline tooling that
+# test.sh never invokes. All 120 recorded `outcome` blocks under trajectories/
+# are unchanged, and the published paired figures recompute to the same values
+# from the shipped bytes.
+#
+# canonical_content_hash re-sealed over those bytes:
+#   was d83a4b4e804f377a90e854a8e22c988c88e6f598748c29d91c7438240ff5301a
+#   now 400ce285ba30556ad0a3432ecc6cd7be0f1a9f4c64f4ad4fe0e06e31564705de
+
+# RECIPE LABEL, 2026-08-31. The `recipe` field above reads
+# `authoring.task_id.v1`. It is a descriptive provenance label and is not an
+# input to any derivation: this bundle's [task] id was minted once and is
+# deliberately never re-derived, as harness/verify_seal.py states in its
+# CONSTRUCTION note. No verifier reads this field. The label was renamed on
+# 2026-08-31 without re-minting; the id it names is unchanged and remains the
+# load-bearing identifier referenced across the repo and inside the records
+# under trajectories/.

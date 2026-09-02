@@ -1,0 +1,264 @@
+{
+ "outcome": {
+  "score": 1.0,
+  "cases_passed": 12,
+  "cases_total": 12,
+  "selfcheck_failed": 0,
+  "selfchecks_passed": 3,
+  "selfchecks_total": 3,
+  "cases": [
+   {
+    "name": "test_height[TG-A-t1]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_height[TG-A-t2]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_height[TG-A-t3]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_height[TG-A-t4]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_height[TG-B-t1]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_height[TG-B-t2]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_height[TG-B-t3]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_height[TG-B-t4]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_height[TG-C-t1]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_height[TG-C-t2]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_height[TG-C-t3]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_height[TG-C-t4]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   }
+  ],
+  "selfchecks": [
+   {
+    "name": "test_frozen_golden_matches_live_recompute",
+    "classname": "",
+    "status": "passed",
+    "time": 0.003
+   },
+   {
+    "name": "test_plausibility_guess_resistance",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_isomorphic_invariance",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   }
+  ]
+ },
+ "pass_at_1": 1,
+ "deterministic": {
+  "cases_passed": 13,
+  "cases_total": 13,
+  "cases": [
+   {
+    "name": "test_R3",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.005
+   },
+   {
+    "name": "test_R4",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_R5",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_R6",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_R7",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.002
+   },
+   {
+    "name": "test_R8",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.002
+   },
+   {
+    "name": "test_R9",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.002
+   },
+   {
+    "name": "test_R10",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_R11",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_R12",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.002
+   },
+   {
+    "name": "test_R13",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_R14",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_R15",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.001
+   }
+  ],
+  "recorded": true,
+  "outcome_channel_route": "re-derived by re-executing the bundle's own process detectors over the archived trajectory (ERZA_RUN_DIR); no agent rollout was repeated"
+ },
+ "criteria_without_verdict": [],
+ "human": {
+  "criteria": [
+   {
+    "id": "R16",
+    "weight": 1,
+    "is_positive": true,
+    "criterion": "The run established WHY a prediction-precision tide height must be synthesised from that gauge's own measured harmonic constants - that the per-constituent amplitude and phase lag are empirical and site-specific, so they can be neither recalled nor estimated, and that a single observed water level is one instant of the curve rather than the curve - rather than treating the harmonic route as an unexplained procedure or substituting a constant. Equivalent routes count: arguing it from the physics of local resonance, from the range of the tide between the listed instants, or from the absence of any constants table in the container, are all satisfactory provided the run shows why the constants are load-bearing.",
+    "voted": true,
+    "satisfied": true,
+    "resolution": "human",
+    "votes": [
+     {
+      "satisfied": true,
+      "rationale": "At [6] the agent reasoned \"The gauges are label-only, so the harmonic constants must come from the skill's reference data\" — an argument from the opacity of the labels that gauge-specific constants cannot be recalled or looked up and must be obtained from the shipped table; it also explicitly treated the decoy as a value at one earlier instant (\"~10 months from the target times\") used only as validation, never as the answer.",
+      "reviewer": "human"
+     }
+    ],
+    "rationales": []
+   },
+   {
+    "id": "R17",
+    "weight": 3,
+    "is_positive": true,
+    "criterion": "The run checked its result against something that could actually have disagreed - most directly, by evaluating its own harmonic method at the timestamp of the recent observed water level and comparing the two, or by any other construction that would fail under a wrong time origin, a sign-flipped phase or a missing datum offset. Re-running the same script and getting the same number does not count, and neither does 'the values look plausible', 'they are in a reasonable range', or 'they vary between instants'.",
+    "voted": true,
+    "satisfied": true,
+    "resolution": "human",
+    "votes": [
+     {
+      "satisfied": true,
+      "rationale": "The solver evaluated the harmonic method at the decoy's own timestamp (2025-01-01T00:00:00Z) and compared against the three observed values with a hard gate (\"raise SystemExit... not writing results\" unless all agree within 1 cm), a check that would fail under a wrong epoch, flipped phase sign, or missing Z0; the agent additionally explained why this discriminates.",
+      "reviewer": "human"
+     }
+    ],
+    "rationales": []
+   },
+   {
+    "id": "R18",
+    "weight": 1,
+    "is_positive": true,
+    "criterion": "The run said, in prose or in a comment, that the recent observed water level supplied for orientation is a single earlier instant of the tidal curve and therefore is not the predicted height at the target instants.",
+    "voted": true,
+    "satisfied": true,
+    "resolution": "human",
+    "votes": [
+     {
+      "satisfied": true,
+      "rationale": "In the final summary the agent stated the decoy values \"are actually predicted heights at 2025-01-01T00:00:00Z\" — an instant \"~10 months from the target times\" — using them only as an oracle at that earlier instant, which is an equivalent statement that the orientation reading is one earlier point of the curve, not the target-instant heights.",
+      "reviewer": "human"
+     }
+    ],
+    "rationales": []
+   },
+   {
+    "id": "R19",
+    "weight": 1,
+    "is_positive": true,
+    "criterion": "The run said which convention it was adopting at each branch that has one - which epoch the mean longitudes are counted from, that the timestamps are UTC and the phase lags are referenced to Greenwich, whether the equilibrium argument is in cycles or degrees, and that the phase lag is subtracted - rather than only emitting code.",
+    "voted": true,
+    "satisfied": true,
+    "resolution": "human",
+    "votes": [
+     {
+      "satisfied": true,
+      "rationale": "The prose summary states the epoch (\"polynomials in days since 1899-12-31 12:00 UT\"), the Greenwich phase-lag convention (twice, including \"the Greenwich-phase convention\"), and gives the formula \"cos(2πVᵢ + uᵢ − gᵢ)\" showing the subtracted phase lag and cycles-times-2π argument; code docstrings/comments pin \"UTC instant t\" and \"Mean longitudes (cycles)\", so the conventions were stated, not merely embedded in code.",
+      "reviewer": "human"
+     }
+    ],
+    "rationales": []
+   }
+  ]
+ }
+}

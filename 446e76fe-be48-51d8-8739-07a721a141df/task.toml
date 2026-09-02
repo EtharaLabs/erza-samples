@@ -1,0 +1,106 @@
+schema_version = "2.0"
+
+[task]
+id   = "446e76fe-be48-51d8-8739-07a721a141df"
+slug = "local-magnitude-seismology"
+name = "Local Magnitude Seismology"
+lever = "agency-standard-methodology-selection"
+# lever bound 2026-08-31. the magnitude requires the standard instrument-response route; the plausible velocity-form path is the dominant wrong answer
+
+[metadata]
+author_name = "Erza"
+category    = "natural-science"
+subcategory = "seismology"
+category_confidence = "high"
+difficulty  = "hard"
+difficulty_explanation = "Requires reading miniSEED + StationXML, removing the instrument response correctly (pre-filter + water level, correct output units), simulating a Wood-Anderson seismograph with the IASPEI standard constants, measuring the maximum-horizontal peak amplitude in millimetres, and applying the Southern California distance-correction (Hutton & Boore -logA0) to obtain the local magnitude. The dominant failure is the Wood-Anderson response itself: it acts on displacement and therefore carries two zeros at the origin, but the one-zero velocity form is what most circulated code contains, and it understates the magnitude by ~0.80. Skipping the response removal or using a generic magnitude formula also fail."
+task_type   = ["analysis", "calculation"]
+modality    = ["time-series", "scientific-data"]
+interface   = ["terminal", "python"]
+skill_type  = ["domain-procedure", "library-api-usage", "mathematical-method"]
+tags        = ["seismology", "earthquake", "local-magnitude", "wood-anderson", "obspy", "instrument-response", "miniseed"]
+
+[environment]
+network_mode      = "no-network"
+os                = "linux"
+arch              = "linux/amd64"
+cpus              = 1
+memory_mb         = 4096
+build_timeout_sec = 900.0
+
+[agent]
+timeout_sec = 1800.0
+
+[verifier]
+timeout_sec   = 300.0
+score_family = "fractional"
+
+[verifier.hardening]
+cleanup_conftests = true
+
+[oracle]
+entrypoint = "oracle/solve.sh"
+
+[provenance]
+recipe    = "authoring.task_id.v1"
+namespace = "c53e8f3b-526f-52c0-a04e-89e2269b237d"
+canonical_content_hash = "aa1732b92e6480a42087e37f479c1193656ab9f108246bc2ea291f7a382e1138"
+# RESEALED 2026-08-19 over the shipped bytes: human-channel landing (loader ACP fallback), criterion revisions, and shipped weight-0 evidence. Same construction.
+source_slug     = "local-magnitude-seismology"
+source_origin   = "original"
+provenance_date = "2026-07-27"
+
+# canonical_content_hash — RE-SEALED 2026-08-05 against the layout shipped today.
+#
+# Construction: sha256 over the newline-joined "relpath:sha256" lines of this
+# bundle's manifest, sorted by relpath, UTF-8 encoded, no trailing newline.
+# relpath is POSIX-style and relative to this bundle directory, so the hash is
+# path-independent.
+#
+# Scope: every regular file shipped in this bundle (16 files), recursively.
+# Exclusions:
+#   * trajectories/ in full — run records, not task content, and they change
+#     every time the grid is re-run;
+#   * task.toml itself — it carries this hash, so including it would make the
+#     field self-referential and impossible to verify;
+#   * transient artifacts that are never shipped: __pycache__/, *.pyc, .DS_Store.
+#
+# Verify with: python3 verify_seal.py <path to this repository>   (the checker
+# ships with the erza harness, at the harness root).
+#
+# STABLE IDENTIFIER — THE TASK ID IS NOT DERIVED FROM THE VALUE ABOVE.
+# [task] id, this bundle's directory name and tests/rubrics.json task_id are
+# load-bearing identifiers referenced across the repo and inside the run records
+# under trajectories/. They were minted ONCE, as uuid5(namespace, <the ORIGINAL
+# v1 content hash>), and are deliberately not re-derived on re-seal.
+# uuid5(namespace, canonical_content_hash) therefore does NOT equal the task id
+# and must not be expected to: recomputing the id from this field would rename
+# the task on every byte that changes. The id names the task; the hash certifies
+# the bytes.
+
+# RESEAL 2026-08-31 - PROCESS-CHANNEL VOCABULARY AND AUTHOR ATTRIBUTION.
+# The process channel's second lane is named `human` throughout: rubrics.json
+# `channel`, the verifier records under trajectories/, score.py and report.py.
+# author_name reads "Erza",
+# and the prose in TRUTH.md, test.sh and trajectory.py names a human reviewer.
+#
+# NO RUN WAS RE-EXECUTED AND NO RECORDED SCORE MOVED. The graded outcome module
+# (test_output.py / test_pytest.py), checks.py, conftest.py and
+# expected_values.json are byte-identical to the pre-change bundle; test.sh
+# changed only in a comment; score.py and report.py are offline tooling that
+# test.sh never invokes. All 120 recorded `outcome` blocks under trajectories/
+# are unchanged, and the published paired figures recompute to the same values
+# from the shipped bytes.
+#
+# canonical_content_hash re-sealed over those bytes:
+#   was 29a4418d8a132dad02d244706499fb9d159c984b75f86c8ed7add3072251c37a
+#   now aa1732b92e6480a42087e37f479c1193656ab9f108246bc2ea291f7a382e1138
+
+# RECIPE LABEL, 2026-08-31. The `recipe` field above reads
+# `authoring.task_id.v1`. It is a descriptive provenance label and is not an
+# input to any derivation: this bundle's [task] id was minted once and is
+# deliberately never re-derived, as harness/verify_seal.py states in its
+# CONSTRUCTION note. No verifier reads this field. The label was renamed on
+# 2026-08-31 without re-minting; the id it names is unchanged and remains the
+# load-bearing identifier referenced across the repo and inside the records
+# under trajectories/.

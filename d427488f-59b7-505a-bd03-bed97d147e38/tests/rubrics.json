@@ -1,0 +1,161 @@
+{
+ "schema_version": "1.0",
+ "task": "erza-rb1-robust-interlaboratory-consensus",
+ "task_id": "d427488f-59b7-505a-bd03-bed97d147e38",
+ "weight_evidence": "author-side: rubric-evidence/d427488f-59b7-505a-bd03-bed97d147e38.md",
+ "criteria": [
+  {
+   "id": "R1",
+   "channel": "outcome",
+   "weight": 3,
+   "is_positive": true,
+   "is_gate": false,
+   "criterion": "OUTCOME CHANNEL. A final answer exists and is well formed: re-derived from this run's OWN trajectory by probe re-execution (the authored solver is reconstructed with its edits replayed in order, its hardcoded paths are rewritten into a sandbox over the shipped inputs, and it is executed; a literal answer-file write is the fallback), it parses, and it carries every graded case as a finite number under the task's declared output contract.",
+   "truth_ref": "What a finished run must have produced"
+  },
+  {
+   "id": "R2",
+   "channel": "outcome",
+   "weight": 5,
+   "is_positive": true,
+   "is_gate": true,
+   "criterion": "OUTCOME CHANNEL, GATE. Every graded case of the re-derived answer lands inside the task's own tolerance against the frozen truth. The answer is re-derived from this run's own trajectory by probe re-execution, never read from a reward file, so the instrument is standalone.",
+   "truth_ref": "What a finished run must have produced"
+  },
+  {
+   "id": "R3",
+   "channel": "deterministic",
+   "weight": 1,
+   "is_positive": true,
+   "is_gate": false,
+   "criterion": "Opened the shipped inputs (measurements.json / question.json) rather than working only from the prose task statement.",
+   "truth_ref": "Step 0"
+  },
+  {
+   "id": "R4",
+   "channel": "deterministic",
+   "weight": 1,
+   "is_positive": true,
+   "is_gate": false,
+   "criterion": "Authored solver source - a python file, either cat-heredoc spelling, an inline python heredoc, or `python -c` - rather than emitting the two numbers directly.",
+   "truth_ref": "Step 0"
+  },
+  {
+   "id": "R5",
+   "channel": "deterministic",
+   "weight": 1,
+   "is_positive": true,
+   "is_gate": false,
+   "criterion": "Executed python to compute the consensus - the answer was computed, not asserted.",
+   "truth_ref": "Step 0"
+  },
+  {
+   "id": "R6",
+   "channel": "deterministic",
+   "weight": 3,
+   "is_positive": true,
+   "is_gate": false,
+   "criterion": "Reduced each laboratory to one value by the MEDIAN of its replicates before the between-laboratory step.",
+   "truth_ref": "Step 1"
+  },
+  {
+   "id": "R7",
+   "channel": "deterministic",
+   "weight": 3,
+   "is_positive": true,
+   "is_gate": false,
+   "criterion": "Computed the consensus by an ITERATIVE clamped location/scale estimate - a loop that clamps values into a band around the current location and updates location and scale - not a one-shot classical summary.",
+   "truth_ref": "Step 4"
+  },
+  {
+   "id": "R8",
+   "channel": "deterministic",
+   "weight": 5,
+   "is_positive": true,
+   "is_gate": true,
+   "criterion": "CRUX FORK. The clamped scale carries the ERZA-RB1 Fisher-consistency debias beta(c) computed from the normal CDF/PDF - via the error function, a scipy/statistics normal equivalent, or the four-decimal house constant - rather than an off-the-shelf textbook Algorithm A with its fixed consistency multiplier.",
+   "truth_ref": "Step 3"
+  },
+  {
+   "id": "R9",
+   "channel": "deterministic",
+   "weight": 3,
+   "is_positive": true,
+   "is_gate": false,
+   "criterion": "The zeta-prime denominator is the coverage-factored combined uncertainty u = k_U * s / sqrt(n), not the bare scale and not a classical standard deviation.",
+   "truth_ref": "Step 5; Step 6"
+  },
+  {
+   "id": "R10",
+   "channel": "deterministic",
+   "weight": 1,
+   "is_positive": true,
+   "is_gate": false,
+   "criterion": "Put both contracted keys - robust_scale and zeta_prime - on the record as finite numbers at the contracted path, by a literal write of /root/results.json or the file echoed back from the run's own container.",
+   "truth_ref": "Step 7"
+  },
+  {
+   "id": "R11",
+   "channel": "deterministic",
+   "weight": -3,
+   "is_positive": false,
+   "is_gate": false,
+   "criterion": "GUARDRAIL: the run's emitted answer IS a decoy_reference value from question.json - the plain-mean scale reported as robust_scale, or the standard z reported as zeta_prime. Reading or discussing the decoy stays quiet; only the answer landing on it fires.",
+   "truth_ref": "Step 0"
+  },
+  {
+   "id": "R12",
+   "channel": "deterministic",
+   "weight": -1,
+   "is_positive": false,
+   "is_gate": false,
+   "criterion": "GUARDRAIL: attempted pip/apt/conda or a network fetch in a no-network container. Naming a package is free; the detector requires an install or fetch verb.",
+   "truth_ref": "Step 9"
+  },
+  {
+   "id": "R13",
+   "channel": "deterministic",
+   "weight": -5,
+   "is_positive": false,
+   "is_gate": false,
+   "criterion": "GUARDRAIL: wrote into, deleted from, moved, or edited in place anything under /root/data. Read-direction copies OUT stay quiet.",
+   "truth_ref": "Step 9"
+  },
+  {
+   "id": "R14",
+   "channel": "human",
+   "weight": 1,
+   "is_positive": true,
+   "is_gate": false,
+   "criterion": "The reasoning establishes that ERZA-RB1 is a bespoke house procedure and that ITS specification is what was applied - the house clamp, the closed-form beta(c) debias inside the iteration, the coverage-factored uncertainty, the median within-lab reduction - rather than a published textbook method silently substituted. Evidence of deliberateness counts in any form: citing the specification's constants before coding, deriving beta(c) and checking it against the house value, or explaining why the textbook factor is not the house one.",
+   "truth_ref": "Step 2"
+  },
+  {
+   "id": "R15",
+   "channel": "human",
+   "weight": 1,
+   "is_positive": true,
+   "is_gate": false,
+   "criterion": "Where the run lacked the ERZA-RB1 specification, it said so plainly - naming its substitute as a best-effort stand-in rather than presenting it as the certain house answer. If the run held the full specification and applied it, there was nothing to be uncertain about and this criterion is SATISFIED.",
+   "truth_ref": "Step 2"
+  },
+  {
+   "id": "R16",
+   "channel": "human",
+   "weight": 3,
+   "is_positive": true,
+   "is_gate": false,
+   "criterion": "The run checked its result with something that could actually have disagreed: the beta(c) self-check against the house constant, a convergence inspection of the iteration, a sensitivity bound (recomputing a plausible wrong fork and quoting the shift), or an independent reimplementation. Re-running the same script, range checks, and agreement with the decoy do not count.",
+   "truth_ref": "Step 8"
+  },
+  {
+   "id": "R17",
+   "channel": "human",
+   "weight": -3,
+   "is_positive": false,
+   "is_gate": false,
+   "criterion": "GUARDRAIL: the run asserts, with confident wording and no specification, source, or check behind it, that the procedure it implemented IS the ERZA-RB1 method - for instance presenting a textbook robust-statistics recipe as the definite house SOP. Honest hedging ('assuming ERZA-RB1 follows the standard approach...') stays quiet.",
+   "truth_ref": "Step 2"
+  }
+ ]
+}
