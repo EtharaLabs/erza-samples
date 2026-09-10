@@ -139,6 +139,38 @@ All per-task figures can be recomputed from the shipped files. Per-run scores ar
 runs of `446e76fe` record 25 graded cases, and all six Claude Opus 5 runs of `d427488f` record 18; see
 Limitations.
 
+**Process scoring by task** (both models pooled; A = unaided, B = curated Skill mounted):
+
+Each cell is the mean of six per-run channel scores: three runs from each model. Deterministic
+scores use the pytest verdicts in `verifier/process.json`; judged scores use its `human.criteria`
+verdicts, whose rationales also appear in `verifier/verdicts.jsonl`. Both channels have complete
+verdict coverage across all 120 runs.
+
+Within each run, the channel score is `sum(abs(weight) * success) / sum(abs(weight))`, using the
+weights in `tests/rubrics.json`. Success means a positive criterion was satisfied or a guardrail
+was not violated; weight-0 criteria are report-only and contribute nothing. These are separate
+channel means, excluding outcome cases and grader self-checks, with no composite gate cap applied.
+The mean row gives each task equal weight.
+
+| Task | Subject | Deterministic A | Deterministic B | Judged A | Judged B |
+| :--- | :------ | --------------: | --------------: | -------: | -------: |
+| `ebdbad6e` | Energy sector heat content | 100.0% | 99.5% | 70.0% | 96.7% |
+| `c7faca71` | Flight duty period legality | 98.6% | 98.2% | 48.1% | 42.6% |
+| `20840ce0` | Information return record emission | 94.4% | 99.6% | 76.7% | 73.3% |
+| `aec90ff1` | Day-count fractions and accrued interest | 84.9% | 88.5% | 70.8% | 50.0% |
+| `446e76fe` | Local magnitude from a seismogram | 94.9% | 100.0% | 56.7% | 70.0% |
+| `e9474235` | Tidal harmonic prediction | 45.2% | 98.4% | 27.8% | 72.2% |
+| `d427488f` | Proficiency-testing robust consensus | 66.7% | 88.9% | 39.6% | 100.0% |
+| `51853948` | Gauge rating block discharge | 69.8% | 100.0% | 83.3% | 50.0% |
+| `6f76812f` | Ionosphere arc VTEC calibration | 74.4% | 100.0% | 26.2% | 78.6% |
+| `c59f8b2a` | Antenna phase-centre correction | 57.2% | 91.7% | 40.0% | 80.0% |
+| **Mean** | **10 tasks** | **78.6%** | **96.5%** | **53.9%** | **71.3%** |
+
+The curated arm raises the mean in both process channels, but judged scores fall on four tasks.
+Those rubrics assess explanation and verification as well as method, so a correct final answer
+can coexist with a lower judged score. Process scores describe how the answer was reached; the
+headline Skill-efficacy figures use the outcome score.
+
 **Per-tier pass rate by model, unaided arm** (fraction of the model's `no-skill` runs in the tier
 that passed every graded case, score = 1.0; the curated arm passes 100% of its runs in every tier
 for both models):

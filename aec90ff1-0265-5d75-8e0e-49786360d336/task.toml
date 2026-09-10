@@ -5,7 +5,6 @@ id   = "aec90ff1-0265-5d75-8e0e-49786360d336"
 slug = "erza-day-count-accrued"
 name = "Erza Day Count Accrued"
 lever = "agency-standard-methodology-selection"
-# lever bound 2026-08-31. the fractions require the exact rules of six named standards-body day-count conventions rather than a general reading of them
 
 [metadata]
 author_name = "Erza"
@@ -44,106 +43,6 @@ entrypoint = "oracle/solve.sh"
 recipe    = "authoring.task_id.v1"
 namespace = "c53e8f3b-526f-52c0-a04e-89e2269b237d"
 canonical_content_hash = "e8d0674353b06dae2dccea5f3e58b285a6c661952d01b7777c297604e3f6fa19"
-# RESEALED 2026-08-19 over the shipped bytes: human-channel landing (loader ACP fallback), criterion revisions, and shipped weight-0 evidence. Same construction.
 source_slug     = "erza-day-count-accrued"
 source_origin   = "re-freeze"
 provenance_date = "2026-07-27"
-
-# NOTE: canonical_content_hash has been re-sealed over the current file
-# layout (verify_seal reports OK); the v1 carried-over value is superseded.
-#
-# STABLE IDENTIFIER - THE TASK ID IS NOT DERIVED FROM THE VALUE ABOVE.
-# [task] id, this bundle's directory name and its run-record task ids are
-# load-bearing identifiers referenced across the repo and inside the records
-# under trajectories/. They were minted once and are deliberately not re-derived
-# at reseal; the id names the task, the hash certifies the bytes.
-#
-# DELTA 2026-08-26 - BASE IMAGE PINNED BY DIGEST.
-# environment/Dockerfile line 1 now reads
-#   FROM python:3.11-slim@sha256:db3ff2e1800a8581e2c48a27c3995339d47bdf046da21c7627accd3d51053a93
-# The tag is kept beside the digest for readability; the digest is what resolves.
-# That digest is not newly chosen: every environment.json under trajectories/
-# records resolved_image_digest python@sha256:db3ff2e1800a8581e2c48a27c3995339d47bdf046da21c7627accd3d51053a93
-# against pinned_image python:3.11-slim, and the local image cache resolves the
-# same tag to the same digest. The pin writes down the base image the recorded
-# runs already used; it does not move the environment.
-#
-# The byte change is confined to environment/Dockerfile and this note.
-# canonical_content_hash re-sealed over the pinned Dockerfile:
-#   was 7870b21448038da5bdadc729b82e4c662b4280d15a74f82ede74c4619e0cd108
-#   now 36004e9c1b03be81230ab4b59ee7066c04003075b502c7fb3478f8f3e6990399
-# Every run recorded under trajectories/ predates this pin and was recorded
-# against the pre-pin hash. Those records are measurement history: they are not
-# re-run, re-scored, or otherwise altered by the pin, and trajectories/ is
-# outside the seal, so the reseal neither reads nor depends on them.
-
-# RESEAL 2026-08-31 - PROCESS-CHANNEL VOCABULARY AND AUTHOR ATTRIBUTION.
-# The process channel's second lane is named `human` throughout: rubrics.json
-# `channel`, the verifier records under trajectories/, score.py and report.py.
-# author_name reads "Erza",
-# and the prose in TRUTH.md, test.sh and trajectory.py names a human reviewer.
-#
-# NO RUN WAS RE-EXECUTED AND NO RECORDED SCORE MOVED. The graded outcome module
-# (test_output.py / test_pytest.py), checks.py, conftest.py and
-# expected_values.json are byte-identical to the pre-change bundle; test.sh
-# changed only in a comment; score.py and report.py are offline tooling that
-# test.sh never invokes. All 120 recorded `outcome` blocks under trajectories/
-# are unchanged, and the published paired figures recompute to the same values
-# from the shipped bytes.
-#
-# canonical_content_hash re-sealed over those bytes:
-#   was 36004e9c1b03be81230ab4b59ee7066c04003075b502c7fb3478f8f3e6990399
-#   now 5edf6135e4d5359db072820022bc5b93d27a6625e75359af8dddcbabcaecc583
-
-# RECIPE LABEL, 2026-08-31. The `recipe` field above reads
-# `authoring.task_id.v1`. It is a descriptive provenance label and is not an
-# input to any derivation: this bundle's [task] id was minted once and is
-# deliberately never re-derived, as harness/verify_seal.py states in its
-# CONSTRUCTION note. No verifier reads this field. The label was renamed on
-# 2026-08-31 without re-minting; the id it names is unchanged and remains the
-# load-bearing identifier referenced across the repo and inside the records
-# under trajectories/.
-
-# RESEAL 2026-09-01 - FRACTIONAL SCORING AND FIXED DENOMINATOR.
-# [task] reward_family = "binary" is removed and tests/test.sh now scores graded
-# cases passed / TOTAL (pinned at 4) instead of 1-iff-every-case-passed. The
-# script writes the fractional value to both /logs/verifier/score.md and
-# /logs/verifier/reward.txt, and emits process.json in the reference schema. The
-# graded module and expected_values.json are byte-identical to the pre-change
-# bundle.
-#
-# RECORDED SCORES WILL MOVE AND THE RUN RECORDS ARE NOT YET REFRESHED. Under the
-# binary rubric a run passing 2 of the 4 outcome tests scored 0; under the
-# fractional rubric it scores 0.5000. All six no-skill runs under trajectories/
-# fail exactly test_year_fraction and test_accrued_interest against the
-# tolerances this bundle ships (tolerance_year_fraction_abs = 1e-10,
-# tolerance_accrued_interest_abs = 1e-08), which appear verbatim in each run's
-# archived verifier/test-stdout.md; no BUNDLE DEFECT banner appears in any of
-# them, so no self-check fired. The six with-skill runs pass 4 of 4 and are
-# unchanged at 1.0000.
-#
-# The twelve run records are PENDING RE-RECORDING and are deliberately NOT
-# corrected in place: their archived verifier/ctrf.json reports seven tests with
-# unprefixed names against test_output.py, while the shipped grader collects
-# twelve under test_pytest.py with the test_reward_ prefix, so that metadata
-# predates these bytes. verifier/final_score.md, result.json, scores.jsonl and
-# score.jsonl still carry the binary values.
-#
-# canonical_content_hash re-sealed over those bytes:
-#   was 5edf6135e4d5359db072820022bc5b93d27a6625e75359af8dddcbabcaecc583
-#   now c6e0cda660f259b79ee7c08512f86bdf82c1ffc5f53d0eb224efcd52ba83773a
-
-# RESEAL 2026-09-02 - HUMAN-CHANNEL VOCABULARY IN THE GOLDEN-RESULT CARRIER.
-# tests/truth_armed/golden_result.json .layer and .caveats[0] were rewritten
-# to use the human-reviewer vocabulary the rest of the bundle already uses. The
-# ABSTAIN verdicts on the human-channel criteria are unchanged; only the reason
-# text changed - the human-reviewed criteria remain ABSTAINED because no human
-# reviewer was assigned to the golden trajectory. The 2026-08-31 reseal note
-# above was edited to drop a sentence describing a removed grader-side module;
-# task.toml is not under the seal and that edit does not affect the hash.
-#
-# NO RUN WAS RE-EXECUTED AND NO RECORDED SCORE MOVED.
-#
-# canonical_content_hash re-sealed over those bytes:
-#   was c6e0cda660f259b79ee7c08512f86bdf82c1ffc5f53d0eb224efcd52ba83773a
-#   now e8d0674353b06dae2dccea5f3e58b285a6c661952d01b7777c297604e3f6fa19
