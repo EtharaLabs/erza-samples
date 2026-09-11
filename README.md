@@ -74,7 +74,8 @@ erza-samples/
 ├── images/                            # figures and their generators
 │   ├── hero.png
 │   ├── score_by_tier_pooled.png       # with score_by_tier_pooled.py
-│   └── cost_by_tier.png               # with cost_by_tier.py
+│   ├── cost_by_tier.png               # with cost_by_tier.py
+│   └── cost_vs_score.png              # with cost_vs_score.py
 └── <task-id>/                         # one directory per task (10): the task bundle and its 12 runs
     ├── task.toml · instruction.md · TRUTH.md · environment/ · oracle/ · tests/
     └── trajectories/<model>/<condition>/run_N/   # model ∈ {claude-opus-5, gpt-5.6-sol}; condition ∈ {no-skill, with-skill}
@@ -139,9 +140,9 @@ All per-task figures can be recomputed from the shipped files. Per-run scores ar
 runs of `446e76fe` record 25 graded cases, and all six Claude Opus 5 runs of `d427488f` record 18; see
 Limitations.
 
-**Process scoring by task** (both models pooled; A = unaided, B = curated Skill mounted):
+**Process scoring by task and model** (A = unaided, B = curated Skill mounted):
 
-Each cell is the mean of six per-run channel scores: three runs from each model. Deterministic
+Each cell is the mean of three per-run channel scores for the named model and condition. Deterministic
 scores use the pytest verdicts in `verifier/process.json`; judged scores use its `human.criteria`
 verdicts, whose rationales also appear in `verifier/verdicts.jsonl`. Both channels have complete
 verdict coverage across all 120 runs.
@@ -150,26 +151,45 @@ Within each run, the channel score is `sum(abs(weight) * success) / sum(abs(weig
 weights in `tests/rubrics.json`. Success means a positive criterion was satisfied or a guardrail
 was not violated; weight-0 criteria are report-only and contribute nothing. These are separate
 channel means, excluding outcome cases and grader self-checks, with no composite gate cap applied.
-The mean row gives each task equal weight.
+Each model's mean row gives the ten tasks equal weight.
+
+**Claude Opus 5**
 
 | Task | Subject | Deterministic A | Deterministic B | Judged A | Judged B |
 | :--- | :------ | --------------: | --------------: | -------: | -------: |
-| `ebdbad6e` | Energy sector heat content | 100.0% | 99.5% | 70.0% | 96.7% |
-| `c7faca71` | Flight duty period legality | 98.6% | 98.2% | 48.1% | 42.6% |
-| `20840ce0` | Information return record emission | 94.4% | 99.6% | 76.7% | 73.3% |
-| `aec90ff1` | Day-count fractions and accrued interest | 84.9% | 88.5% | 70.8% | 50.0% |
-| `446e76fe` | Local magnitude from a seismogram | 94.9% | 100.0% | 56.7% | 70.0% |
-| `e9474235` | Tidal harmonic prediction | 45.2% | 98.4% | 27.8% | 72.2% |
-| `d427488f` | Proficiency-testing robust consensus | 66.7% | 88.9% | 39.6% | 100.0% |
-| `51853948` | Gauge rating block discharge | 69.8% | 100.0% | 83.3% | 50.0% |
-| `6f76812f` | Ionosphere arc VTEC calibration | 74.4% | 100.0% | 26.2% | 78.6% |
-| `c59f8b2a` | Antenna phase-centre correction | 57.2% | 91.7% | 40.0% | 80.0% |
-| **Mean** | **10 tasks** | **78.6%** | **96.5%** | **53.9%** | **71.3%** |
+| `ebdbad6e` | Energy sector heat content | 100.0% | 100.0% | 100.0% | 100.0% |
+| `c7faca71` | Flight duty period legality | 100.0% | 99.3% | 55.6% | 74.1% |
+| `20840ce0` | Information return record emission | 93.2% | 99.1% | 93.3% | 80.0% |
+| `aec90ff1` | Day-count fractions and accrued interest | 90.6% | 93.8% | 91.7% | 100.0% |
+| `446e76fe` | Local magnitude from a seismogram | 94.4% | 100.0% | 86.7% | 80.0% |
+| `e9474235` | Tidal harmonic prediction | 48.4% | 100.0% | 33.3% | 94.4% |
+| `d427488f` | Proficiency-testing robust consensus | 70.4% | 88.9% | 54.2% | 100.0% |
+| `51853948` | Gauge rating block discharge | 74.1% | 100.0% | 100.0% | 100.0% |
+| `6f76812f` | Ionosphere arc VTEC calibration | 75.2% | 100.0% | 38.1% | 100.0% |
+| `c59f8b2a` | Antenna phase-centre correction | 62.2% | 100.0% | 40.0% | 100.0% |
+| **Mean** | **10 tasks** | **80.8%** | **98.1%** | **69.3%** | **92.9%** |
 
-The curated arm raises the mean in both process channels, but judged scores fall on four tasks.
-Those rubrics assess explanation and verification as well as method, so a correct final answer
-can coexist with a lower judged score. Process scores describe how the answer was reached; the
-headline Skill-efficacy figures use the outcome score.
+**GPT-5.6 SOL**
+
+| Task | Subject | Deterministic A | Deterministic B | Judged A | Judged B |
+| :--- | :------ | --------------: | --------------: | -------: | -------: |
+| `ebdbad6e` | Energy sector heat content | 100.0% | 99.1% | 40.0% | 93.3% |
+| `c7faca71` | Flight duty period legality | 97.1% | 97.1% | 40.7% | 11.1% |
+| `20840ce0` | Information return record emission | 95.7% | 100.0% | 60.0% | 66.7% |
+| `aec90ff1` | Day-count fractions and accrued interest | 79.2% | 83.3% | 50.0% | 0.0% |
+| `446e76fe` | Local magnitude from a seismogram | 95.4% | 100.0% | 26.7% | 60.0% |
+| `e9474235` | Tidal harmonic prediction | 41.9% | 96.8% | 22.2% | 50.0% |
+| `d427488f` | Proficiency-testing robust consensus | 63.0% | 88.9% | 25.0% | 100.0% |
+| `51853948` | Gauge rating block discharge | 65.4% | 100.0% | 66.7% | 0.0% |
+| `6f76812f` | Ionosphere arc VTEC calibration | 73.6% | 100.0% | 14.3% | 57.1% |
+| `c59f8b2a` | Antenna phase-centre correction | 52.2% | 83.3% | 40.0% | 60.0% |
+| **Mean** | **10 tasks** | **76.4%** | **94.9%** | **38.6%** | **49.8%** |
+
+Pooling the two models gives deterministic means of 78.6% unaided and 96.5% with the Skill, and
+judged means of 53.9% and 71.3%. The model split shows that judged scores fall on two tasks for
+Claude Opus 5 and three for GPT-5.6 SOL. Those rubrics assess explanation and verification as well
+as method, so a correct final answer can coexist with a lower judged score. Process scores describe
+how the answer was reached; the headline Skill-efficacy figures use the outcome score.
 
 **Per-tier pass rate by model, unaided arm** (fraction of the model's `no-skill` runs in the tier
 that passed every graded case, score = 1.0; the curated arm passes 100% of its runs in every tier
@@ -205,6 +225,19 @@ $0.66 on Expert; its curated arm ranges from $0.32 to $0.73 and costs less than 
 Easy, Medium and Hard, but more on Trivial and Expert.
 
 ![Mean agent cost per run by difficulty tier, one chart per model](images/cost_by_tier.png)
+
+**Cost versus outcome score**
+
+Each point below is one recorded run: agent cost in USD (`agent_result.cost_usd`) against outcome
+score (`scores.score`), both from `result.json`. Each model has its own panel, with 30 unaided and
+30 Skill-assisted runs. Dashed lines show a linear fit within each condition where the score varies.
+
+![Agent cost versus outcome score, with separate panels for each model and colors for each condition](images/cost_vs_score.png)
+
+Among unaided runs, Pearson's correlation is **+0.13 for Claude Opus 5** and **−0.28 for GPT-5.6 SOL**.
+The Skill-assisted correlation is **undefined** for both models because all 30 scores per model are
+1.000, even though costs vary. These are descriptive associations across different tasks and repeated
+runs; they do not establish that spending more causes a better result.
 
 ## Analysis
 
@@ -393,7 +426,12 @@ The Erza harness builds the images, runs the agents and scores the runs. The sco
 `result.json` (`scores.score`) and again in `verifier/score.md`; the graded record is in
 `verifier/process.json`. The figures can be regenerated from the generators in `images/`, for
 example with `uv run --with matplotlib==3.10.5 python3 images/score_by_tier_pooled.py`. The
-generators read the tier assignments from the shipped runs; nothing is stored as a constant.
+generators derive scores, costs, tier assignments and correlations from the shipped runs.
+To regenerate the cost-versus-outcome chart:
+
+```sh
+uv run --python 3.12 --with matplotlib==3.10.5 python images/cost_vs_score.py
+```
 
 ### Recompute the efficacy yourself
 
