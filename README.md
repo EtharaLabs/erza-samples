@@ -161,8 +161,8 @@ Each bundle directory is a complete Harbor task: `task.toml` is the runner manif
   title        = {Erza: A Paired-Evaluation Benchmark for Agent Skill Efficacy},
   author       = {{Ethara.AI}},
   year         = {2026},
-  howpublished = {\url{https://github.com/Ethara-Ai/erza}},
-  note         = {Evidence ledger disposition CURRENT. See Evidence status for what is measured}
+  howpublished = {\url{https://github.com/EtharaOrion/erza}},
+  note         = {See the Evidence status section for what is measured}
 }
 ```
 
