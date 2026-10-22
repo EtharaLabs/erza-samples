@@ -1,0 +1,74 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.3.2"
+        },
+        "summary": {
+            "tests": 6,
+            "passed": 6,
+            "failed": 0,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1787580500.9930575,
+            "stop": 1787580505.2905078
+        },
+        "tests": [
+            {
+                "name": "::test_wood_anderson_calibration",
+                "status": "passed",
+                "duration": 3.2518456680700183,
+                "start": 1787580501.4072056,
+                "stop": 1787580504.6608272,
+                "retries": 0,
+                "file_path": "../tests/test_outputs.py"
+            },
+            {
+                "name": "::test_golden_matches_independent_recompute",
+                "status": "passed",
+                "duration": 0.22273808298632503,
+                "start": 1787580504.6615486,
+                "stop": 1787580504.8851876,
+                "retries": 0,
+                "file_path": "../tests/test_outputs.py"
+            },
+            {
+                "name": "::test_plausible",
+                "status": "passed",
+                "duration": 0.0003219589125365019,
+                "start": 1787580504.8854637,
+                "stop": 1787580504.886244,
+                "retries": 0,
+                "file_path": "../tests/test_outputs.py"
+            },
+            {
+                "name": "::test_local_magnitude",
+                "status": "passed",
+                "duration": 0.0006250001024454832,
+                "start": 1787580504.8868682,
+                "stop": 1787580504.8878024,
+                "retries": 0,
+                "file_path": "../tests/test_outputs.py"
+            },
+            {
+                "name": "::test_not_the_velocity_form",
+                "status": "passed",
+                "duration": 0.17111279093660414,
+                "start": 1787580504.8889892,
+                "stop": 1787580505.0605254,
+                "retries": 0,
+                "file_path": "../tests/test_outputs.py"
+            },
+            {
+                "name": "::test_isomorphic_invariance",
+                "status": "passed",
+                "duration": 0.22700904193334281,
+                "start": 1787580505.0608203,
+                "stop": 1787580505.290166,
+                "retries": 0,
+                "file_path": "../tests/test_outputs.py"
+            }
+        ]
+    }
+}

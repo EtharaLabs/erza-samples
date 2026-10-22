@@ -1,0 +1,415 @@
+{
+ "outcome": {
+  "score": 0.8065,
+  "cases_passed": 25,
+  "cases_total": 31,
+  "selfchecks_passed": 10,
+  "selfchecks_total": 10,
+  "selfcheck_failed": 0,
+  "cases": [
+   {
+    "name": "test_graded_case[R0001_head_1_54]",
+    "classname": "",
+    "status": "failed",
+    "time": 0.0
+   },
+   {
+    "name": "test_graded_case[R0001_amounts_55_270]",
+    "classname": "",
+    "status": "failed",
+    "time": 0.0
+   },
+   {
+    "name": "test_graded_case[R0001_reserved_and_first_name_271_327]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_graded_case[R0001_second_name_and_address_328_407]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_graded_case[R0001_reserved_and_city_408_487]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_graded_case[R0001_state_and_postal_488_498]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_graded_case[R0001_reserved_and_counter_499_543]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_graded_case[R0001_indicators_and_reserved_544_662]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_graded_case[R0001_free_text_and_state_withholding_663_734]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_graded_case[R0001_local_withholding_and_program_code_735_750]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_graded_case[R0002_head_1_54]",
+    "classname": "",
+    "status": "failed",
+    "time": 0.0
+   },
+   {
+    "name": "test_graded_case[R0002_amounts_55_270]",
+    "classname": "",
+    "status": "failed",
+    "time": 0.0
+   },
+   {
+    "name": "test_graded_case[R0002_reserved_and_first_name_271_327]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_graded_case[R0002_second_name_and_address_328_407]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_graded_case[R0002_reserved_and_city_408_487]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_graded_case[R0002_state_and_postal_488_498]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_graded_case[R0002_reserved_and_counter_499_543]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_graded_case[R0002_indicators_and_reserved_544_662]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_graded_case[R0002_free_text_and_state_withholding_663_734]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_graded_case[R0002_local_withholding_and_program_code_735_750]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_graded_case[R0003_head_1_54]",
+    "classname": "",
+    "status": "failed",
+    "time": 0.0
+   },
+   {
+    "name": "test_graded_case[R0003_amounts_55_270]",
+    "classname": "",
+    "status": "failed",
+    "time": 0.0
+   },
+   {
+    "name": "test_graded_case[R0003_reserved_and_first_name_271_327]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_graded_case[R0003_second_name_and_address_328_407]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_graded_case[R0003_reserved_and_city_408_487]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_graded_case[R0003_state_and_postal_488_498]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_graded_case[R0003_reserved_and_counter_499_543]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_graded_case[R0003_indicators_and_reserved_544_662]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_graded_case[R0003_free_text_and_state_withholding_663_734]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_graded_case[R0003_local_withholding_and_program_code_735_750]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_graded_case[answer_file_shape_and_charset]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   }
+  ],
+  "selfchecks": [
+   {
+    "name": "test_field_table_is_contiguous_and_totals_750",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_every_position_belongs_to_exactly_one_graded_group",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_frozen_golden_records_decode_to_the_payee_data",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_permitted_readings_of_the_specification_do_not_false_fail",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_control_paths_are_measured_live_and_clear_the_tolerance",
+    "classname": "",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_plausibility_envelope_and_guess_resistance",
+    "classname": "",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_no_assembled_record_reaches_the_agent",
+    "classname": "",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_isomorphic_invariance_under_relabel_and_reindex",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_amount_convention_alone_does_not_carry_the_task",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_tolerances_are_positive_and_the_case_set_is_well_formed",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   }
+  ]
+ },
+ "pass_at_1": 0,
+ "deterministic": {
+  "cases_passed": 15,
+  "cases_total": 15,
+  "cases": [
+   {
+    "name": "test_d_reads_inputs",
+    "classname": "test_process",
+    "status": "passed",
+    "time": 0.005
+   },
+   {
+    "name": "test_d_writes_emitter",
+    "classname": "test_process",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_d_executes_emitter",
+    "classname": "test_process",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_d_pins_the_declared_length",
+    "classname": "test_process",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_d_places_payee_block_at_published_offsets",
+    "classname": "test_process",
+    "status": "passed",
+    "time": 0.065
+   },
+   {
+    "name": "test_d_reserves_the_interior_runs",
+    "classname": "test_process",
+    "status": "passed",
+    "time": 0.002
+   },
+   {
+    "name": "test_d_emits_return_specific_tail",
+    "classname": "test_process",
+    "status": "passed",
+    "time": 0.007
+   },
+   {
+    "name": "test_d_amount_fields_right_justified_zero_filled",
+    "classname": "test_process",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_d_sequence_number_zero_filled",
+    "classname": "test_process",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_d_converts_amounts_to_cents",
+    "classname": "test_process",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_d_reports_contract",
+    "classname": "test_process",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_d_g_delimited_output",
+    "classname": "test_process",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_d_g_padded_remainder_without_placing",
+    "classname": "test_process",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_d_g_grader_path_access",
+    "classname": "test_process",
+    "status": "passed",
+    "time": 0.002
+   },
+   {
+    "name": "test_d_g_network_egress",
+    "classname": "test_process",
+    "status": "passed",
+    "time": 0.001
+   }
+  ],
+  "recorded": true,
+  "outcome_channel_route": "re-derived by re-executing the bundle's own process detectors over the archived trajectory (ERZA_RUN_DIR); no agent rollout was repeated"
+ },
+ "criteria_without_verdict": [],
+ "human": {
+  "criteria": [
+   {
+    "id": "n_treats_positions_as_absolute",
+    "weight": 1,
+    "is_positive": true,
+    "criterion": "The reasoning locates a particular gap in the layout rather than endorsing positional layout in general: it names at least one interior run of the record that carries no field - identified by the two fields it sits between, or by its own extent - and then does at least one of two things with it: states that the run is deliberately part of the layout and is emitted rather than closed up, or states what closing it would do, that every field after it moves and is then read out as a different field. Code that writes blanks into such a run, or a comment that merely labels it reserved, is the behaviour, not the statement, and does not satisfy this on its own; neither does calling the format fixed-width, saying that positions matter, or asserting that the fields were written at their published offsets, with no interior gap of this record actually located.",
+    "voted": true,
+    "satisfied": false,
+    "resolution": "human",
+    "votes": [
+     {
+      "satisfied": false,
+      "rationale": "The agent's code and docstring list interior blank runs (e.g., \"45-48 Blank\", \"265-286 Blank\", \"408-447 Blank\", \"508-543 Blank\") and writes blanks into them, but nowhere does the reasoning state that such a run is deliberately part of the layout kept rather than closed, nor what closing one would do to the fields after it — this is exactly the \"code that writes blanks / comment labeling it Blank\" behaviour the criterion excludes.",
+      "reviewer": "human"
+     }
+    ],
+    "rationales": []
+   },
+   {
+    "id": "n_verification_that_can_disagree",
+    "weight": 3,
+    "is_positive": true,
+    "criterion": "The run checks its result against something that could actually have disagreed - slicing the finished line back apart and reading fields out, checking the length, checking that the field table's own lengths sum to it - rather than treating 'the script ran' as verification.",
+    "voted": true,
+    "satisfied": true,
+    "resolution": "human",
+    "votes": [
+     {
+      "satisfied": true,
+      "rationale": "`verify.py` slices each finished line back apart at the same position ranges, decodes every field (names, TIN, amounts in cents, indicators, blanks) and compares against `payees.json`, plus asserts the field table is contiguous and sums to 750, that each line is exactly 750 characters, contains no separators, and is uppercase; it was actually run and reported \"all fields verified OK\", so the check could genuinely have disagreed.",
+      "reviewer": "human"
+     }
+    ],
+    "rationales": []
+   },
+   {
+    "id": "n_states_layout_source",
+    "weight": 1,
+    "is_positive": true,
+    "criterion": "The agent states which specification, revision and per-form table the positions came from.",
+    "voted": true,
+    "satisfied": true,
+    "resolution": "human",
+    "votes": [
+     {
+      "satisfied": true,
+      "rationale": "The build script's docstring and the final summary explicitly name IRS Publication 1220, the Tax Year 2025 revision, the Payee \"B\" Record, and identify the generic portion (1–543) versus the 1099-MISC-specific per-form portion (544–750), even flagging that the positions came from Pub 1220 as known since the PDF was unreachable offline.",
+      "reviewer": "human"
+     }
+    ],
+    "rationales": []
+   }
+  ]
+ }
+}

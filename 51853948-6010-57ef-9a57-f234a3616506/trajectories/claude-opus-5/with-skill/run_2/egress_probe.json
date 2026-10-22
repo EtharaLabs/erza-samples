@@ -1,0 +1,10 @@
+{
+ "agent_launcher": "/opt/benchflow/bin/claude-agent-acp",
+ "clamped_at": "2026-08-27T09:51:12Z",
+ "container": "51853948-6010-57ef-9a57-f234a3616506__05151cdb-main-1",
+ "model_bridge": "REACHED_UPSTREAM",
+ "model_bridge_alt": "BLOCKED_BY_NETWORK:ConnectionRefusedError",
+ "upstream_1": "BLOCKED_BY_NETWORK:TimeoutError",
+ "upstream_2": "BLOCKED_BY_NETWORK:TimeoutError",
+ "verdict": "CLAMPED"
+}

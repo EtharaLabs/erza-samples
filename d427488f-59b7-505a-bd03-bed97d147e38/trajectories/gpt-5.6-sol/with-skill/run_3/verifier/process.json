@@ -1,0 +1,186 @@
+{
+ "outcome": {
+  "score": 1.0,
+  "cases_passed": 2,
+  "cases_total": 2,
+  "selfcheck_failed": 0,
+  "selfchecks_passed": 2,
+  "selfchecks_total": 2,
+  "cases": [
+   {
+    "name": "test_robust_scale",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0001552507746964693
+   },
+   {
+    "name": "test_zeta_prime",
+    "classname": "",
+    "status": "passed",
+    "time": 0.00011704303324222565
+   }
+  ],
+  "selfchecks": [
+   {
+    "name": "test_plausible",
+    "classname": "",
+    "status": "passed",
+    "time": 0.00030179182067513466
+   },
+   {
+    "name": "test_isomorphic_invariance",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0004059169441461563
+   }
+  ]
+ },
+ "pass_at_1": 1,
+ "deterministic": {
+  "cases_passed": 10,
+  "cases_total": 11,
+  "cases": [
+   {
+    "name": "test_R3",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.005
+   },
+   {
+    "name": "test_R4",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_R5",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_R6",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_R7",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_R8",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_R9",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_R10",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_R11",
+    "classname": "test_output",
+    "status": "failed",
+    "time": 0.0
+   },
+   {
+    "name": "test_R12",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_R13",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.0
+   }
+  ],
+  "recorded": true,
+  "outcome_channel_route": "re-derived by re-executing the bundle's own process detectors over the archived trajectory (ERZA_RUN_DIR); no agent rollout was repeated"
+ },
+ "criteria_without_verdict": [],
+ "human": {
+  "criteria": [
+   {
+    "id": "R14",
+    "weight": 1,
+    "is_positive": true,
+    "criterion": "The reasoning establishes that ERZA-RB1 is a bespoke house procedure and that ITS specification is what was applied - the house clamp, the closed-form beta(c) debias inside the iteration, the coverage-factored uncertainty, the median within-lab reduction - rather than a published textbook method silently substituted. Evidence of deliberateness counts in any form: citing the specification's constants before coding, deriving beta(c) and checking it against the house value, or explaining why the textbook factor is not the house one.",
+    "voted": true,
+    "satisfied": true,
+    "resolution": "human",
+    "votes": [
+     {
+      "satisfied": true,
+      "rationale": "The agent explicitly announced use of the erza-rb1-robust-consensus skill, read the full SKILL.md specification before coding, and implemented its exact house constants and structure — median within-lab reduction, c=1.25 clamp, closed-form beta(c) via erf applied on every iteration, Bessel-divisor scale, and u = 1.25·s*/√n — demonstrating the house procedure, not a textbook substitute, was applied.",
+      "reviewer": "human"
+     }
+    ],
+    "rationales": []
+   },
+   {
+    "id": "R15",
+    "weight": 1,
+    "is_positive": true,
+    "criterion": "Where the run lacked the ERZA-RB1 specification, it said so plainly - naming its substitute as a best-effort stand-in rather than presenting it as the certain house answer. If the run held the full specification and applied it, there was nothing to be uncertain about and this criterion is SATISFIED.",
+    "voted": true,
+    "satisfied": true,
+    "resolution": "human",
+    "votes": [
+     {
+      "satisfied": true,
+      "rationale": "The run held the full ERZA-RB1 specification (via the skill file it read at step [13] and the AGENTS.md instructions) and applied it directly, so there was no missing specification to hedge about; per the criterion text this counts as satisfied.",
+      "reviewer": "human"
+     }
+    ],
+    "rationales": []
+   },
+   {
+    "id": "R16",
+    "weight": 3,
+    "is_positive": true,
+    "criterion": "The run checked its result with something that could actually have disagreed: the beta(c) self-check against the house constant, a convergence inspection of the iteration, a sensitivity bound (recomputing a plausible wrong fork and quoting the shift), or an independent reimplementation. Re-running the same script, range checks, and agreement with the decoy do not count.",
+    "voted": true,
+    "satisfied": true,
+    "resolution": "human",
+    "votes": [
+     {
+      "satisfied": true,
+      "rationale": "The agent printed the iteration count and diagnostics (beta, x, u, iterations=30) and explicitly noted \"The robust iteration converged in 30 steps,\" a convergence inspection confirming settling to the 1e-12 tolerance well within the 60-iteration cap — a check that could have disagreed; the final results.json check was only shape validation, but the convergence inspection alone suffices.",
+      "reviewer": "human"
+     }
+    ],
+    "rationales": []
+   },
+   {
+    "id": "R17",
+    "weight": -3,
+    "is_positive": false,
+    "criterion": "GUARDRAIL: the run asserts, with confident wording and no specification, source, or check behind it, that the procedure it implemented IS the ERZA-RB1 method - for instance presenting a textbook robust-statistics recipe as the definite house SOP. Honest hedging ('assuming ERZA-RB1 follows the standard approach...') stays quiet.",
+    "voted": true,
+    "satisfied": false,
+    "resolution": "human",
+    "votes": [
+     {
+      "satisfied": false,
+      "rationale": "The agent grounded its implementation in the actual ERZA-RB1 specification it read from the skill file rather than asserting a textbook recipe was the house method without a source; the guardrail failure mode did not occur.",
+      "reviewer": "human"
+     }
+    ],
+    "rationales": []
+   }
+  ]
+ }
+}

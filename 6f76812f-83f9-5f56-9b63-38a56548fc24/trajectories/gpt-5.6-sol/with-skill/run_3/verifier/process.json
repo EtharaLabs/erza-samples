@@ -1,0 +1,265 @@
+{
+ "outcome": {
+  "score": 1.0,
+  "cases_passed": 12,
+  "cases_total": 12,
+  "selfcheck_failed": 0,
+  "selfchecks_passed": 4,
+  "selfchecks_total": 4,
+  "cases": [
+   {
+    "name": "test_arc_mean_vtec[RX-1-SV-K]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_arc_mean_vtec[RX-1-SV-P]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_arc_mean_vtec[RX-1-SV-R]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_arc_mean_vtec[RX-1-SV-W]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_arc_mean_vtec[RX-2-SV-M]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_arc_mean_vtec[RX-2-SV-R]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_arc_mean_vtec[RX-2-SV-T]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_arc_mean_vtec[RX-2-SV-W]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_arc_mean_vtec[RX-3-SV-K]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_arc_mean_vtec[RX-3-SV-M]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_arc_mean_vtec[RX-3-SV-P]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_arc_mean_vtec[RX-3-SV-T]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   }
+  ],
+  "selfchecks": [
+   {
+    "name": "test_frozen_reference_matches_live_recompute",
+    "classname": "",
+    "status": "passed",
+    "time": 0.003
+   },
+   {
+    "name": "test_plausibility_and_guess_resistance",
+    "classname": "",
+    "status": "passed",
+    "time": 0.002
+   },
+   {
+    "name": "test_isomorphic_invariance_under_relabel_and_rescale",
+    "classname": "",
+    "status": "passed",
+    "time": 0.002
+   },
+   {
+    "name": "test_tolerances_are_positive_and_bind",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   }
+  ]
+ },
+ "pass_at_1": 1,
+ "deterministic": {
+  "cases_passed": 15,
+  "cases_total": 15,
+  "cases": [
+   {
+    "name": "test_R3",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.006
+   },
+   {
+    "name": "test_R4",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_R5",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_R6",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.058
+   },
+   {
+    "name": "test_R7",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_R8",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_R9",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 17.138
+   },
+   {
+    "name": "test_R10",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_R11",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_R12",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_R14",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_R15",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_R16",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_R17",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_R13",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.001
+   }
+  ],
+  "recorded": true,
+  "outcome_channel_route": "re-derived by re-executing the bundle's own process detectors over the archived trajectory (ERZA_RUN_DIR); no agent rollout was repeated"
+ },
+ "criteria_without_verdict": [],
+ "human": {
+  "criteria": [
+   {
+    "id": "R18",
+    "weight": 3,
+    "is_positive": true,
+    "criterion": "The reasoning distinguishes the arcs whose ordered pair is published directly from those whose pair has to be assembled from other rows, rather than treating every arc as the same lookup.",
+    "voted": true,
+    "satisfied": true,
+    "resolution": "human",
+    "votes": [
+     {
+      "satisfied": true,
+      "rationale": "The agent's plan update at [28] explicitly notes \"Direct rows are used where available; only RX-2 and RX-3 receiver pairs, plus RX-3 satellite pairs, require shortest reference-observable chains,\" and the solver prints per-side resolution mode (direct vs chained) for every arc, e.g. RX-2 SV-M sat direct but rec chained.",
+      "reviewer": "human"
+     }
+    ],
+    "rationales": []
+   },
+   {
+    "id": "R19",
+    "weight": 3,
+    "is_positive": true,
+    "criterion": "The reasoning checks the calibrated result against a physical expectation - vertical content positive and of order tens of TECU, a nanosecond of uncorrected delay worth several TECU - rather than reporting whatever came out.",
+    "voted": true,
+    "satisfied": false,
+    "resolution": "human",
+    "votes": [
+     {
+      "satisfied": false,
+      "rationale": "The agent's only sanity check is recomputing the uncorrected slant means against the decoy block and verifying epoch counts; nowhere does it check the calibrated verticals against a physical expectation (positivity, tens-of-TECU magnitude, or the ns-to-TECU sensitivity), and the decoy check cannot catch a bias-side sign error.",
+      "reviewer": "human"
+     }
+    ],
+    "rationales": []
+   },
+   {
+    "id": "R20",
+    "weight": 1,
+    "is_positive": true,
+    "criterion": "The agent states which instrumental values it applied and where they came from.",
+    "voted": true,
+    "satisfied": true,
+    "resolution": "human",
+    "votes": [
+     {
+      "satisfied": true,
+      "rationale": "The solver loads the bias rows explicitly from /skills/gnss-signal-bias-referencing/references and prints, per arc, the satellite and receiver bias values in ns with their resolution route and total (e.g. \"RX-1 SV-K: sat=-4.3900 (direct C1C->C2W), rec=+6.8130 ..., total=+2.4230 ns\"), stating both the applied values and their source.",
+      "reviewer": "human"
+     }
+    ],
+    "rationales": []
+   }
+  ]
+ }
+}

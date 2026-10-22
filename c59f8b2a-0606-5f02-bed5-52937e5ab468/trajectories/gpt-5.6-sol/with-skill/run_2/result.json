@@ -1,0 +1,117 @@
+{
+  "task_name": "c59f8b2a-0606-5f02-bed5-52937e5ab468",
+  "rollout_name": "c59f8b2a-0606-5f02-bed5-52937e5ab468__699b1503",
+  "scores": {
+    "score": 1.0
+  },
+  "agent": "codex-acp",
+  "agent_name": "@agentclientprotocol/codex-acp",
+  "model": "openai/gpt-5.6-sol",
+  "skill_mode": "with-skill",
+  "skill_source": "task_bundled",
+  "requested_skills_dir": "/Users/AgisSpectre/work/2026-08-19-recording-defect/staging/c59f8b2a-0606-5f02-bed5-52937e5ab468/environment/skills",
+  "effective_skills_dir": "/var/folders/t0/djdccpcs44x5ch6xxk3ynl340000gn/T/benchflow-task-0luphpsi/c59f8b2a-0606-5f02-bed5-52937e5ab468/environment/skills",
+  "skills_sandbox_dir": "/skills",
+  "include_task_skills": true,
+  "n_tool_calls": 12,
+  "n_skill_invocations": 0,
+  "n_prompts": 1,
+  "agent_result": {
+    "n_tool_calls": 12,
+    "n_skill_invocations": 0,
+    "n_prompts": 1,
+    "n_input_tokens": 424283,
+    "n_output_tokens": 3424,
+    "n_cache_read_tokens": 12800,
+    "n_cache_creation_tokens": 0,
+    "total_tokens": 427707,
+    "cost_usd": 1.719532,
+    "usage_source": "provider_response",
+    "price_source": "litellm"
+  },
+  "final_metrics": {
+    "total_prompt_tokens": 424283,
+    "total_completion_tokens": 3424,
+    "total_cached_tokens": 12800,
+    "total_cost_usd": 1.719532
+  },
+  "trajectory_summary": {
+    "steps": 17,
+    "tool_call_steps": 12,
+    "user_message_steps": 1,
+    "agent_message_steps": 4,
+    "agent_thought_steps": 0,
+    "other_steps": 0,
+    "event_type_counts": {
+      "user_message": 1,
+      "agent_message": 4,
+      "tool_call": 12
+    },
+    "tool_call_status_counts": {
+      "failed": 3,
+      "completed": 9
+    },
+    "partial_trajectory": false,
+    "trajectory_source": "acp"
+  },
+  "usage_tracking": {
+    "requested": "auto",
+    "status": "enabled",
+    "environment": "docker",
+    "endpoint_kind": "host",
+    "usage_source": "provider_response"
+  },
+  "error": null,
+  "error_category": null,
+  "verifier_error": null,
+  "verifier_error_category": null,
+  "export_error": null,
+  "idle_timeout_info": null,
+  "agent_timeout_info": null,
+  "sandbox_startup_info": null,
+  "transport_error_info": null,
+  "verifier_timeout_info": null,
+  "api_error_info": null,
+  "suspected_api_error_info": null,
+  "partial_trajectory": false,
+  "trajectory_source": "acp",
+  "started_at": "2026-08-24 19:40:41.937920",
+  "finished_at": "2026-08-24 21:59:11.800983",
+  "timing": {
+    "environment_setup": 5.8,
+    "agent_setup": 7.3,
+    "agent_execution": 8234.6,
+    "verifier": 6.9,
+    "total": 8309.9
+  },
+  "scenes": [
+    {
+      "name": "default",
+      "skills_dir": null,
+      "roles": [
+        {
+          "name": "agent",
+          "agent": "codex-acp",
+          "model": "openai/gpt-5.6-sol",
+          "reasoning_effort": null,
+          "timeout_sec": null,
+          "idle_timeout_sec": null,
+          "skills_dir": null,
+          "capabilities": null,
+          "env_keys": []
+        }
+      ],
+      "turns": [
+        {
+          "role": "agent",
+          "has_prompt": false
+        }
+      ]
+    }
+  ],
+  "loop": {
+    "strategy": "single-shot"
+  },
+  "task_digest": "sha256:26ceb059e8c14486db013a87f312994048416304e6d8aa53089612d5412e59bf",
+  "sandbox_id": null
+}

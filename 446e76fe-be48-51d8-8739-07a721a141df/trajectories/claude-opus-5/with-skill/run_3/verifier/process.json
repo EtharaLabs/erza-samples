@@ -1,0 +1,398 @@
+{
+ "outcome": {
+  "score": 1.0,
+  "cases_passed": 25,
+  "cases_total": 25,
+  "selfcheck_failed": 0,
+  "cases": [
+   {
+    "name": "test_score_local_magnitude_network[wa_peak_amplitude_mm[ST01]]",
+    "classname": "",
+    "status": "passed",
+    "time": 1.902
+   },
+   {
+    "name": "test_score_local_magnitude_network[wa_peak_amplitude_mm[ST02]]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_score_local_magnitude_network[wa_peak_amplitude_mm[ST03]]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_score_local_magnitude_network[wa_peak_amplitude_mm[ST04]]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_score_local_magnitude_network[wa_peak_amplitude_mm[ST05]]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_score_local_magnitude_network[wa_peak_amplitude_mm[ST06]]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_score_local_magnitude_network[wa_peak_amplitude_mm[ST07]]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_score_local_magnitude_network[wa_peak_amplitude_mm[ST08]]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_score_local_magnitude_network[hypocentral_distance_km[ST01]]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_score_local_magnitude_network[hypocentral_distance_km[ST02]]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_score_local_magnitude_network[hypocentral_distance_km[ST03]]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_score_local_magnitude_network[hypocentral_distance_km[ST04]]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_score_local_magnitude_network[hypocentral_distance_km[ST05]]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_score_local_magnitude_network[hypocentral_distance_km[ST06]]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_score_local_magnitude_network[hypocentral_distance_km[ST07]]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_score_local_magnitude_network[hypocentral_distance_km[ST08]]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_score_local_magnitude_network[local_magnitude_ml[ST01]]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_score_local_magnitude_network[local_magnitude_ml[ST02]]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_score_local_magnitude_network[local_magnitude_ml[ST03]]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_score_local_magnitude_network[local_magnitude_ml[ST04]]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_score_local_magnitude_network[local_magnitude_ml[ST05]]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_score_local_magnitude_network[local_magnitude_ml[ST06]]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_score_local_magnitude_network[local_magnitude_ml[ST07]]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_score_local_magnitude_network[local_magnitude_ml[ST08]]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_score_local_magnitude_network[network_local_magnitude_ml]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_selfcheck_wood_anderson_calibration",
+    "classname": "",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_selfcheck_frozen_references_match_live_recompute",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_selfcheck_tolerances_are_positive_and_bind",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_selfcheck_control_paths_are_measured_live",
+    "classname": "",
+    "status": "passed",
+    "time": 0.961
+   },
+   {
+    "name": "test_selfcheck_closed_form_gaps_are_independently_predicted",
+    "classname": "",
+    "status": "passed",
+    "time": 0.061
+   },
+   {
+    "name": "test_selfcheck_blessed_conventions_do_not_false_fail",
+    "classname": "",
+    "status": "passed",
+    "time": 1.347
+   },
+   {
+    "name": "test_selfcheck_separable_units",
+    "classname": "",
+    "status": "passed",
+    "time": 0.373
+   },
+   {
+    "name": "test_selfcheck_isomorphic_invariance",
+    "classname": "",
+    "status": "passed",
+    "time": 0.402
+   },
+   {
+    "name": "test_selfcheck_there_is_nothing_to_recall",
+    "classname": "",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_selfcheck_the_chain_is_one_implementation",
+    "classname": "",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_selfcheck_references_are_physically_plausible",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_selfcheck_the_velocity_form_is_separated",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_selfcheck_graded_case_count_is_pinned",
+    "classname": "",
+    "status": "passed",
+    "time": 0.001
+   }
+  ]
+ },
+ "deterministic": {
+  "cases_passed": 16,
+  "cases_total": 16,
+  "cases": [
+   {
+    "name": "test_R3",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.006
+   },
+   {
+    "name": "test_R4",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_R5",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_R6",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_R7",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_R8",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_R9",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_R10",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_R11",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_R12",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_R13",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_R15",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.002
+   },
+   {
+    "name": "test_R16",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.002
+   },
+   {
+    "name": "test_R17",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.002
+   },
+   {
+    "name": "test_R18",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_R14",
+    "classname": "test_output",
+    "status": "passed",
+    "time": 0.002
+   }
+  ],
+  "recorded": true,
+  "outcome_channel_route": "re-derived by re-executing the bundle's own process detectors over the archived trajectory (ERZA_RUN_DIR); no agent rollout was repeated"
+ },
+ "criteria_without_verdict": [],
+ "human": {
+  "criteria": [
+   {
+    "id": "R19",
+    "weight": 1,
+    "is_positive": true,
+    "criterion": "The run established WHY a Wood-Anderson simulation is required - that the local magnitude scale is defined on the amplitude that instrument would have written, so the response-removed ground displacement is not the quantity the scale takes - rather than applying the simulation as an unexplained step or omitting it. Equivalent routes count: deriving it from the definition of ML, from the instrument's role in the -logA0 calibration, or from a units argument about what the amplitude term means, are all satisfactory provided the run shows why the simulation is load-bearing rather than cosmetic.",
+    "voted": true,
+    "satisfied": false,
+    "resolution": "human",
+    "votes": [
+     {
+      "satisfied": false,
+      "rationale": "The agent applied the Wood-Anderson simulation as prescribed by the skill and explained why the two-zero paz form is correct for a displacement input, but its own reasoning never states why the simulation itself is required — nowhere does the agent articulate that ML is defined as the amplitude a WA instrument would have written, or otherwise show that measuring the response-removed displacement directly would be the wrong quantity; that rationale exists only in the skill text fed to it, not in the agent's own derivation.",
+      "reviewer": "human"
+     }
+    ],
+    "rationales": []
+   },
+   {
+    "id": "R20",
+    "weight": 3,
+    "is_positive": true,
+    "criterion": "The run executed a check whose outcome the chain that produced the magnitude did not already fix, and reported the number that check returned against an expectation formed outside that chain. Qualifying: driving the simulated instrument with a known ground displacement and comparing the deflection it writes against the static magnification a Wood-Anderson is defined by; comparing the simulated peak amplitude in millimetres against the deflection such an instrument would physically have written for a shock of this size at this distance; or recomputing the magnitude under the alternative distance convention and quoting how far it moved. Reading the second horizontal, or the other band code, out of the same chain counts only where the run also says what that comparison cannot see - a convention error displaces both components identically - and pairs it with one of the checks above. Re-running the same script, 'the value looks plausible', and agreement with the catalogue magnitude do not count.",
+    "voted": true,
+    "satisfied": true,
+    "resolution": "human",
+    "votes": [
+     {
+      "satisfied": true,
+      "rationale": "At [16]–[17] the agent drove the simulated instrument with a known 1 mm ground-displacement sinusoid and compared the output deflection (2034 mm for two zeros, 65 mm for one zero) against the externally-defined static magnification ~2080, and reported this explicitly in its summary; it also swept the alternative stabilisation settings and quoted the drift. This is exactly a qualifying out-of-chain check.",
+      "reviewer": "human"
+     }
+    ],
+    "rationales": []
+   },
+   {
+    "id": "R21",
+    "weight": 1,
+    "is_positive": true,
+    "criterion": "The run said which convention it was adopting at each branch that has one - displacement versus velocity output, millimetres versus metres, zero-to-peak versus peak-to-peak, which distance it fed the correction - rather than only emitting code.",
+    "voted": true,
+    "satisfied": true,
+    "resolution": "human",
+    "votes": [
+     {
+      "satisfied": true,
+      "rationale": "In both code comments and its final prose summary the agent explicitly named its conventions: `output=\"DISP\"` (displacement, with the two-zero form justified for a displacement trace), \"max of the two horizontals zero-to-peak in mm\" (millimetres and zero-to-peak stated), and Hutton & Boore evaluated \"against hypocentral distance √(Δ²+15²)\".",
+      "reviewer": "human"
+     }
+    ],
+    "rationales": []
+   }
+  ]
+ }
+}

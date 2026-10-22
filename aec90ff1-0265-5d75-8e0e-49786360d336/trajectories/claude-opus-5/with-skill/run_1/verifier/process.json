@@ -1,0 +1,223 @@
+{
+ "outcome": {
+  "score": 1.0,
+  "cases_passed": 4,
+  "cases_total": 4,
+  "selfchecks_passed": 8,
+  "selfchecks_total": 8,
+  "selfcheck_failed": 0,
+  "cases": [
+   {
+    "name": "test_reward_all_instruments_present",
+    "classname": "",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_reward_plausible",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_reward_year_fraction",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_reward_accrued_interest",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   }
+  ],
+  "selfchecks": [
+   {
+    "name": "test_selfcheck_golden_recomputes_from_inputs",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_selfcheck_isomorphic_invariance",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_selfcheck_degenerate_submission_scores_zero_without_crashing[empty object-payload0]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_selfcheck_degenerate_submission_scores_zero_without_crashing[results not an object-payload1]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_selfcheck_degenerate_submission_scores_zero_without_crashing[missing an instrument-payload2]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_selfcheck_degenerate_submission_scores_zero_without_crashing[wrong types-payload3]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_selfcheck_degenerate_submission_scores_zero_without_crashing[NaN-payload4]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_selfcheck_degenerate_submission_scores_zero_without_crashing[infinity-payload5]",
+    "classname": "",
+    "status": "passed",
+    "time": 0.0
+   }
+  ]
+ },
+ "pass_at_1": 1,
+ "deterministic": {
+  "cases_passed": 11,
+  "cases_total": 12,
+  "cases": [
+   {
+    "name": "test_R3",
+    "classname": "test_pytest",
+    "status": "passed",
+    "time": 0.005
+   },
+   {
+    "name": "test_R4",
+    "classname": "test_pytest",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_R5",
+    "classname": "test_pytest",
+    "status": "passed",
+    "time": 0.0
+   },
+   {
+    "name": "test_R6",
+    "classname": "test_pytest",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_R7",
+    "classname": "test_pytest",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_R8",
+    "classname": "test_pytest",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_R9",
+    "classname": "test_pytest",
+    "status": "failed",
+    "time": 0.001
+   },
+   {
+    "name": "test_R10",
+    "classname": "test_pytest",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_R11",
+    "classname": "test_pytest",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_R12",
+    "classname": "test_pytest",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_R13",
+    "classname": "test_pytest",
+    "status": "passed",
+    "time": 0.001
+   },
+   {
+    "name": "test_R14",
+    "classname": "test_pytest",
+    "status": "passed",
+    "time": 0.001
+   }
+  ],
+  "recorded": true,
+  "outcome_channel_route": "re-derived by re-executing the bundle's own process detectors over the archived trajectory (ERZA_RUN_DIR); no agent rollout was repeated"
+ },
+ "criteria_without_verdict": [],
+ "human": {
+  "criteria": [
+   {
+    "id": "R15",
+    "weight": 0,
+    "is_positive": true,
+    "criterion": "The run forms three genuinely different denominators for ACT/ACT ISDA, ACT/ACT ICMA and ACT/365F, and the trajectory shows what each one is built out of: for ISDA the actual days are split by the calendar year they fall in and each part divided by that year's own length and summed, not divided by a single year's denominator; for ICMA the denominator is the coupon frequency multiplied by the length of the supplied reference coupon period; for ACT/365F it is a fixed 365. Dispatching on the basis name, or stating that the Actual/Actual conventions differ, does not satisfy this on its own - each of the three denominators has to be visible as a different quantity in the run's own construction or arithmetic.",
+    "voted": true,
+    "satisfied": true,
+    "resolution": "human",
+    "votes": [
+     {
+      "satisfied": true,
+      "rationale": "The code in /root/daycount.py visibly constructs three distinct denominators: `yf_actact_isda` splits at calendar-year boundaries with each partial year over 366/365 per its own leap status; `yf_actact_icma` uses `freq * actual_days(ref_start, ref_end)`; `yf_act_365f` uses a fixed 365 — and the cross-check step even prints the ICMA denominators (368 = 2×184, 4×92) as distinct quantities.",
+      "reviewer": "human"
+     }
+    ],
+    "rationales": []
+   },
+   {
+    "id": "R16",
+    "weight": 3,
+    "is_positive": true,
+    "criterion": "The run verifies a result against something that could disagree - a hand-recomputed day count, a cross-convention difference on shared dates, or a leap-boundary spot check - not merely by re-running its own solver.",
+    "voted": true,
+    "satisfied": true,
+    "resolution": "human",
+    "votes": [
+     {
+      "satisfied": true,
+      "rationale": "The run explicitly compared 30/360 US vs 30E/360 on INST04's shared dates, ACT/ACT ISDA vs ACT/365F on INST09's shared dates (both differing), computed the ICMA denominators to confirm they are 368 not 365, and noted the leap-day-spanning INST07 exceeds 1 — all checks that could have disagreed, beyond merely re-running the solver.",
+      "reviewer": "human"
+     }
+    ],
+    "rationales": []
+   },
+   {
+    "id": "R17",
+    "weight": 1,
+    "is_positive": true,
+    "criterion": "The reasoning engages the pull toward naive calendar-day arithmetic (a single 365/360 denominator) and sets it aside in favour of the per-convention ISDA rules.",
+    "voted": true,
+    "satisfied": true,
+    "resolution": "human",
+    "votes": [
+     {
+      "satisfied": true,
+      "rationale": "The agent's own concluding analysis directly confronts the naive-single-denominator collapse — verifying ISDA \"not collapsed to days/365\" with a blended /366 and /365 period, ICMA denominators \"correctly period-based rather than 365/366\", and ACT/365F above 1 due to the fixed denominator — setting the naive approach aside in favor of the per-convention rules.",
+      "reviewer": "human"
+     }
+    ],
+    "rationales": []
+   }
+  ]
+ }
+}
