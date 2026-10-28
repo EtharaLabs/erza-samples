@@ -71,7 +71,7 @@ Each bundle directory is a complete Harbor task: `task.toml` is the runner manif
 
 ## License
 
-Released under the MIT License; see [LICENSE](LICENSE) for the full text. Benchmarks, datasets, and task bundles produced through this project retain their own original licences.
+Released under the MIT License; see [LICENSE](LICENSE) for the full text. Benchmarks, datasets, and task bundles produced through this project retain their own original licences. Copyright (c) 2026 Green Rider Technology LLP (Ethara AI). All rights reserved.
 
 ## Contact
 
