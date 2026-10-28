@@ -1,9 +1,0 @@
-{
-  "group_energy_tbtu": {
-    "coal|commercial": 13.087825221,
-    "coal|industrial_coke_plants": 104.59539590700001,
-    "petroleum_products|commercial": 17.659255606,
-    "petroleum_products|industrial": 25.821223890999995,
-    "petroleum_products|residential": 19.034062678
-  }
-}
