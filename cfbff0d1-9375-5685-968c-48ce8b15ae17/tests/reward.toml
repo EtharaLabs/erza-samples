@@ -1,7 +1,0 @@
-[[reward]]
-name = "reward"
-aggregation = "weighted-mean"
-weights = { test_output = 31.0, judge = 26.0 }
-
-[scoring.test_output]
-aggregation = "weighted-mean"
