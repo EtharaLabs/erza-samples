@@ -1,0 +1,209 @@
+{
+  "reward": {
+    "kind": "group",
+    "score": 0.7018,
+    "aggregation": "weighted-mean",
+    "components": [
+      {
+        "name": "judge",
+        "weight": 26.0,
+        "detail": {
+          "score": 0.5769,
+          "criteria": [
+            {
+              "id": "J01",
+              "name": "J01",
+              "value": 0.0,
+              "raw": "no",
+              "weight": 5.0,
+              "description": "/workspace/output/ROOT_CAUSE.md states the cause of each failure the note reports, matching an accepted cause in the reference answer and tied to the section 22.2 step the reference names; it passes only when all six causes F1 to F6 are identified.",
+              "reasoning": "The note identifies F1 (single `&` dropping the preceding operand, tied to ClassSetCharacter/ClassIntersection grammar), F2 (empty `\\q{}` dropped, missing MayContainStrings early error), F3 (complement taken before case closure under `v`+`i`, tied to CompileToCharSet/MaybeSimpleCaseFolding/CharacterComplement), F4 (duplicate-name backreference lowered as alternatives, tied to BackreferenceMatcher), and F5 (nested loop count overwritten without undo, tied to RepeatMatcher). It never identifies F6: nothing about the capture group's end being written without an undo entry so a backreference sees a stale capture after backtracking. Since all six are required, this fails."
+            },
+            {
+              "id": "J02",
+              "name": "J02",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 1.0,
+              "description": "/workspace/output/ROOT_CAUSE.md explains why the crate's own tests passed through a reason matching an accepted reason in the reference answer.",
+              "reasoning": "Section 2 explains that the existing tests did not exercise the distinguishing shapes (e.g. duplicate-reference tests only tried `xx`,`yy`,`xy`,`yx`, never the one-character input; class-set tests did not cover case-folding/empty-string combinations), which matches the accepted 'tests did not exercise these shapes' reason."
+            },
+            {
+              "id": "J03",
+              "name": "J03",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 3.0,
+              "description": "/workspace/output/ROOT_CAUSE.md names other affected patterns matching an accepted pattern class in the reference answer for at least each cause the note identifies.",
+              "reasoning": "Section 3 names pattern families for the causes identified: nested quantifiers revisited by backtracking (F5), duplicate-name references with a participating and undefined occurrence (F4), case-equivalent operands under every class-set operator and negation (F3), nullable class strings and negation after string operations (F2); the F1 row additionally names other patterns of that cause (`[ab&&c]`, `[a&&&]`, mixed operators)."
+            },
+            {
+              "id": "J04",
+              "name": "J04",
+              "value": 0.0,
+              "raw": "no",
+              "weight": 5.0,
+              "description": "/workspace/output/ROOT_CAUSE.md describes a repair matching an accepted repair statement in the reference answer for every cause.",
+              "reasoning": "Repairs are described for F1\u2013F5 (parse single `&` as a character, carry MayContainStrings structurally and keep empty strings, normalize before complement under `v`, concatenate duplicate-name backreferences, push old LoopData before resetting on entry). F6 (restoring the capture end on backtrack) is never repaired or mentioned; the reference states a note that leaves any cause unrepaired does not pass."
+            },
+            {
+              "id": "J05",
+              "name": "J05",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 1.0,
+              "description": "/workspace/output/ROOT_CAUSE.md names unchanged behaviours matching the accepted unchanged set in the reference answer.",
+              "reasoning": "Sections 4 and 5 state that public types and method signatures are unchanged, the BudgetExhausted/budget API remains in place, and existing exponential-pattern budget tests still pass, matching the accepted unchanged set (public API, budget API, existing tests)."
+            },
+            {
+              "id": "J06",
+              "name": "J06",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 3.0,
+              "description": "/workspace/output/ROOT_CAUSE.md describes how the correct results were determined through a method matching an accepted method class in the reference answer.",
+              "reasoning": "Section 6 states expected results were derived from the local specification by applying RepeatMatcher, BackreferenceMatcher, MightBothParticipate, CompileToCharSet, MayContainStrings, CharacterComplement, Canonicalize and CharacterSetMatcher, explicitly not from another engine; this matches the accepted class of reading and applying the section 22.2 algorithms."
+            },
+            {
+              "id": "J07",
+              "name": "J07",
+              "value": 0.0,
+              "raw": "no",
+              "weight": 1.0,
+              "description": "/workspace/output/ROOT_CAUSE.md describes a check for each cause matching an accepted check class in the reference answer.",
+              "reasoning": "The note describes regression tests in `src/spec_tests.rs` for the distinguishing examples of each identified cause, including million-backtrack (budget) checks for the loop cause, which would satisfy the accepted check classes for F1\u2013F5. However there is no check for F6 (a backreference after backtracking across a group end, forward or in lookbehind), since that cause was not identified, so there is not a check for each cause."
+            },
+            {
+              "id": "J08",
+              "name": "J08",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 1.0,
+              "description": "/workspace/output/ROOT_CAUSE.md describes interactions among the causes matching an accepted interaction statement in the reference answer.",
+              "reasoning": "Section 8 states that duplicate-reference concatenation relies on per-iteration capture clearing and the undefined-capture-matches-empty rule (matching 'F4 relies on unset backreferences matching empty'), that folding/normalization must precede set algebra and complement (F2/F3 at the complement step), and gives a reasoned statement that the isolated loop experiment separates the loop-state cause from the parser causes."
+            },
+            {
+              "id": "J09",
+              "name": "J09",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 1.0,
+              "description": "/workspace/output/ROOT_CAUSE.md names a behaviour its evidence does not establish matching an accepted limitation class in the reference answer.",
+              "reasoning": "Section 9 states the evidence does not establish conformance for every Unicode property member or that every result is obtainable within a fixed backtracking budget, matching the accepted limitation classes of Unicode property/case-folding coverage and performance."
+            },
+            {
+              "id": "J10",
+              "name": "J10",
+              "value": 1.0,
+              "raw": "no",
+              "weight": 5.0,
+              "description": "/workspace/output/ROOT_CAUSE.md makes a causal claim matching a rejected claim class in the reference answer.",
+              "reasoning": "The note makes no rejected claim: it does not treat another engine as authority, treats the hang as corrupted loop state rather than a budget/performance problem, states `[a&]/v` is valid and `[^\\q{...}]` negation of string-containing sets is an error, complements the case-closed set rather than all code points under `v`+`i`, and does not blame Unicode tables, the UTF-8 decoder, or the optimizer.",
+              "negate": true
+            }
+          ],
+          "kind": "llm",
+          "judge": {
+            "model": "anthropic/claude-fable-5-1",
+            "reasoning_effort": "medium",
+            "timeout": 300,
+            "files": [
+              "/workspace/output/ROOT_CAUSE.md"
+            ],
+            "atif_trajectory": null,
+            "reference": "/opt/grader/reference/ROOT_CAUSE.md",
+            "mode": "batched"
+          },
+          "judge_output": "{\"J01\":{\"score\":\"no\",\"reasoning\":\"The note identifies F1 (single `&` dropping the preceding operand, tied to ClassSetCharacter/ClassIntersection grammar), F2 (empty `\\\\q{}` dropped, missing MayContainStrings early error), F3 (complement taken before case closure under `v`+`i`, tied to CompileToCharSet/MaybeSimpleCaseFolding/CharacterComplement), F4 (duplicate-name backreference lowered as alternatives, tied to BackreferenceMatcher), and F5 (nested loop count overwritten without undo, tied to RepeatMatcher). It never identifies F6: nothing about the capture group's end being written without an undo entry so a backreference sees a stale capture after backtracking. Since all six are required, this fails.\"},\"J02\":{\"score\":\"yes\",\"reasoning\":\"Section 2 explains that the existing tests did not exercise the distinguishing shapes (e.g. duplicate-reference tests only tried `xx`,`yy`,`xy`,`yx`, never the one-character input; class-set tests did not cover case-folding/empty-string combinations), which matches the accepted 'tests did not exercise these shapes' reason.\"},\"J03\":{\"score\":\"yes\",\"reasoning\":\"Section 3 names pattern families for the causes identified: nested quantifiers revisited by backtracking (F5), duplicate-name references with a participating and undefined occurrence (F4), case-equivalent operands under every class-set operator and negation (F3), nullable class strings and negation after string operations (F2); the F1 row additionally names other patterns of that cause (`[ab&&c]`, `[a&&&]`, mixed operators).\"},\"J04\":{\"score\":\"no\",\"reasoning\":\"Repairs are described for F1\u2013F5 (parse single `&` as a character, carry MayContainStrings structurally and keep empty strings, normalize before complement under `v`, concatenate duplicate-name backreferences, push old LoopData before resetting on entry). F6 (restoring the capture end on backtrack) is never repaired or mentioned; the reference states a note that leaves any cause unrepaired does not pass.\"},\"J05\":{\"score\":\"yes\",\"reasoning\":\"Sections 4 and 5 state that public types and method signatures are unchanged, the BudgetExhausted/budget API remains in place, and existing exponential-pattern budget tests still pass, matching the accepted unchanged set (public API, budget API, existing tests).\"},\"J06\":{\"score\":\"yes\",\"reasoning\":\"Section 6 states expected results were derived from the local specification by applying RepeatMatcher, BackreferenceMatcher, MightBothParticipate, CompileToCharSet, MayContainStrings, CharacterComplement, Canonicalize and CharacterSetMatcher, explicitly not from another engine; this matches the accepted class of reading and applying the section 22.2 algorithms.\"},\"J07\":{\"score\":\"no\",\"reasoning\":\"The note describes regression tests in `src/spec_tests.rs` for the distinguishing examples of each identified cause, including million-backtrack (budget) checks for the loop cause, which would satisfy the accepted check classes for F1\u2013F5. However there is no check for F6 (a backreference after backtracking across a group end, forward or in lookbehind), since that cause was not identified, so there is not a check for each cause.\"},\"J08\":{\"score\":\"yes\",\"reasoning\":\"Section 8 states that duplicate-reference concatenation relies on per-iteration capture clearing and the undefined-capture-matches-empty rule (matching 'F4 relies on unset backreferences matching empty'), that folding/normalization must precede set algebra and complement (F2/F3 at the complement step), and gives a reasoned statement that the isolated loop experiment separates the loop-state cause from the parser causes.\"},\"J09\":{\"score\":\"yes\",\"reasoning\":\"Section 9 states the evidence does not establish conformance for every Unicode property member or that every result is obtainable within a fixed backtracking budget, matching the accepted limitation classes of Unicode property/case-folding coverage and performance.\"},\"J10\":{\"score\":\"no\",\"reasoning\":\"The note makes no rejected claim: it does not treat another engine as authority, treats the hang as corrupted loop state rather than a budget/performance problem, states `[a&]/v` is valid and `[^\\\\q{...}]` negation of string-containing sets is an error, complements the case-closed set rather than all code points under `v`+`i`, and does not blame Unicode tables, the UTF-8 decoder, or the optimizer.\"}}"
+        }
+      },
+      {
+        "name": "test_output",
+        "weight": 31.0,
+        "detail": {
+          "score": 0.8065,
+          "criteria": [
+            {
+              "name": "C01",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "C02",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "C03",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "C04",
+              "value": 0.0,
+              "raw": false,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "C05",
+              "value": 1.0,
+              "raw": true,
+              "weight": 1.0,
+              "description": "conforms"
+            },
+            {
+              "name": "C06",
+              "value": 1.0,
+              "raw": true,
+              "weight": 3.0,
+              "description": "conforms"
+            },
+            {
+              "name": "C07",
+              "value": 1.0,
+              "raw": true,
+              "weight": 3.0,
+              "description": "conforms"
+            },
+            {
+              "name": "C08",
+              "value": 1.0,
+              "raw": true,
+              "weight": 1.0,
+              "description": "conforms"
+            },
+            {
+              "name": "C09",
+              "value": 0.0,
+              "raw": false,
+              "weight": 1.0,
+              "description": "shipped_tests_pass"
+            },
+            {
+              "name": "C10",
+              "value": 1.0,
+              "raw": true,
+              "weight": 1.0,
+              "description": "conforms"
+            },
+            {
+              "name": "C11",
+              "value": 1.0,
+              "raw": true,
+              "weight": 1.0,
+              "description": "conforms"
+            }
+          ],
+          "kind": "programmatic"
+        }
+      }
+    ]
+  }
+}

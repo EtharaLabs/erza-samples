@@ -1,0 +1,2 @@
+12:37:35 - LiteLLM:WARNING: anthropic_beta_headers_manager.py:155 - LiteLLM: Failed to fetch remote beta headers config from https://raw.githubusercontent.com/BerriAI/litellm/main/litellm/anthropic_beta_headers_config.json: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1011). Falling back to local backup.
+reward: 0.6842
