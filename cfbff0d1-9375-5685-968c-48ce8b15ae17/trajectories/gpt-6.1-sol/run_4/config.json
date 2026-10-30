@@ -1,0 +1,40 @@
+{
+    "task": {
+        "path": "/Users/shraiykhaddar/erza-probes/probe-20261029T122302Z/regress-ecma-h2"
+    },
+    "trial_name": "regress-ecma-h2__gZBAN24",
+    "trials_dir": "/Users/shraiykhaddar/erza-probes/probe-20261029T122302Z/runs/gpt/2026-10-29__17-53-03",
+    "agent": {
+        "name": "codex",
+        "model_name": "openai/gpt-6.1-sol",
+        "extra_allowed_hosts": [
+            "host.docker.internal"
+        ],
+        "kwargs": {
+            "reasoning_effort": "high",
+            "disable_web_search": true
+        },
+        "env": {
+            "OPENAI_BASE_URL": "http://host.docker.internal:8766/v1",
+            "OPENAI_API_KEY": "jp_i****h8k"
+        }
+    },
+    "environment": {
+        "type": "docker",
+        "mounts": [
+            {
+                "type": "bind",
+                "source": "/Users/shraiykhaddar/erza-probes/cli/codex",
+                "target": "/usr/local/bin/codex",
+                "read_only": true
+            },
+            {
+                "type": "bind",
+                "source": "/Users/shraiykhaddar/erza-probes/cli/codex-code-mode-host",
+                "target": "/usr/local/bin/codex-code-mode-host",
+                "read_only": true
+            }
+        ]
+    },
+    "job_id": "49c4b006-5342-44ee-b648-2211e04e763b"
+}

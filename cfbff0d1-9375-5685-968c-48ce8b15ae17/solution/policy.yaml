@@ -1,0 +1,48 @@
+# FORGE-CANARY-BEGIN
+# FORGE-CANARY-SLOT-1: 0000000000000000000000000000000000000000000000000000000000000000
+# FORGE-CANARY-SLOT-2: 0000000000000000000000000000000000000000000000000000000000000000
+# FORGE-CANARY-SLOT-3: 0000000000000000000000000000000000000000000000000000000000000000
+# FORGE-CANARY-END
+# Capability policy manifest, sourced from the run contract's policy block. Intent only.
+schema: trinity.policy/v1
+vocabulary: capability vocabulary version 2
+channels:
+  read:
+    state: restricted
+    scope: the image filesystem and /workspace; never tests/
+    solution/: null
+    or any verifier byte: null
+  write:
+    state: restricted
+    scope: /workspace only
+    as the fixed non-root agent user: null
+  execute:
+    state: allowed
+    scope: cargo
+    rustc: null
+    python: null
+    and shell inside the agent sandbox: null
+  network:
+    state: denied
+    scope: the agent environment is no-network
+  environment:
+    state: restricted
+    scope: the variables the image sets; no credential reaches the agent environment
+  timing:
+    state: denied
+    scope: no grading outcome depends on wall-clock time
+  ipc:
+    state: denied
+    scope: no service
+    socket: null
+    or process the verifier reads: null
+  resource:
+    state: restricted
+    scope: the cpus
+    memory_mb: null
+    and storage_mb task.toml binds: null
+  context:
+    state: restricted
+    scope: instruction.md
+    plus /harbor/skills only in the with-skill arm: null
+    where Harbor injects the skill: null

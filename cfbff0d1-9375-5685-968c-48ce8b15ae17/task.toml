@@ -1,0 +1,78 @@
+schema_version = "1.4"
+artifacts = [
+  { source = "/workspace/regress", exclude = ["target"] },
+  "/workspace/output",
+]
+
+[task]
+name = "ethara/regress-ecmascript-regexp"
+version = "1.0.0"
+description = "Repair a Rust ECMAScript regular-expression engine so its class sets, case-insensitive matching, duplicate named groups, backreferences, and quantifier backtracking follow ECMA-262 2025 section 22.2, and write a root-cause note."
+authors = [{ name = "shraiy.khaddar", email = "shraiy.khaddar@ethara.ai" }]
+keywords = ["debugging", "regex", "ecmascript", "specification-conformance", "backtracking", "rust"]
+
+[metadata]
+difficulty = "hard"
+category = "software-engineering"
+subcategory = "debugging"
+task_type = ["debugging", "repair"]
+modality = ["source-code", "structured-text"]
+interface = ["terminal", "rust"]
+skill_type = ["debugging-heuristic", "specification-reading"]
+tags = ["regex", "ecma-262", "unicode-sets", "case-folding", "backtracking", "rust"]
+null_floor = 0.0
+discrimination_weight = 0.25
+platforms = ["linux/amd64", "linux/arm64"]
+
+[verifier]
+timeout_sec = 3600.0
+user = "root"
+network_mode = "allowlist"
+allowed_hosts = ["api.anthropic.com", "host.docker.internal"]
+environment_mode = "separate"
+
+[verifier.env]
+ANTHROPIC_API_BASE = "${ANTHROPIC_API_BASE:-https://api.anthropic.com}"
+ANTHROPIC_API_KEY = "${ANTHROPIC_API_KEY}"
+
+[verifier.environment]
+network_mode = "allowlist"
+allowed_hosts = ["api.anthropic.com", "host.docker.internal"]
+build_timeout_sec = 3600.0
+cpus = 2
+memory_mb = 4096
+storage_mb = 10240
+gpus = 0
+
+[agent]
+timeout_sec = 10800.0
+network_mode = "no-network"
+user = "1000:1000"
+
+[environment]
+network_mode = "no-network"
+build_timeout_sec = 3600.0
+cpus = 2
+memory_mb = 4096
+storage_mb = 10240
+gpus = 0
+workdir = "/workspace"
+skills_dir = "/harbor/skills"
+
+[upstream_provenance]
+origin = "derived"
+provenance_date = "2026-10-11T12:07:27Z"
+source_kind = "public_repository"
+upstream_benchmark = "none"
+license = "MIT OR Apache-2.0"
+modifications = [
+  "the fixes for regress#197 to #200 and boa#5572, #5574 and #5575, their tests, and their threads are withheld from every agent-visible byte",
+  "the PikeVM backend, regress-tool, gen-unicode, CI files, git history, and the duplicate-name backreference TODO are removed",
+  "the ECMAScript 2025 specification is added under /workspace/spec",
+  "hidden checks are derived from section 22.2 and do not reuse upstream test bodies",
+]
+
+[upstream_provenance.source]
+canonical_repo = "github.com/ridiculousfish/regress"
+base_commit = "0328ab6828471b6a8ed3b9acb8b256e285b65abc"
+event_timestamp = "2026-10-11T12:07:27Z"
