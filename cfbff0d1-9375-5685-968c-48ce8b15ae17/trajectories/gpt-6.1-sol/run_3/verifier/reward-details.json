@@ -1,23 +1,23 @@
 {
   "reward": {
     "kind": "group",
-    "score": 0.9298,
+    "score": 0.6842,
     "aggregation": "weighted-mean",
     "components": [
       {
         "name": "judge",
         "weight": 26.0,
         "detail": {
-          "score": 0.8846,
+          "score": 0.5769,
           "criteria": [
             {
               "id": "J01",
               "name": "J01",
-              "value": 1.0,
-              "raw": "yes",
+              "value": 0.0,
+              "raw": "no",
               "weight": 5.0,
               "description": "/workspace/output/ROOT_CAUSE.md states the cause of each failure the note reports, matching an accepted cause in the reference answer and tied to the section 22.2 step the reference names; it passes only when all six causes F1 to F6 are identified.",
-              "reasoning": "All six reference causes appear: F5 (loop entry resets iteration count without a backtracking record, tied to RepeatMatcher 22.2.2.3.1 and the empty-iteration rule), F6 (capture end written without recording state, tied to CompileAtom continuations and BackreferenceMatcher), F4 (duplicate-name reference compiled as alternation so an undefined alternative succeeds empty, tied to 22.2.2.7.2), F3 (set algebra on raw operands folding only the final result / complement before folding, tied to CompileToCharSet and MaybeSimpleCaseFolding in 22.2.2.9), F2 (negation lacking MayContainStrings, dropped empty \\q alternatives, tied to 22.2.1.1 early errors and ClassStringDisjunction/22.2.2.8), and F1 (first operand lost before a single &, tied to ClassUnion/ClassIntersection/ClassSetCharacter)."
+              "reasoning": "The note identifies causes matching F1 (C8: single `&` path lost the first operand, tied to ClassUnion/ClassIntersection), F2 (C7: MayContainStrings not computed, empty `\\q{}` dropped, tied to the negated-class early errors), F3 (C6: folding after algebra / complements needing correct folding order, tied to CompileToCharSet and CharacterComplement), F4 (C3: alternation of numeric references, tied to BackreferenceMatcher), and F5 (C1: EnterLoop reset without saving state, tied to RepeatMatcher). It does not identify F6: nowhere does it describe EndCaptureGroup writing a capture end without an undo entry so a backreference sees a stale capture after backtracking; in fact it lists capture handling among behaviours left unchanged. Since J01 passes only with all six causes, it fails."
             },
             {
               "id": "J02",
@@ -26,25 +26,25 @@
               "raw": "yes",
               "weight": 1.0,
               "description": "/workspace/output/ROOT_CAUSE.md explains why the crate's own tests passed through a reason matching an accepted reason in the reference answer.",
-              "reasoning": "Section 2 explains that the existing tests did not cover the distinguishing shapes: duplicate-name tests used the named iterator, backreference tests did not force rejection of an empty alternative, class-set tests did not cover empty strings or static string-negation analysis, and budget tests did not cover restoration across nested nullable loops. This matches the accepted 'tests did not exercise these shapes' reason."
+              "reasoning": "Section 2 explains that existing tests did not exercise the relevant shapes: duplicate-name alternatives that distinguish selection from alternation, sibling disjunctions at equal depth, loop re-entry with later backtracking, `iv` class algebra and empty strings, and that budget tests expected exhaustion so could not distinguish the loop fault. This matches the accepted reason that the tests did not exercise these shapes or encoded no expectation for them."
             },
             {
               "id": "J03",
               "name": "J03",
-              "value": 0.0,
-              "raw": "no",
+              "value": 1.0,
+              "raw": "yes",
               "weight": 3.0,
               "description": "/workspace/output/ROOT_CAUSE.md names other affected patterns matching an accepted pattern class in the reference answer for at least each cause the note identifies.",
-              "reasoning": "Most rows name an affected family (nested repetitions, references inside previously completed groups, ranges/nested classes/negative properties, nested sets and q strings, etc.), but the duplicate-name backreference row (F4) names no other affected pattern class beyond its failing example (only 'relies on the grammar's exclusivity invariant and repetition capture reset'), and the named_group() row likewise lacks one. The criterion requires an affected class for each cause the note identifies."
+              "reasoning": "Section 3 names other affected pattern classes for every cause the note identifies: re-entered quantifiers with live choice points (C1/F5), any duplicate name whose participating capture is not the first (C3/F4), case-equivalent operands in nested sets, subtraction, intersection and complements (C6/F3), negated set expressions and empty alternatives (C7/F2), punctuation combinations (C8/F1), plus classes for its additional causes. These belong to the accepted affected-pattern classes."
             },
             {
               "id": "J04",
               "name": "J04",
-              "value": 1.0,
-              "raw": "yes",
+              "value": 0.0,
+              "raw": "no",
               "weight": 5.0,
               "description": "/workspace/output/ROOT_CAUSE.md describes a repair matching an accepted repair statement in the reference answer for every cause.",
-              "reasoning": "Each cause has a repair with the reference's effect: save loop state before resetting the count (F5); record capture state at group exit (F6); concatenate numbered references so undefined groups consume nothing (F4); normalize/fold operands before algebra and complement (F3); track static MayContainStrings flags with union OR/intersection AND/subtraction left and validate at negated classes, preserve empty strings (F2); preserve every union operand and parse a single & as a character (F1). No cause is left unrepaired and no cap/timeout is proposed for F5."
+              "reasoning": "Section 4 describes repairs matching the accepted effects for F1 (only `&&` is an operator), F2 (metadata union/intersection/subtraction, empty strings kept and emitted last), F3 (closing under case equivalence before set operations and complements over closed positive sets), F4 (sequence of numeric references), and F5 (loop entry saves prior state before reset). However, F6 (restoring a capture group's end on backtrack) is not repaired or even mentioned; the reference states that a repair leaving any cause unrepaired does not pass."
             },
             {
               "id": "J05",
@@ -53,7 +53,7 @@
               "raw": "yes",
               "weight": 1.0,
               "description": "/workspace/output/ROOT_CAUSE.md names unchanged behaviours matching the accepted unchanged set in the reference answer.",
-              "reasoning": "Section 5 and section 4 name the budget API, public API signatures, greedy/lazy preference, capture clearing, and existing-suite coverage as unchanged, matching the accepted unchanged set (budget API, public API, existing tests, patterns outside faulty shapes)."
+              "reasoning": "Section 5 states the public API, capture numbering, budget API, UTF-16 offset APIs, dependencies and Unicode tables are unchanged, matching the accepted unchanged set (public API, budget API, UTF-16 entry points)."
             },
             {
               "id": "J06",
@@ -62,16 +62,16 @@
               "raw": "yes",
               "weight": 3.0,
               "description": "/workspace/output/ROOT_CAUSE.md describes how the correct results were determined through a method matching an accepted method class in the reference answer.",
-              "reasoning": "Section 6 states expected values were derived from the supplied grammar and algorithms (section 22.2) without a network oracle, and walks through RepeatMatcher continuation, capture undefined until closing continuation, BackreferenceMatcher participating capture, and normalized operands for v sets \u2014 the accepted 'reading the cited section 22.2 algorithms and applying by hand' method."
+              "reasoning": "Section 6 states expected results were derived by reading the grammar, early errors, and algorithms of the supplied specification (section 22.2) and by an independent transcription implementing the specification's continuation order, capture clearing, and empty-progress rule, compared differentially on 16,800 generated cases. This matches the accepted method class of reading the section 22.2 algorithms and applying them by hand or in a transcription; no other engine is used as authority."
             },
             {
               "id": "J07",
               "name": "J07",
-              "value": 1.0,
-              "raw": "yes",
+              "value": 0.0,
+              "raw": "no",
               "weight": 1.0,
               "description": "/workspace/output/ROOT_CAUSE.md describes a check for each cause matching an accepted check class in the reference answer.",
-              "reasoning": "Each table row gives a distinguishing check (specific pattern/input with expected result), these are retained as regression tests run with and without optimization, and the F5 cause is checked under the 1,000,000 backtrack budget via a controlled experiment; section 7 also proposes differential comparison against an independent transcription of the cited algorithms."
+              "reasoning": "The note supplies regression tests and a differential transcription check (under budget 1,000,000) for the causes it identifies, which would match the accepted check classes for F1\u2013F5. But it provides no check for F6: the generated comparison grammar excludes backreferences and no regression test covers a backreference evaluated after backtracking across a group end (forward or in lookbehind). A check is therefore missing for one of the six causes."
             },
             {
               "id": "J08",
@@ -80,7 +80,7 @@
               "raw": "yes",
               "weight": 1.0,
               "description": "/workspace/output/ROOT_CAUSE.md describes interactions among the causes matching an accepted interaction statement in the reference answer.",
-              "reasoning": "Section 8 states that loop/capture restoration affects which capture a reference sees (F5/F6/backreference), that duplicate-name references rely on undefined groups consuming nothing plus repetition capture clearing (F4 relies on unset references matching empty), and that operand folding must precede complement and algebra with singleton-string normalization (F2 and F3 at the complement step). These match accepted interaction statements."
+              "reasoning": "Section 8 states that the sequential lowering of duplicate-name backreferences (C3/F4) is valid because at most one of the groups can be defined and, per section 4, the others contribute empty; this corresponds to the accepted statement that F4 relies on unset backreferences matching empty. It also relates the folding/complement ordering (C6) and the string-metadata handling (C7), both acting on negated/complemented class sets, which approximates the F2/F3 interaction at the complement step."
             },
             {
               "id": "J09",
@@ -89,7 +89,7 @@
               "raw": "yes",
               "weight": 1.0,
               "description": "/workspace/output/ROOT_CAUSE.md names a behaviour its evidence does not establish matching an accepted limitation class in the reference answer.",
-              "reasoning": "Section 9 states the evidence does not establish that every pattern finishes within the budget (performance) nor conformance across Unicode database entries, encodings, or resource limits \u2014 matching the accepted performance and Unicode-version limitation classes."
+              "reasoning": "Section 9 states the evidence does not establish exhaustive agreement of the shipped Unicode tables with every property and case-fold mapping required by ECMAScript 2025, nor bounds on backtracking work for arbitrary inputs. These match the accepted limitation classes of Unicode version differences in case folding or properties, and performance."
             },
             {
               "id": "J10",
@@ -98,7 +98,7 @@
               "raw": "no",
               "weight": 5.0,
               "description": "/workspace/output/ROOT_CAUSE.md makes a causal claim matching a rejected claim class in the reference answer.",
-              "reasoning": "The note does not treat another engine as authority, does not blame budget size/performance for the hang (it repairs loop state), does not claim [^\\q{xy}] should compile or that & alone is an operator, does not say first-declared group is correct, does not advocate folding once over the whole outer class or complement over all code points under v/i, and does not attribute faults to Unicode tables, the decoder, or the optimizer.",
+              "reasoning": "The note does not take Python `re`, PCRE or another engine as authority (its Python tool is a transcription of the specification's own algorithms), does not claim the budget is too small or that a cap/timeout fixes the loop fault, does not claim `&` alone is an operator or that `[^\\q{xy}]` should compile, does not justify duplicate-name results by first-declared group, does not say folding should apply once to the outer class or complement over all code points under `iv`, and does not blame Unicode tables, the decoder, or the optimizer. No rejected claim class is matched.",
               "negate": true
             }
           ],
@@ -114,14 +114,14 @@
             "reference": "/opt/grader/reference/ROOT_CAUSE.md",
             "mode": "batched"
           },
-          "judge_output": "{\"J01\":{\"score\":\"yes\",\"reasoning\":\"All six reference causes appear: F5 (loop entry resets iteration count without a backtracking record, tied to RepeatMatcher 22.2.2.3.1 and the empty-iteration rule), F6 (capture end written without recording state, tied to CompileAtom continuations and BackreferenceMatcher), F4 (duplicate-name reference compiled as alternation so an undefined alternative succeeds empty, tied to 22.2.2.7.2), F3 (set algebra on raw operands folding only the final result / complement before folding, tied to CompileToCharSet and MaybeSimpleCaseFolding in 22.2.2.9), F2 (negation lacking MayContainStrings, dropped empty \\\\q alternatives, tied to 22.2.1.1 early errors and ClassStringDisjunction/22.2.2.8), and F1 (first operand lost before a single &, tied to ClassUnion/ClassIntersection/ClassSetCharacter).\"},\"J02\":{\"score\":\"yes\",\"reasoning\":\"Section 2 explains that the existing tests did not cover the distinguishing shapes: duplicate-name tests used the named iterator, backreference tests did not force rejection of an empty alternative, class-set tests did not cover empty strings or static string-negation analysis, and budget tests did not cover restoration across nested nullable loops. This matches the accepted 'tests did not exercise these shapes' reason.\"},\"J03\":{\"score\":\"no\",\"reasoning\":\"Most rows name an affected family (nested repetitions, references inside previously completed groups, ranges/nested classes/negative properties, nested sets and q strings, etc.), but the duplicate-name backreference row (F4) names no other affected pattern class beyond its failing example (only 'relies on the grammar's exclusivity invariant and repetition capture reset'), and the named_group() row likewise lacks one. The criterion requires an affected class for each cause the note identifies.\"},\"J04\":{\"score\":\"yes\",\"reasoning\":\"Each cause has a repair with the reference's effect: save loop state before resetting the count (F5); record capture state at group exit (F6); concatenate numbered references so undefined groups consume nothing (F4); normalize/fold operands before algebra and complement (F3); track static MayContainStrings flags with union OR/intersection AND/subtraction left and validate at negated classes, preserve empty strings (F2); preserve every union operand and parse a single & as a character (F1). No cause is left unrepaired and no cap/timeout is proposed for F5.\"},\"J05\":{\"score\":\"yes\",\"reasoning\":\"Section 5 and section 4 name the budget API, public API signatures, greedy/lazy preference, capture clearing, and existing-suite coverage as unchanged, matching the accepted unchanged set (budget API, public API, existing tests, patterns outside faulty shapes).\"},\"J06\":{\"score\":\"yes\",\"reasoning\":\"Section 6 states expected values were derived from the supplied grammar and algorithms (section 22.2) without a network oracle, and walks through RepeatMatcher continuation, capture undefined until closing continuation, BackreferenceMatcher participating capture, and normalized operands for v sets \u2014 the accepted 'reading the cited section 22.2 algorithms and applying by hand' method.\"},\"J07\":{\"score\":\"yes\",\"reasoning\":\"Each table row gives a distinguishing check (specific pattern/input with expected result), these are retained as regression tests run with and without optimization, and the F5 cause is checked under the 1,000,000 backtrack budget via a controlled experiment; section 7 also proposes differential comparison against an independent transcription of the cited algorithms.\"},\"J08\":{\"score\":\"yes\",\"reasoning\":\"Section 8 states that loop/capture restoration affects which capture a reference sees (F5/F6/backreference), that duplicate-name references rely on undefined groups consuming nothing plus repetition capture clearing (F4 relies on unset references matching empty), and that operand folding must precede complement and algebra with singleton-string normalization (F2 and F3 at the complement step). These match accepted interaction statements.\"},\"J09\":{\"score\":\"yes\",\"reasoning\":\"Section 9 states the evidence does not establish that every pattern finishes within the budget (performance) nor conformance across Unicode database entries, encodings, or resource limits \u2014 matching the accepted performance and Unicode-version limitation classes.\"},\"J10\":{\"score\":\"no\",\"reasoning\":\"The note does not treat another engine as authority, does not blame budget size/performance for the hang (it repairs loop state), does not claim [^\\\\q{xy}] should compile or that & alone is an operator, does not say first-declared group is correct, does not advocate folding once over the whole outer class or complement over all code points under v/i, and does not attribute faults to Unicode tables, the decoder, or the optimizer.\"}}"
+          "judge_output": "{\"J01\":{\"score\":\"no\",\"reasoning\":\"The note identifies causes matching F1 (C8: single `&` path lost the first operand, tied to ClassUnion/ClassIntersection), F2 (C7: MayContainStrings not computed, empty `\\\\q{}` dropped, tied to the negated-class early errors), F3 (C6: folding after algebra / complements needing correct folding order, tied to CompileToCharSet and CharacterComplement), F4 (C3: alternation of numeric references, tied to BackreferenceMatcher), and F5 (C1: EnterLoop reset without saving state, tied to RepeatMatcher). It does not identify F6: nowhere does it describe EndCaptureGroup writing a capture end without an undo entry so a backreference sees a stale capture after backtracking; in fact it lists capture handling among behaviours left unchanged. Since J01 passes only with all six causes, it fails.\"},\"J02\":{\"score\":\"yes\",\"reasoning\":\"Section 2 explains that existing tests did not exercise the relevant shapes: duplicate-name alternatives that distinguish selection from alternation, sibling disjunctions at equal depth, loop re-entry with later backtracking, `iv` class algebra and empty strings, and that budget tests expected exhaustion so could not distinguish the loop fault. This matches the accepted reason that the tests did not exercise these shapes or encoded no expectation for them.\"},\"J03\":{\"score\":\"yes\",\"reasoning\":\"Section 3 names other affected pattern classes for every cause the note identifies: re-entered quantifiers with live choice points (C1/F5), any duplicate name whose participating capture is not the first (C3/F4), case-equivalent operands in nested sets, subtraction, intersection and complements (C6/F3), negated set expressions and empty alternatives (C7/F2), punctuation combinations (C8/F1), plus classes for its additional causes. These belong to the accepted affected-pattern classes.\"},\"J04\":{\"score\":\"no\",\"reasoning\":\"Section 4 describes repairs matching the accepted effects for F1 (only `&&` is an operator), F2 (metadata union/intersection/subtraction, empty strings kept and emitted last), F3 (closing under case equivalence before set operations and complements over closed positive sets), F4 (sequence of numeric references), and F5 (loop entry saves prior state before reset). However, F6 (restoring a capture group's end on backtrack) is not repaired or even mentioned; the reference states that a repair leaving any cause unrepaired does not pass.\"},\"J05\":{\"score\":\"yes\",\"reasoning\":\"Section 5 states the public API, capture numbering, budget API, UTF-16 offset APIs, dependencies and Unicode tables are unchanged, matching the accepted unchanged set (public API, budget API, UTF-16 entry points).\"},\"J06\":{\"score\":\"yes\",\"reasoning\":\"Section 6 states expected results were derived by reading the grammar, early errors, and algorithms of the supplied specification (section 22.2) and by an independent transcription implementing the specification's continuation order, capture clearing, and empty-progress rule, compared differentially on 16,800 generated cases. This matches the accepted method class of reading the section 22.2 algorithms and applying them by hand or in a transcription; no other engine is used as authority.\"},\"J07\":{\"score\":\"no\",\"reasoning\":\"The note supplies regression tests and a differential transcription check (under budget 1,000,000) for the causes it identifies, which would match the accepted check classes for F1\u2013F5. But it provides no check for F6: the generated comparison grammar excludes backreferences and no regression test covers a backreference evaluated after backtracking across a group end (forward or in lookbehind). A check is therefore missing for one of the six causes.\"},\"J08\":{\"score\":\"yes\",\"reasoning\":\"Section 8 states that the sequential lowering of duplicate-name backreferences (C3/F4) is valid because at most one of the groups can be defined and, per section 4, the others contribute empty; this corresponds to the accepted statement that F4 relies on unset backreferences matching empty. It also relates the folding/complement ordering (C6) and the string-metadata handling (C7), both acting on negated/complemented class sets, which approximates the F2/F3 interaction at the complement step.\"},\"J09\":{\"score\":\"yes\",\"reasoning\":\"Section 9 states the evidence does not establish exhaustive agreement of the shipped Unicode tables with every property and case-fold mapping required by ECMAScript 2025, nor bounds on backtracking work for arbitrary inputs. These match the accepted limitation classes of Unicode version differences in case folding or properties, and performance.\"},\"J10\":{\"score\":\"no\",\"reasoning\":\"The note does not take Python `re`, PCRE or another engine as authority (its Python tool is a transcription of the specification's own algorithms), does not claim the budget is too small or that a cap/timeout fixes the loop fault, does not claim `&` alone is an operator or that `[^\\\\q{xy}]` should compile, does not justify duplicate-name results by first-declared group, does not say folding should apply once to the outer class or complement over all code points under `iv`, and does not blame Unicode tables, the decoder, or the optimizer. No rejected claim class is matched.\"}}"
         }
       },
       {
         "name": "test_output",
         "weight": 31.0,
         "detail": {
-          "score": 0.9677,
+          "score": 0.7742,
           "criteria": [
             {
               "name": "C01",
@@ -146,8 +146,8 @@
             },
             {
               "name": "C04",
-              "value": 1.0,
-              "raw": true,
+              "value": 0.0,
+              "raw": false,
               "weight": 5.0,
               "description": "conforms"
             },
@@ -174,8 +174,8 @@
             },
             {
               "name": "C08",
-              "value": 1.0,
-              "raw": true,
+              "value": 0.0,
+              "raw": false,
               "weight": 1.0,
               "description": "conforms"
             },

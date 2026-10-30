@@ -118,10 +118,6 @@ impl CodePointSet {
         CodePointSet { ivs: Vec::new() }
     }
 
-    pub(crate) fn clear(&mut self) {
-        self.ivs.clear();
-    }
-
     // Return true if the set is empty.
     pub(crate) fn is_empty(&self) -> bool {
         self.ivs.is_empty()

@@ -349,22 +349,6 @@ pub fn add_icase_code_points(mut input: CodePointSet) -> CodePointSet {
     input
 }
 
-/// Close a class under the Canonicalize relation for the selected mode.
-pub(crate) fn add_case_code_points(input: CodePointSet, unicode: bool) -> CodePointSet {
-    if unicode { return add_icase_code_points(input); }
-    let mut result = input.clone();
-    // Only transformed characters can add members to an equivalence class.
-    for tr in TO_UPPERCASE.iter() {
-        for cp in tr.transformed_from().codepoints() {
-            let canonical = uppercase(cp);
-            if input.contains(cp) || input.contains(canonical) {
-                for variant in unfold_uppercase_char(cp) { result.add_one(variant); }
-            }
-        }
-    }
-    result
-}
-
 pub(crate) enum PropertyEscapeKind {
     CharacterClass(&'static [Interval]),
     StringSet(&'static [&'static [u32]]),

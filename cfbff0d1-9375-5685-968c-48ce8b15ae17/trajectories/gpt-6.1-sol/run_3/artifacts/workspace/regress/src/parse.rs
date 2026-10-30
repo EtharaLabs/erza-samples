@@ -62,7 +62,7 @@ enum ClassAtom {
 struct ClassSet {
     codepoints: CodePointSet,
     alternatives: ClassSetAlternativeStrings,
-    may_strings: bool,
+    may_contain_strings: bool,
 }
 
 impl ClassSet {
@@ -70,181 +70,46 @@ impl ClassSet {
         ClassSet {
             codepoints: CodePointSet::new(),
             alternatives: ClassSetAlternativeStrings::new(),
-            may_strings: false,
+            may_contain_strings: false,
         }
     }
 
-    fn node(mut self, icase: bool, negate_set: bool) -> ir::Node {
-        let empty = self.alternatives.0.iter().any(|s| s.is_empty());
-        self.alternatives.0.retain(|s| !s.is_empty());
+    fn node(self, icase: bool, negate_set: bool) -> ir::Node {
+        let bracket = ir::Node::Bracket(BracketContents {
+            invert: negate_set,
+            cps: self.codepoints,
+        });
+        let has_empty = self.alternatives.iter().any(|s| s.is_empty());
+        let alternatives = ClassSetAlternativeStrings(self.alternatives.0.into_iter()
+            .filter(|s| !s.is_empty()).collect());
         let mut nodes = Vec::new();
-        if !self.alternatives.0.is_empty() {
-            nodes.push(self.alternatives.into_node(icase));
-        }
-        if negate_set || !self.codepoints.is_empty() {
-            nodes.push(ir::Node::Bracket(BracketContents {
-                invert: negate_set,
-                cps: self.codepoints,
-            }));
-        }
-        if empty {
-            nodes.push(ir::Node::Empty);
-        }
-        if nodes.is_empty() {
-            ir::Node::make_always_fails()
-        } else {
-            make_alt(nodes)
-        }
-    }
-
-    fn normalize(&mut self, icase: bool) {
-        for string in &mut self.alternatives.0 {
-            if icase {
-                for c in string.iter_mut() {
-                    *c = unicode::fold(*c);
-                }
-            }
-            if string.len() == 1 {
-                self.codepoints.add_one(string[0]);
-            }
-        }
-        self.alternatives.0.retain(|s| s.len() != 1);
-        self.alternatives.0.sort_unstable();
-        self.alternatives.0.dedup();
-        if icase {
-            self.codepoints = unicode::add_icase_code_points(mem::take(&mut self.codepoints));
-        }
+        if !alternatives.is_empty() { nodes.push(alternatives.into_node(icase)); }
+        nodes.push(bracket);
+        if has_empty { nodes.push(ir::Node::Empty); }
+        make_alt(nodes)
     }
 
     fn union_operand(&mut self, operand: ClassSetOperand) {
-        match operand {
-            ClassSetOperand::ClassSetCharacter(c) => {
-                self.codepoints.add_one(c);
-            }
-            ClassSetOperand::CharacterClassEscape(cps) => {
-                self.codepoints.add_set(cps);
-            }
-            ClassSetOperand::Class(class) => {
-                self.codepoints.add_set(class.codepoints);
-                self.alternatives.extend(class.alternatives);
-            }
-            ClassSetOperand::ClassStringDisjunction(s) => {
-                self.alternatives.extend(s);
-            }
-        }
+        let class = operand.into_class();
+        self.may_contain_strings |= class.may_contain_strings;
+        self.codepoints.add_set(class.codepoints);
+        self.alternatives.extend(class.alternatives);
     }
 
     fn intersect_operand(&mut self, operand: ClassSetOperand) {
-        match operand {
-            ClassSetOperand::ClassSetCharacter(c) => {
-                if self.codepoints.contains(c) {
-                    self.codepoints =
-                        CodePointSet::from_sorted_disjoint_intervals(Vec::from([Interval {
-                            first: c,
-                            last: c,
-                        }]));
-                } else {
-                    self.codepoints.clear();
-                }
-                let mut found_alternative = false;
-                for alternative in &mut self.alternatives.0 {
-                    if alternative.len() == 1 && alternative[0] == c {
-                        found_alternative = true;
-                        break;
-                    }
-                }
-                self.alternatives.0.clear();
-                if found_alternative {
-                    self.alternatives.0.push(Box::from([c]));
-                }
-            }
-            ClassSetOperand::CharacterClassEscape(cps) => {
-                self.codepoints.intersect(cps.intervals());
-                let mut retained = Vec::new();
-                for alternative in &self.alternatives.0 {
-                    if alternative.len() == 1 && cps.contains(alternative[0]) {
-                        retained.push(alternative.clone());
-                    }
-                }
-                self.alternatives.0 = retained;
-            }
-            ClassSetOperand::Class(class) => {
-                let mut retained_codepoints = CodePointSet::new();
-                for alternative in &class.alternatives.0 {
-                    if alternative.len() == 1 && self.codepoints.contains(alternative[0]) {
-                        retained_codepoints.add_one(alternative[0]);
-                    }
-                }
-                let mut retained_alternatives = ClassSetAlternativeStrings::new();
-                for alternative in &self.alternatives.0 {
-                    if alternative.len() == 1 && class.codepoints.contains(alternative[0]) {
-                        retained_alternatives.0.push(alternative.clone());
-                    }
-                }
-                self.codepoints.intersect(class.codepoints.intervals());
-                self.codepoints.add_set(retained_codepoints);
-                self.alternatives.intersect(&class.alternatives);
-                self.alternatives.extend(retained_alternatives);
-            }
-            ClassSetOperand::ClassStringDisjunction(s) => {
-                let mut retained = CodePointSet::new();
-                for alternative in &s.0 {
-                    if alternative.len() == 1 && self.codepoints.contains(alternative[0]) {
-                        retained.add_one(alternative[0]);
-                    }
-                }
-                self.codepoints = retained;
-                self.alternatives.intersect(&s);
-            }
-        }
+        let class = operand.into_class();
+        self.may_contain_strings &= class.may_contain_strings;
+        self.codepoints.intersect(class.codepoints.intervals());
+        self.alternatives.intersect(&class.alternatives);
     }
 
     fn subtract_operand(&mut self, operand: ClassSetOperand) {
-        match operand {
-            ClassSetOperand::ClassSetCharacter(c) => {
-                self.codepoints.remove(&[Interval { first: c, last: c }]);
-                self.alternatives.remove(&[Box::from([c])]);
-            }
-            ClassSetOperand::CharacterClassEscape(cps) => {
-                self.codepoints.remove(cps.intervals());
-                let mut to_remove = ClassSetAlternativeStrings::new();
-                for alternative in &self.alternatives.0 {
-                    if alternative.len() == 1 && cps.contains(alternative[0]) {
-                        to_remove.0.push(alternative.clone());
-                    }
-                }
-                self.alternatives.remove(&to_remove);
-            }
-            ClassSetOperand::Class(class) => {
-                let mut codepoints_removed = CodePointSet::new();
-                for alternative in &class.alternatives.0 {
-                    if alternative.len() == 1 && self.codepoints.contains(alternative[0]) {
-                        codepoints_removed.add_one(alternative[0]);
-                    }
-                }
-                let mut alternatives_removed = ClassSetAlternativeStrings::new();
-                for alternative in &self.alternatives.0 {
-                    if alternative.len() == 1 && class.codepoints.contains(alternative[0]) {
-                        alternatives_removed.0.push(alternative.clone());
-                    }
-                }
-                self.codepoints.remove(codepoints_removed.intervals());
-                self.codepoints.remove(class.codepoints.intervals());
-                self.alternatives.remove(&alternatives_removed);
-                self.alternatives.remove(&class.alternatives);
-            }
-            ClassSetOperand::ClassStringDisjunction(s) => {
-                let mut to_remove = CodePointSet::new();
-                for alternative in &s.0 {
-                    if alternative.len() == 1 && self.codepoints.contains(alternative[0]) {
-                        to_remove.add_one(alternative[0]);
-                    }
-                }
-                self.codepoints.remove(to_remove.intervals());
-                self.alternatives.remove(&s);
-            }
-        }
+        let class = operand.into_class();
+        // MayContainStrings of subtraction depends only on its left operand.
+        self.codepoints.remove(class.codepoints.intervals());
+        self.alternatives.remove(&class.alternatives);
     }
+
 }
 
 /// Represents all different types of class set operands.
@@ -254,6 +119,33 @@ enum ClassSetOperand {
     CharacterClassEscape(CodePointSet),
     Class(ClassSet),
     ClassStringDisjunction(ClassSetAlternativeStrings),
+}
+
+impl ClassSetOperand {
+    fn into_class(self) -> ClassSet {
+        let mut class = ClassSet::new();
+        class.may_contain_strings = self.may_contain_strings();
+        match self {
+            Self::ClassSetCharacter(c) => class.codepoints.add_one(c),
+            Self::CharacterClassEscape(cps) => class.codepoints = cps,
+            Self::Class(c) => return c,
+            Self::ClassStringDisjunction(strings) => {
+                for string in strings {
+                    if string.len() == 1 { class.codepoints.add_one(string[0]); }
+                    else { class.alternatives.0.push(string); }
+                }
+            }
+        }
+        class
+    }
+
+    fn may_contain_strings(&self) -> bool {
+        match self {
+            Self::Class(c) => c.may_contain_strings,
+            Self::ClassStringDisjunction(s) => s.iter().any(|s| s.len() != 1),
+            _ => false,
+        }
+    }
 }
 
 /// A list of strings matching some property, for use in 'v' regular expressions.
@@ -266,7 +158,9 @@ impl ClassSetAlternativeStrings {
     }
 
     fn extend(&mut self, other: impl IntoIterator<Item = Box<[CodePoint]>>) {
-        self.0.extend(other);
+        for string in other {
+            if !self.0.contains(&string) { self.0.push(string); }
+        }
     }
 
     fn intersect(&mut self, other: &[Box<[CodePoint]>]) {
@@ -279,7 +173,7 @@ impl ClassSetAlternativeStrings {
 
     fn into_node(self, icase: bool) -> ir::Node {
         // ClassSetAlternativeStrings are matched longest first.
-        // "iterating in descending order of length" per ES2027
+        // CompileAtom (22.2.2.7) requires descending length.
         let mut alternatives = self.0;
         #[allow(clippy::unnecessary_sort_by)]
         alternatives.sort_by(|a, b| b.len().cmp(&a.len()));
@@ -399,12 +293,8 @@ struct LookaroundParams {
     backwards: bool,
 }
 
-/// Represents an alternative path in a regex pattern.
-/// For example, in `/(?<a>x)|(?<a>y)/`, the two occurrences of 'a' are in different
-/// alternative paths (separated by |), so they don't conflict.
-/// Each element in the vector is (depth, alternative_index) where:
-/// - depth: parenthesis nesting level (0 = top level)
-/// - alternative_index: which alternative at that depth (0 = first, 1 = second after |, etc.)
+/// A group's path through enclosing disjunctions. Each segment contains a
+/// unique disjunction identity and the alternative selected within it.
 #[derive(Debug, Clone, PartialEq, Eq)]
 struct AlternativePath {
     /// Vector of (depth, alternative_index) pairs representing the path through alternatives
@@ -412,15 +302,12 @@ struct AlternativePath {
 }
 
 impl AlternativePath {
-    /// Check if two alternative paths conflict (i.e., are in the same alternative branch).
-    /// Two paths conflict if they share the same alternative indices at all common depth levels.
-    /// Example:
-    ///   - [(0, 0)] and [(0, 0), (1, 0)] conflict (second is nested within first)
-    ///   - [(0, 0)] and [(0, 1)] don't conflict (different alternatives at depth 0)
+    /// MightBothParticipate is false only if a common disjunction puts the
+    /// groups in different alternatives. Equal nesting depth is insufficient.
     fn conflicts_with(&self, other: &AlternativePath) -> bool {
-        let min_len = self.segments.len().min(other.segments.len());
-        !self.segments[..min_len].iter().zip(&other.segments[..min_len])
-            .any(|((a, x), (b, y))| a == b && x != y)
+        !self.segments.iter().any(|(id, branch)|
+            other.segments.iter().any(|(other_id, other_branch)|
+                id == other_id && branch != other_branch))
     }
 }
 
@@ -588,6 +475,7 @@ where
                         // Term :: Assertion :: \b
                         'b' => {
                             self.consume('b');
+                            quantifier_allowed = false;
                             result.push(ir::Node::WordBoundary {
                                 invert: false,
                                 unicode_icase: self.flags.unicode && self.flags.icase,
@@ -596,6 +484,7 @@ where
                         // Term :: Assertion :: \B
                         'B' => {
                             self.consume('B');
+                            quantifier_allowed = false;
                             result.push(ir::Node::WordBoundary {
                                 invert: true,
                                 unicode_icase: self.flags.unicode && self.flags.icase,
@@ -872,7 +761,7 @@ where
                 Some(']') => {
                     self.consume(']');
                     if self.flags.icase {
-                        result.cps = unicode::add_case_code_points(result.cps, self.flags.unicode);
+                        result.cps = unicode::add_icase_code_points(result.cps);
                     }
                     return Ok(ir::Node::Bracket(result));
                 }
@@ -1009,11 +898,6 @@ where
                     // ClassEscape :: CharacterClassEscape :: w
                     'w' => {
                         self.consume('w');
-                        if self.flags.unicode && self.flags.icase {
-                            let mut iv = unicode::add_icase_code_points(codepoints_from_class_positive(CharacterClassType::Words));
-                            if !true { iv = iv.inverted(); }
-                            return Ok(Some(ClassAtom::Range { iv, negate: false }));
-                        }
                         Ok(Some(ClassAtom::CharacterClass {
                             class_type: CharacterClassType::Words,
                             positive: true,
@@ -1022,15 +906,9 @@ where
                     // ClassEscape :: CharacterClassEscape :: W
                     'W' => {
                         self.consume('W');
-                        if self.flags.unicode && self.flags.icase {
-                            let mut iv = unicode::add_icase_code_points(codepoints_from_class_positive(CharacterClassType::Words));
-                            if !false { iv = iv.inverted(); }
-                            return Ok(Some(ClassAtom::Range { iv, negate: false }));
-                        }
-                        Ok(Some(ClassAtom::CharacterClass {
-                            class_type: CharacterClassType::Words,
-                            positive: false,
-                        }))
+                        let mut cps = codepoints_from_class_positive(CharacterClassType::Words);
+                        if self.flags.unicode && self.flags.icase { cps = unicode::add_icase_code_points(cps); }
+                        Ok(Some(ClassAtom::Range { iv: cps.inverted(), negate: false }))
                     }
                     // ClassEscape :: CharacterClassEscape :: [+UnicodeMode] p{ UnicodePropertyValueExpression }
                     // ClassEscape :: CharacterClassEscape :: [+UnicodeMode] P{ UnicodePropertyValueExpression }
@@ -1058,89 +936,202 @@ where
     }
 
     // CharacterClass :: ClassContents :: ClassSetExpression
-    // Track MayContainStrings on the expression, independently of its resulting set.
-    fn consume_class_set_expression(&mut self, negated: bool) -> Result<ClassSet, Error> {
-        let mut result = ClassSet::new();
-        if self.try_consume(']') {
-            return Ok(result);
-        }
-        let first = self.consume_class_set_operand(false)?;
-        let mut mode = 0; // union, intersection, subtraction
-        let mut cursor = self.input.clone();
-        let c = cursor.next();
-        if c == Some('&' as u32) && cursor.next() == c {
-            mode = 1;
-        }
-        let mut cursor = self.input.clone();
-        let c = cursor.next();
-        if c == Some('-' as u32) && cursor.next() == c {
-            mode = 2;
-        }
-        let first = self.class_union_item(first, mode == 0)?;
-        result.may_strings = first.may_strings;
-        result.union_operand(ClassSetOperand::Class(first));
-        loop {
-            if self.try_consume(']') {
-                break;
-            }
-            if mode != 0 {
-                let operator = if mode == 1 { '&' } else { '-' };
-                if !self.try_consume(operator) || !self.try_consume(operator) {
-                    return error("Mixed class set operators");
-                }
-                if self.peek() == Some(operator as u32) {
-                    return error("Invalid class set operator");
-                }
-            }
-            let operand = self.consume_class_set_operand(false)?;
-            let set = self.class_union_item(operand, mode == 0)?;
-            match mode {
-                0 => {
-                    result.may_strings |= set.may_strings;
-                    result.union_operand(ClassSetOperand::Class(set));
-                }
-                1 => {
-                    result.may_strings &= set.may_strings;
-                    result.intersect_operand(ClassSetOperand::Class(set));
-                }
-                _ => result.subtract_operand(ClassSetOperand::Class(set)),
-            }
-        }
-        if negated && result.may_strings {
+    // Validate the syntactic MayContainStrings result before complementing.
+    fn consume_class_set_expression(&mut self, in_negated_class: bool) -> Result<ClassSet, Error> {
+        let result = self.consume_class_set_expression_inner()?;
+        if in_negated_class && result.may_contain_strings {
             return error("Negated class may contain strings");
         }
         Ok(result)
     }
 
-    fn class_union_item(&mut self, operand: ClassSetOperand, range: bool) -> Result<ClassSet, Error> {
-        let mut set = ClassSet::new();
-        if range && self.peek() == Some('-' as u32) {
-            self.consume('-');
-            let ClassSetOperand::ClassSetCharacter(first) = operand else {
-                return error("Invalid range");
-            };
-            // A range endpoint is a ClassSetCharacter, never a nested class.
-            let last = self.consume_class_set_character()?;
-            if first > last {
-                return error("Reversed range");
+    fn consume_class_set_expression_inner(&mut self) -> Result<ClassSet, Error> {
+        let in_negated_class = false;
+        let mut result = ClassSet::new();
+
+        let first = match self.peek() {
+            Some(0x5D /* ] */) => {
+                self.consume(']');
+                return Ok(result);
             }
-            set.codepoints.add(Interval { first, last });
-        } else {
-            set.may_strings = match &operand {
-                ClassSetOperand::Class(c) => c.may_strings,
-                ClassSetOperand::ClassStringDisjunction(s) => s.0.iter().any(|s| s.len() != 1),
-                _ => false,
-            };
-            set.union_operand(operand);
+            Some(_) => self.consume_class_set_operand(in_negated_class)?,
+            None => {
+                return error("Unbalanced class set bracket");
+            }
+        };
+
+        enum ClassSetOperator {
+            Union,
+            Intersection,
+            Subtraction,
         }
-        set.normalize(self.flags.icase);
-        Ok(set)
+
+        let op = match self.peek() {
+            Some(0x5D /* ] */) => {
+                self.consume(']');
+                result.union_operand(self.fold_class_operand(first));
+                return Ok(result);
+            }
+            Some(0x26 /* & */) => {
+                self.consume('&');
+                if self.peek() == Some(0x26 /* & */) {
+                    self.consume('&');
+                    if self.peek() == Some('&' as u32) { return error("Invalid class intersection"); }
+                    result.union_operand(self.fold_class_operand(first.clone()));
+                    ClassSetOperator::Intersection
+                } else {
+                    result.union_operand(self.fold_class_operand(first));
+                    result.codepoints.add_one(0x26 /* & */);
+                    ClassSetOperator::Union
+                }
+            }
+            Some(0x2D /* - */) => {
+                self.consume('-');
+                if self.peek() == Some(0x2D /* - */) {
+                    self.consume('-');
+                    result.union_operand(self.fold_class_operand(first.clone()));
+                    ClassSetOperator::Subtraction
+                } else {
+                    match first {
+                        ClassSetOperand::ClassSetCharacter(first) => {
+                            let ClassSetOperand::ClassSetCharacter(last) =
+                                self.consume_class_set_operand(in_negated_class)?
+                            else {
+                                return error("Invalid class set range");
+                            };
+                            if first > last {
+                                return error("Invalid class set range");
+                            }
+                            result.codepoints.add(Interval { first, last });
+                            if self.flags.icase { result.codepoints = unicode::add_icase_code_points(result.codepoints); }
+                        }
+                        _ => {
+                            return error("Invalid class set range");
+                        }
+                    };
+                    ClassSetOperator::Union
+                }
+            }
+            Some(_) => {
+                result.union_operand(self.fold_class_operand(first.clone()));
+                ClassSetOperator::Union
+            }
+            None => {
+                return error("Unbalanced class set bracket");
+            }
+        };
+
+        match op {
+            ClassSetOperator::Union => {
+                loop {
+                    let operand = match self.peek() {
+                        Some(0x5D /* ] */) => {
+                            self.consume(']');
+                            return Ok(result);
+                        }
+                        Some(_) => self.consume_class_set_operand(in_negated_class)?,
+                        None => return error("Unbalanced class set bracket"),
+                    };
+                    if self.peek() == Some(0x2D /* - */) {
+                        self.consume('-');
+                        match operand {
+                            ClassSetOperand::ClassSetCharacter(first) => {
+                                let ClassSetOperand::ClassSetCharacter(last) =
+                                    self.consume_class_set_operand(in_negated_class)?
+                                else {
+                                    return error("Invalid class set range");
+                                };
+                                if first > last {
+                                    return error("Invalid class set range");
+                                }
+                                result.codepoints.add(Interval { first, last });
+                            if self.flags.icase { result.codepoints = unicode::add_icase_code_points(result.codepoints); }
+                            }
+                            _ => {
+                                return error("Invalid class set range");
+                            }
+                        };
+                    } else {
+                        result.union_operand(self.fold_class_operand(operand));
+                    }
+                }
+            }
+            // ClassIntersection :: ClassSetOperand && [lookahead ≠ &]
+            ClassSetOperator::Intersection => {
+                loop {
+                    let operand = self.consume_class_set_operand(in_negated_class)?;
+                    result.intersect_operand(self.fold_class_operand(operand));
+                    match self.next() {
+                        Some(0x5D /* ] */) => return Ok(result),
+                        Some(0x26 /* & */) => {}
+                        Some(_) => return error("Unexpected character in class set intersection"),
+                        _ => return error("Unbalanced class set bracket"),
+                    }
+                    if self.next() != Some(0x26 /* & */) {
+                        return error("Unbalanced class set bracket");
+                    }
+                    if self.peek() == Some('&' as u32) { return error("Invalid class intersection"); }
+                }
+            }
+            // ClassSubtraction :: ClassSubtraction -- ClassSetOperand
+            ClassSetOperator::Subtraction => {
+                loop {
+                    let operand = self.consume_class_set_operand(in_negated_class)?;
+                    result.subtract_operand(self.fold_class_operand(operand));
+                    match self.next() {
+                        Some(0x5D /* ] */) => return Ok(result),
+                        Some(0x2D /* - */) => {}
+                        Some(_) => return error("Unexpected character in class set subtraction"),
+                        _ => return error("Unbalanced class set bracket"),
+                    }
+                    if self.next() != Some(0x2D /* - */) {
+                        return error("Unbalanced class set bracket");
+                    }
+                }
+            }
+        }
+    }
+
+    fn fold_class_operand(&self, operand: ClassSetOperand) -> ClassSetOperand {
+        if self.flags.icase {
+            if let ClassSetOperand::ClassSetCharacter(c) = operand {
+                let mut cps = CodePointSet::new();
+                cps.add_one(c);
+                return ClassSetOperand::CharacterClassEscape(unicode::add_icase_code_points(cps));
+            }
+        }
+        operand
     }
 
     fn consume_class_set_operand(
         &mut self,
         in_negated_class: bool,
     ) -> Result<ClassSetOperand, Error> {
+        let operand = self.consume_class_set_operand_inner(in_negated_class)?;
+        // Canonicalize before set algebra. Single-character strings and characters
+        // denote the same set elements.
+        if let ClassSetOperand::ClassSetCharacter(_) = operand { return Ok(operand); }
+        let may_contain_strings = operand.may_contain_strings();
+        let mut class = ClassSet::new();
+        class.union_operand(operand);
+        let mut strings = Vec::new();
+        for string in class.alternatives.0 {
+            if string.len() == 1 {
+                class.codepoints.add_one(string[0]);
+            } else {
+                let string = if self.flags.icase {
+                    string.iter().map(|&c| unicode::fold(c)).collect::<Vec<_>>().into_boxed_slice()
+                } else { string };
+                if !strings.contains(&string) { strings.push(string); }
+            }
+        }
+        class.alternatives = ClassSetAlternativeStrings(strings);
+        class.may_contain_strings = may_contain_strings;
+        if self.flags.icase { class.codepoints = unicode::add_icase_code_points(class.codepoints); }
+        Ok(ClassSetOperand::Class(class))
+    }
+
+    fn consume_class_set_operand_inner(&mut self, in_negated_class: bool) -> Result<ClassSetOperand, Error> {
         use ClassSetOperand::*;
         let Some(cp) = self.peek() else {
             return error("Empty class set operand");
@@ -1224,16 +1215,14 @@ where
                     // CharacterClassEscape :: w
                     0x77 /* w */ => {
                         self.consume('w');
-                        Ok(CharacterClassEscape(if self.flags.icase {
-                            unicode::add_icase_code_points(codepoints_from_class_positive(CharacterClassType::Words))
-                        } else { codepoints_from_class_positive(CharacterClassType::Words) }))
+                        Ok(CharacterClassEscape(codepoints_from_class(CharacterClassType::Words, true)))
                     }
                     // CharacterClassEscape :: W
                     0x57 /* W */ => {
                         self.consume('W');
-                        Ok(CharacterClassEscape(if self.flags.icase {
-                            unicode::add_icase_code_points(codepoints_from_class_positive(CharacterClassType::Words)).inverted()
-                        } else { codepoints_from_class(CharacterClassType::Words, false) }))
+                        { let mut cps = codepoints_from_class(CharacterClassType::Words, true);
+                        if self.flags.icase { cps = unicode::add_icase_code_points(cps); }
+                        Ok(CharacterClassEscape(cps.inverted())) }
                     }
                     // CharacterClassEscape :: [+UnicodeMode] p{ UnicodePropertyValueExpression }
                     0x70 /* p */ => {
@@ -1264,7 +1253,7 @@ where
                     }
                     // ClassSetCharacter:: \b
                     0x62 /* b */ => {
-                        self.consume(cp); Ok(ClassSetCharacter(8))
+                        { self.consume(cp); Ok(ClassSetCharacter(8)) }
                     }
                     // ClassSetCharacter:: \ ClassSetReservedPunctuator
                     _ if Self::is_class_set_reserved_punctuator(cp) => Ok(ClassSetCharacter(self.consume(cp))),
@@ -1301,7 +1290,7 @@ where
             }
             // [lookahead ∉ ClassSetReservedDoublePunctuator] SourceCharacter but not ClassSetSyntaxCharacter
             0x28 /* ( */ | 0x29 /* ) */ | 0x7B /* { */ | 0x7D /* } */ | 0x2F /* / */
-            | 0x2D /* - */ | 0x7C /* | */ | 0x5B /* [ */ | 0x5D /* ] */ => error("Invalid class set character"),
+            | 0x2D /* - */ | 0x7C /* | */ | 0x5B | 0x5D => error("Invalid class set character"),
             _ => {
                 if Self::is_class_set_reserved_double_punctuator(cp)
                     && self.peek() == Some(cp) {
@@ -1391,6 +1380,9 @@ where
         // if parsed input is actually invalid, keep the previous one for rollback
         let pre_input = self.input.clone();
         self.consume('{');
+        let minimum_digits: Vec<_> = self.input.clone()
+            .take_while(|c| (0x30..=0x39).contains(c))
+            .skip_while(|c| *c == 0x30).collect();
         let optmin = self.try_consume_decimal_integer_literal();
         let Some(optmin) = optmin else {
             // not a valid quantifier, rollback consumption
@@ -1402,8 +1394,14 @@ where
             max: Some(optmin),
             greedy: true,
         };
+        let mut reversed_bounds = false;
         if self.try_consume(',') {
+            let maximum_digits: Vec<_> = self.input.clone()
+                .take_while(|c| (0x30..=0x39).contains(c))
+                .skip_while(|c| *c == 0x30).collect();
             let max = self.try_consume_decimal_integer_literal();
+            reversed_bounds = max.is_some() &&
+                (minimum_digits.len(), &minimum_digits) > (maximum_digits.len(), &maximum_digits);
             // Either like {3,4} in which case we want to set the max;
             // or like {3,} in which case the max should be None to indicate unbounded.
             quant.max = max;
@@ -1415,19 +1413,10 @@ where
             self.input = pre_input;
             return None;
         }
-        // Keep the mathematical ordering even when both machine integers saturated.
-        let text: Vec<u32> = pre_input.take_while(|&c| c != '}' as u32).collect();
-        if let Some(comma) = text.iter().position(|&c| c == ',' as u32) {
-            let trim = |mut digits: &[u32]| {
-                while digits.first() == Some(&('0' as u32)) { digits = &digits[1..]; }
-                digits.to_vec()
-            };
-            let low = trim(&text[1..comma]);
-            let high = trim(&text[comma + 1..]);
-            if text.len() > comma + 1 && (low.len(), &low) > (high.len(), &high) {
-                quant.min = 1;
-                quant.max = Some(0);
-            }
+        if reversed_bounds {
+            // Preserve the early error even when both decimal values saturate.
+            quant.min = 1;
+            quant.max = Some(0);
         }
         Some(quant)
     }
@@ -1581,7 +1570,7 @@ where
                 Ok(make_bracket_class(
                     CharacterClassType::Digits,
                     c == 'd' as u32,
-                    self.flags.icase && self.flags.unicode,
+                    self.flags.icase,
                 ))
             }
 
@@ -1590,7 +1579,7 @@ where
                 Ok(make_bracket_class(
                     CharacterClassType::Spaces,
                     c == 's' as u32,
-                    self.flags.icase && self.flags.unicode,
+                    self.flags.icase,
                 ))
             }
 
@@ -1599,7 +1588,7 @@ where
                 Ok(make_bracket_class(
                     CharacterClassType::Words,
                     c == 'w' as u32,
-                    self.flags.icase && self.flags.unicode,
+                    self.flags.icase,
                 ))
             }
 
@@ -1613,8 +1602,9 @@ where
                     PropertyEscapeKind::CharacterClass(s) => {
                         let mut cps = CodePointSet::from_sorted_disjoint_intervals(s.to_vec());
                         if self.flags.icase {
-                            // In v mode complement the folded property; in u mode
-                            // CharacterSetMatcher canonicalizes the complement.
+                            // Per ES2024: apply SimpleCaseFolding to the property set first.
+                            // For \P (inverted): complement before expansion so that case
+                            // variants of the complement are included (existential quantifier).
                             if negate && self.flags.unicode_sets {
                                 cps = unicode::add_icase_code_points(cps).inverted();
                             } else if negate {
@@ -1730,7 +1720,8 @@ where
                 match self.next().and_then(char::from_u32) {
                     Some('}') => break,
                     Some(c) if c.is_ascii_hexdigit() => s.push(c),
-                    _ => {
+                    Some(_) => { self.input = orig_input; return None; },
+                    None => {
                         // Surrogates not supported in code point escapes.
                         self.input = orig_input;
                         return None;
@@ -1757,6 +1748,7 @@ where
             let mut s = String::new();
             for _ in 0..4 {
                 if let Some(c) = self.next().and_then(char::from_u32) {
+                    if !c.is_ascii_hexdigit() { self.input = orig_input; return None; }
                     s.push(c);
                 } else {
                     // Surrogates are not hex digits.
@@ -1764,15 +1756,14 @@ where
                     return None;
                 }
             }
-            if !s.chars().all(|c| c.is_ascii_hexdigit()) { self.input = orig_input; return None; }
             match u16::from_str_radix(&s, 16) {
                 Ok(u) => {
-                    if self.flags.unicode && (0xD800..=0xDBFF).contains(&u) {
+                    if (0xD800..=0xDBFF).contains(&u) {
                         // Found a high surrogate. Try to parse a low surrogate next
                         // to see if we can rebuild the original `char`
 
                         orig_input = self.input.clone();
-                        if !self.try_consume_str("\\u") {
+                        if !self.flags.unicode || !self.try_consume_str("\\u") {
                             return Some(u as u32);
                         }
 
@@ -1784,10 +1775,10 @@ where
                             let mut s = String::new();
                             for _ in 0..4 {
                                 let c = self.next().and_then(char::from_u32)?;
+                                if !c.is_ascii_hexdigit() { return None; }
                                 s.push(c);
                             }
 
-                            if !s.chars().all(|c| c.is_ascii_hexdigit()) { return None; }
                             let uu = u16::from_str_radix(&s, 16).ok()?;
                             let ch = char::decode_utf16([u, uu]).next()?.ok()?;
                             Some(u32::from(ch))
@@ -1811,25 +1802,25 @@ where
         }
     }
 
+    fn try_escape_group_name_sequence(&mut self) -> Option<u32> {
+        let saved = self.flags.unicode;
+        self.flags.unicode = true;
+        let result = self.try_escape_unicode_sequence();
+        self.flags.unicode = saved;
+        result
+    }
+
     fn try_consume_named_capture_group_name(&mut self) -> Option<String> {
         if !self.try_consume('<') {
             return None;
         }
 
         let orig_input = self.input.clone();
-        let saved_unicode = self.flags.unicode;
-        self.flags.unicode = true;
-        let name = self.consume_group_name_body(orig_input);
-        self.flags.unicode = saved_unicode;
-        name
-    }
-
-    fn consume_group_name_body(&mut self, orig_input: Peekable<I>) -> Option<String> {
         let mut group_name = String::new();
 
         if let Some(mut c) = self.next().and_then(char::from_u32) {
             if c == '\\' && self.try_consume('u') {
-                if let Some(escaped) = self.try_escape_unicode_sequence().and_then(char::from_u32) {
+                if let Some(escaped) = self.try_escape_group_name_sequence().and_then(char::from_u32) {
                     c = escaped;
                 } else {
                     self.input = orig_input;
@@ -1849,21 +1840,17 @@ where
         }
 
         loop {
+            if self.try_consume('>') { break; }
             if let Some(mut c) = self.next().and_then(char::from_u32) {
-                let escaped = c == '\\';
                 if c == '\\' && self.try_consume('u') {
                     if let Some(escaped) =
-                        self.try_escape_unicode_sequence().and_then(char::from_u32)
+                        self.try_escape_group_name_sequence().and_then(char::from_u32)
                     {
                         c = escaped;
                     } else {
                         self.input = orig_input;
                         return None;
                     }
-                }
-
-                if c == '>' && !escaped {
-                    break;
                 }
 
                 if interval_contains(id_continue_ranges(), c.into()) || c == '$' || c == '_' || c == '\u{200C}' /* <ZWNJ> */ || c == '\u{200D}'
@@ -1908,8 +1895,8 @@ where
         // Map from depth to current alternative index at that depth
         let mut alt_indices: HashMap<usize, usize> = HashMap::new();
         alt_indices.insert(0, 0);
-        let mut identities = vec![0usize];
-        let mut next_identity = 1usize;
+        let mut disjunction_ids = vec![0usize];
+        let mut next_disjunction_id = 1usize;
 
         // Map from group name to all alternative paths where it appears
         let mut named_group_locations: HashMap<String, Vec<AlternativePath>> = HashMap::new();
@@ -1931,7 +1918,10 @@ where
                                 self.next();
                                 continue;
                             }
-                            Some('[') => depth += 1,
+                            Some('[') => {
+                                depth += 1;
+                                if depth > MAX_NESTING_DEPTH as usize { return error("Regular expression is too deeply nested"); }
+                            },
                             Some(']') => {
                                 depth -= 1;
                                 if depth == 0 {
@@ -1970,7 +1960,7 @@ where
                         // Build current alternative path from depth 0 to current depth.
                         let mut segments = Vec::new();
                         for d in 0..=paren_depth {
-                            segments.push((identities[d], *alt_indices.get(&d).unwrap_or(&0)));
+                            segments.push((disjunction_ids[d], *alt_indices.get(&d).unwrap_or(&0)));
                         }
 
                         // Record this location.
@@ -1997,8 +1987,9 @@ where
 
                     // Entering a new group.
                     paren_depth += 1;
-                    identities.push(next_identity);
-                    next_identity += 1;
+                    if paren_depth >= MAX_NESTING_DEPTH as usize { return error("Regular expression is too deeply nested"); }
+                    disjunction_ids.push(next_disjunction_id);
+                    next_disjunction_id += 1;
                     alt_indices.insert(paren_depth, 0);
                 }
                 Some(')') => {
@@ -2006,7 +1997,7 @@ where
                     if paren_depth > 0 {
                         alt_indices.remove(&paren_depth);
                         paren_depth -= 1;
-                        identities.pop();
+                        disjunction_ids.pop();
                     }
                 }
                 Some('|') => {
@@ -2102,8 +2093,7 @@ where
     I: Iterator<Item = u32> + Clone,
 {
     let mut flags = flags;
-    if flags.unicode && flags.unicode_sets { return error("The u and v flags are mutually exclusive"); }
-    flags.unicode |= flags.unicode_sets;
+    if flags.unicode_sets { flags.unicode = true; }
     let mut p = Parser {
         input: pattern.peekable(),
         flags,

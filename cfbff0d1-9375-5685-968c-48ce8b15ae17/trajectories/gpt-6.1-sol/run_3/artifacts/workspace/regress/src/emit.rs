@@ -105,17 +105,11 @@ impl Emitter {
     // Emit a sequence of code points, lowering to literal bytes (UTF-8).
     #[cfg(not(feature = "utf16"))]
     fn emit_code_point_sequence(&mut self, cps: &[u32], icase: bool) {
-        if self.in_lookbehind {
-            for cp in cps.iter().rev() {
-                for piece in lower_code_point_sequence(core::slice::from_ref(cp), icase, self.result.flags.unicode) {
-                    self.emit_node(&Node::from(piece));
-                }
-            }
-            return;
-        }
         let pieces = lower_code_point_sequence(cps, icase, self.result.flags.unicode);
-        for piece in pieces {
-            self.emit_node(&Node::from(piece));
+        if self.in_lookbehind {
+            for piece in pieces.into_iter().rev() { self.emit_node(&Node::from(piece)); }
+        } else {
+            for piece in pieces { self.emit_node(&Node::from(piece)); }
         }
     }
 
@@ -123,8 +117,8 @@ impl Emitter {
     #[cfg(feature = "utf16")]
     fn emit_code_point_sequence(&mut self, cps: &[u32], icase: bool) {
         let unicode = self.result.flags.unicode;
-        let ordered: Vec<u32> = if self.in_lookbehind { cps.iter().rev().copied().collect() } else { cps.to_vec() };
-        for cp in ordered {
+        for index in 0..cps.len() {
+            let cp = cps[if self.in_lookbehind { cps.len() - 1 - index } else { index }];
             let chars = unicode::expand_code_point(cp, icase, unicode);
             let node = match chars.len() {
                 0 => panic!("Char should always unfold to at least itself"),
@@ -139,9 +133,10 @@ impl Emitter {
     /// Lower a `Node::StringSet` to a right-leaning chain of `Insn::Alt` over the
     /// alternatives.
     fn emit_string_set(&mut self, alternatives: &[Box<[u32]>], icase: bool) {
-        let mut ordered: Vec<_> = alternatives.iter().collect();
-        ordered.sort_by_key(|s| core::cmp::Reverse(s.len()));
-        let Some((last, priors)) = ordered.split_last() else {
+        let mut alternatives: Vec<_> = alternatives.iter().collect();
+        alternatives.sort_by_key(|s| core::cmp::Reverse(s.len()));
+        alternatives.dedup();
+        let Some((last, priors)) = alternatives.split_last() else {
             // Empty string sets always fail.
             self.emit_insn(Insn::JustFail);
             return;

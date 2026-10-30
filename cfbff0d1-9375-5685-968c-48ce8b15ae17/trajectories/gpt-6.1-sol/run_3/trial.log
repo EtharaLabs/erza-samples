@@ -48,7 +48,7 @@ fi
 Command outputs captured
 Running command: rm -rf /tmp/codex-secrets "$CODEX_HOME"
 Command outputs captured
-Wrote Codex trajectory to /Users/shraiykhaddar/erza-probes/probe-20261029T122302Z/runs/gpt/2026-10-29__17-53-03/regress-ecma-h2__k4XaUKQ/agent/trajectory.json
+Wrote Codex trajectory to /Users/shraiykhaddar/erza-probes/probe-20261029T122302Z/runs/gpt/2026-10-29__17-53-03/regress-ecma-h2__gZBAN24/agent/trajectory.json
 Collecting main service artifacts
 Skipping image OS validation for hb__d90e80ae8972cac2403b8e988f4048d7: docker inspect returned 1
 The verifier.env contains an API key (often the case for LLM-based verifiers). You will incur costs associated with the API calls.

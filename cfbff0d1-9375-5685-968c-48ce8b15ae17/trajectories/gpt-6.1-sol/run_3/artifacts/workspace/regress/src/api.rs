@@ -192,8 +192,7 @@ impl Match {
             return None;
         }
         self.group_names.iter().zip(&self.captures)
-            .filter(|(s, _)| s.as_ref() == name)
-            .find_map(|(_, capture)| capture.clone())
+            .find_map(|(n, capture)| if n.as_ref() == name { capture.clone() } else { None })
     }
 
     /// Return an iterator over the named groups of a Match.

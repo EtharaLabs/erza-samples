@@ -853,11 +853,6 @@ impl<'a, Input: InputIndexer> MatchAttempter<'a, Input> {
 
                     &Insn::EndCaptureGroup(cg_idx) => {
                         let cg = self.s.groups.mat(cg_idx as usize);
-                        // Alternatives inside this group must see it open again.
-                        self.bts.push(BacktrackInsn::SetCaptureGroup {
-                            id: cg_idx,
-                            data: *cg,
-                        });
                         if Dir::FORWARD {
                             debug_assert!(
                                 cg.start_matched(),
@@ -960,12 +955,7 @@ impl<'a, Input: InputIndexer> MatchAttempter<'a, Input> {
                     Insn::EnterLoop(fields) => {
                         // Entering a loop, not re-entering it.
                         let data = self.s.loops.mat(fields.loop_id as usize);
-                        // A later outer iteration may re-enter this instruction.
-                        // Preserve the earlier activation for backtracking.
-                        self.bts.push(BacktrackInsn::SetLoopData {
-                            id: fields.loop_id,
-                            data: *data,
-                        });
+                        self.bts.push(BacktrackInsn::SetLoopData { id: fields.loop_id, data: *data });
                         data.iters = 0;
                         match self.run_loop(fields, pos, ip) {
                             Some(next_ip) => {
