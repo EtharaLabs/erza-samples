@@ -1,0 +1,60 @@
+--- FAIL: TestAdversarialSchedulesRegression (0.90s)
+    --- FAIL: TestAdversarialSchedulesRegression/false/false/false/60 (0.01s)
+        safety_regression_test.go:272: node 1: committed=2, applied=2, applying=2, unstable.offset=5, unstable.offsetInProgress=5, len(unstable.Entries)=0 status term:199  vote:1  commit:2 queues 0/0/0
+        safety_regression_test.go:272: node 2: committed=204, applied=204, applying=204, unstable.offset=205, unstable.offsetInProgress=205, len(unstable.Entries)=0 status term:16  vote:2  commit:204 queues 0/0/0
+        safety_regression_test.go:272: node 3: committed=204, applied=204, applying=204, unstable.offset=205, unstable.offsetInProgress=205, len(unstable.Entries)=0 status term:16  vote:2  commit:204 queues 0/0/0
+        safety_regression_test.go:274: no leader after recovery
+    --- FAIL: TestAdversarialSchedulesRegression/true/false/true/4 (0.02s)
+        safety_regression_test.go:272: node 1: committed=203, applied=203, applying=203, unstable.offset=204, unstable.offsetInProgress=204, len(unstable.Entries)=0 status term:13  vote:3  commit:203 queues 0/0/0
+        safety_regression_test.go:272: node 2: committed=2, applied=2, applying=2, unstable.offset=3, unstable.offsetInProgress=3, len(unstable.Entries)=0 status term:195  vote:2  commit:2 queues 0/0/0
+        safety_regression_test.go:272: node 3: committed=203, applied=203, applying=203, unstable.offset=204, unstable.offsetInProgress=204, len(unstable.Entries)=0 status term:13  vote:3  commit:203 queues 0/0/0
+        safety_regression_test.go:274: no leader after recovery
+    --- FAIL: TestAdversarialSchedulesRegression/true/false/true/41 (0.02s)
+        safety_regression_test.go:272: node 1: committed=203, applied=203, applying=203, unstable.offset=204, unstable.offsetInProgress=204, len(unstable.Entries)=0 status term:9  vote:1  commit:203 queues 0/0/0
+        safety_regression_test.go:272: node 2: committed=203, applied=203, applying=203, unstable.offset=204, unstable.offsetInProgress=204, len(unstable.Entries)=0 status term:9  vote:1  commit:203 queues 0/0/0
+        safety_regression_test.go:272: node 3: committed=2, applied=2, applying=2, unstable.offset=4, unstable.offsetInProgress=4, len(unstable.Entries)=0 status term:191  vote:3  commit:2 queues 0/0/0
+        safety_regression_test.go:274: no leader after recovery
+    --- FAIL: TestAdversarialSchedulesRegression/true/false/true/57 (0.02s)
+        safety_regression_test.go:272: node 1: committed=203, applied=203, applying=203, unstable.offset=204, unstable.offsetInProgress=204, len(unstable.Entries)=0 status term:10  vote:1  commit:203 queues 0/0/0
+        safety_regression_test.go:272: node 2: committed=203, applied=203, applying=203, unstable.offset=204, unstable.offsetInProgress=204, len(unstable.Entries)=0 status term:10  vote:1  commit:203 queues 0/0/0
+        safety_regression_test.go:272: node 3: committed=2, applied=2, applying=2, unstable.offset=3, unstable.offsetInProgress=3, len(unstable.Entries)=0 status term:188  vote:3  commit:2 queues 0/0/0
+        safety_regression_test.go:274: no leader after recovery
+    --- FAIL: TestAdversarialSchedulesRegression/true/false/true/84 (0.01s)
+        safety_regression_test.go:272: node 1: committed=203, applied=203, applying=203, unstable.offset=204, unstable.offsetInProgress=204, len(unstable.Entries)=0 status term:11  vote:3  commit:203 queues 0/0/0
+        safety_regression_test.go:272: node 2: committed=2, applied=2, applying=2, unstable.offset=3, unstable.offsetInProgress=3, len(unstable.Entries)=0 status term:194  vote:2  commit:2 queues 0/0/0
+        safety_regression_test.go:272: node 3: committed=203, applied=203, applying=203, unstable.offset=204, unstable.offsetInProgress=204, len(unstable.Entries)=0 status term:11  vote:3  commit:203 queues 0/0/0
+        safety_regression_test.go:274: no leader after recovery
+    --- FAIL: TestAdversarialSchedulesRegression/true/true/false/38 (0.00s)
+panic: tocommit(3) is out of range [lastIndex(2)]. Was the raft log corrupted, truncated, or lost? [recovered, repanicked]
+
+goroutine 639 [running]:
+testing.tRunner.func1.2({0x35a660, 0x42755d614a20})
+	/usr/local/go/src/testing/testing.go:1974 +0x1a0
+testing.tRunner.func1()
+	/usr/local/go/src/testing/testing.go:1977 +0x318
+panic({0x35a660?, 0x42755d614a20?})
+	/usr/local/go/src/runtime/panic.go:860 +0x12c
+log.(*Logger).Panicf(0x42755d297830, {0x3f9539?, 0x20?}, {0x42755d602840?, 0x1?, 0x2?})
+	/usr/local/go/src/log/log.go:319 +0x88
+go.etcd.io/raft/v3.(*DefaultLogger).Panicf(0x0?, {0x3f9539?, 0xd?}, {0x42755d602840?, 0x42755d2edb78?, 0x26bf4c?})
+	/workspace/raft/logger.go:137 +0x28
+go.etcd.io/raft/v3.(*raftLog).commitTo(0x42755d4d21e0, 0x3)
+	/workspace/raft/log.go:326 +0xe4
+go.etcd.io/raft/v3.(*raft).handleHeartbeat(0x42755d4f8480, 0x42755d680f70)
+	/workspace/raft/raft.go:1826 +0x44
+go.etcd.io/raft/v3.stepFollower(0x42755d4f8480, 0x42755d680f70)
+	/workspace/raft/raft.go:1727 +0x2dc
+go.etcd.io/raft/v3.(*raft).Step(0x42755d4f8480, 0x42755d680f70)
+	/workspace/raft/raft.go:1264 +0xee0
+go.etcd.io/raft/v3.(*RawNode).Step(0x405be0?, 0x42755d5a3d40?)
+	/workspace/raft/rawnode.go:124 +0x15c
+go.etcd.io/raft/v3.(*safetySim).deliver(0x42755d5f41e0, 0x42755d5a3d40)
+	/workspace/raft/safety_regression_test.go:168 +0x7c
+go.etcd.io/raft/v3.TestAdversarialSchedulesRegression.func1(0x42755d588908?)
+	/workspace/raft/safety_regression_test.go:508 +0x508
+testing.tRunner(0x42755d588908, 0x42755d4fefc0)
+	/usr/local/go/src/testing/testing.go:2036 +0xc4
+created by testing.(*T).Run in goroutine 20
+	/usr/local/go/src/testing/testing.go:2101 +0x3a8
+exit status 2
+FAIL	go.etcd.io/raft/v3	0.906s

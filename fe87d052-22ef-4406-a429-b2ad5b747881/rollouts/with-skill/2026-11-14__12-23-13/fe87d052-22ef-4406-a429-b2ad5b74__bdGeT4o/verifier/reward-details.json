@@ -1,0 +1,307 @@
+{
+  "reward": {
+    "kind": "group",
+    "score": 0.854,
+    "aggregation": "weighted-mean",
+    "components": [
+      {
+        "name": "judge",
+        "weight": 21.0,
+        "detail": {
+          "score": 1.0,
+          "criteria": [
+            {
+              "id": "J1",
+              "name": "J1",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 3.0,
+              "description": "/workspace/output/REPAIR_REPORT.md gives, for every cause of nonconformance it claims, a reproducing input together with the character type and the floating-point type it is parsed as.",
+              "reasoning": "The report claims five causes (normal midpoint parity, binary32 tie exponent range, overflow at infinity exponent, long-input certainty check, overlapping suffix scans). Each gives a reproducing or affected input with the character type (char) and floating-point type (float or double): e.g. 'char float 16777219', 'char float 52428803125e-5', 'char double 2e308', '1.500000000000000000000000000000, char, double', and '1.000000059604644775390625 ... char, float'. The 'Additional arithmetic safeguards' section is presented as safeguards rather than as claimed causes, so it is not held to this requirement."
+            },
+            {
+              "id": "J2",
+              "name": "J2",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 1.0,
+              "description": "/workspace/output/REPAIR_REPORT.md gives, for every cause of nonconformance it claims that changes a result bit pattern, the bit pattern the contract requires for that cause's reproducing input. A claimed cause that changes only the cost of conversion needs no bit pattern.",
+              "reasoning": "For each bit-changing cause the required bit pattern is given: 0x4b800002 (cause 1), 0x49000000 (cause 2), 0x7ff0000000000000 and 0x7f800000 (overflow). The two cost causes correctly give no bit pattern."
+            },
+            {
+              "id": "J3",
+              "name": "J3",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 1.0,
+              "description": "/workspace/output/REPAIR_REPORT.md gives, for every cause of nonconformance it claims that changes a result bit pattern, the bit pattern the unrepaired library produced for that cause's reproducing input. A claimed cause that changes only the cost of conversion needs no bit pattern.",
+              "reasoning": "For each bit-changing cause the original library's produced bits are given: 0x4b800001, 0x49000001, 0x7ff1ccf385ebc8a0 and 0x7f967699. The report states these were obtained by running the original headers. Cost causes need none."
+            },
+            {
+              "id": "J4",
+              "name": "J4",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 3.0,
+              "description": "/workspace/output/REPAIR_REPORT.md names, for every cause of nonconformance it claims that changes a bit pattern, a test file under /workspace/fast_float/tests/ as that cause's regression test; a cause that only breaks the bound on the cost of conversion needs none.",
+              "reasoning": "Each bit-changing cause names tests/rounding_contract.cpp (under /workspace/fast_float/tests/) as its regression test; the cost causes also name it, though not required."
+            },
+            {
+              "id": "J5",
+              "name": "J5",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 1.0,
+              "description": "/workspace/output/REPAIR_REPORT.md marks each of its claims as verified by running code or as inferred without running code.",
+              "reasoning": "The report marks rounding reproductions as obtained by running the original and repaired headers, marks the cost-path claims as verified by inspection with instruction counts not measured, and marks the exponent-saturation and all-one-low-word safeguards as identified by inspection/mathematical review without execution. Each claim is labelled."
+            },
+            {
+              "id": "J6",
+              "name": "J6",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 3.0,
+              "description": "/workspace/output/REPAIR_REPORT.md states how the causes of nonconformance it claims interact with one another, or states that they do not interact.",
+              "reasoning": "The 'Verification and interactions' paragraph states how causes interact: the certainty defect masked product-rounding-branch defects on long spellings and amplified the suffix-scan defect; midpoint parity and exponent-range detection act on different conditions in the same decision; overflow normalization is shared by text and integer entry points."
+            },
+            {
+              "id": "J7",
+              "name": "J7",
+              "value": 1.0,
+              "raw": "no",
+              "weight": 5.0,
+              "description": "/workspace/output/REPAIR_REPORT.md claims as a cause of nonconformance something that is not one of the causes listed in the reference answer.",
+              "reasoning": "The five claimed causes correspond to reference causes 1, 2, 4, 5 and 6. The 'arithmetic safeguards' (exponent saturation, which matches reference cause 7, and the all-one low word check) are presented as safeguards and explicitly not as observed nonconformances, and none falls in a rejected claim class.",
+              "negate": true
+            },
+            {
+              "id": "J8",
+              "name": "J8",
+              "value": 1.0,
+              "raw": "no",
+              "weight": 1.0,
+              "description": "/workspace/output/REPAIR_REPORT.md presents two of the causes listed in the reference answer as one single cause.",
+              "reasoning": "Each claimed cause maps to exactly one reference cause; no two reference causes are presented as a single cause.",
+              "negate": true
+            },
+            {
+              "id": "J9",
+              "name": "J9",
+              "value": 1.0,
+              "raw": "no",
+              "weight": 3.0,
+              "description": "/workspace/output/REPAIR_REPORT.md states an interaction between causes, or the absence of one, that the reference answer contradicts.",
+              "reasoning": "The stated interactions (certainty defect hid product-branch defects on long spellings, forcing midpoint and overflow repairs to hold there; certainty defect amplified the suffix-scan cost) are consistent with the reference's cause-5 interaction. The remark that parity and exponent-range detection affect different conditions does not assert non-interaction and is not contradicted.",
+              "negate": true
+            }
+          ],
+          "kind": "llm",
+          "judge": {
+            "model": "anthropic/claude-fable-5-1",
+            "reasoning_effort": "medium",
+            "timeout": 300,
+            "files": [
+              "/workspace/output/REPAIR_REPORT.md"
+            ],
+            "atif_trajectory": null,
+            "reference": "/opt/grader/reference/REFERENCE.md",
+            "mode": "batched"
+          },
+          "judge_output": "{\"J1\":{\"score\":\"yes\",\"reasoning\":\"The report claims five causes (normal midpoint parity, binary32 tie exponent range, overflow at infinity exponent, long-input certainty check, overlapping suffix scans). Each gives a reproducing or affected input with the character type (char) and floating-point type (float or double): e.g. 'char float 16777219', 'char float 52428803125e-5', 'char double 2e308', '1.500000000000000000000000000000, char, double', and '1.000000059604644775390625 ... char, float'. The 'Additional arithmetic safeguards' section is presented as safeguards rather than as claimed causes, so it is not held to this requirement.\"},\"J2\":{\"score\":\"yes\",\"reasoning\":\"For each bit-changing cause the required bit pattern is given: 0x4b800002 (cause 1), 0x49000000 (cause 2), 0x7ff0000000000000 and 0x7f800000 (overflow). The two cost causes correctly give no bit pattern.\"},\"J3\":{\"score\":\"yes\",\"reasoning\":\"For each bit-changing cause the original library's produced bits are given: 0x4b800001, 0x49000001, 0x7ff1ccf385ebc8a0 and 0x7f967699. The report states these were obtained by running the original headers. Cost causes need none.\"},\"J4\":{\"score\":\"yes\",\"reasoning\":\"Each bit-changing cause names tests/rounding_contract.cpp (under /workspace/fast_float/tests/) as its regression test; the cost causes also name it, though not required.\"},\"J5\":{\"score\":\"yes\",\"reasoning\":\"The report marks rounding reproductions as obtained by running the original and repaired headers, marks the cost-path claims as verified by inspection with instruction counts not measured, and marks the exponent-saturation and all-one-low-word safeguards as identified by inspection/mathematical review without execution. Each claim is labelled.\"},\"J6\":{\"score\":\"yes\",\"reasoning\":\"The 'Verification and interactions' paragraph states how causes interact: the certainty defect masked product-rounding-branch defects on long spellings and amplified the suffix-scan defect; midpoint parity and exponent-range detection act on different conditions in the same decision; overflow normalization is shared by text and integer entry points.\"},\"J7\":{\"score\":\"no\",\"reasoning\":\"The five claimed causes correspond to reference causes 1, 2, 4, 5 and 6. The 'arithmetic safeguards' (exponent saturation, which matches reference cause 7, and the all-one low word check) are presented as safeguards and explicitly not as observed nonconformances, and none falls in a rejected claim class.\"},\"J8\":{\"score\":\"no\",\"reasoning\":\"Each claimed cause maps to exactly one reference cause; no two reference causes are presented as a single cause.\"},\"J9\":{\"score\":\"no\",\"reasoning\":\"The stated interactions (certainty defect hid product-branch defects on long spellings, forcing midpoint and overflow repairs to hold there; certainty defect amplified the suffix-scan cost) are consistent with the reference's cause-5 interaction. The remark that parity and exponent-range detection affect different conditions does not assert non-interaction and is not contradicted.\"}}"
+        }
+      },
+      {
+        "name": "test_output",
+        "weight": 116.0,
+        "detail": {
+          "score": 0.8276,
+          "criteria": [
+            {
+              "name": "K1",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K2",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K3",
+              "value": 0.0,
+              "raw": false,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K4",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K5",
+              "value": 1.0,
+              "raw": true,
+              "weight": 1.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K6",
+              "value": 1.0,
+              "raw": true,
+              "weight": 1.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K7",
+              "value": 0.0,
+              "raw": false,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K8",
+              "value": 1.0,
+              "raw": true,
+              "weight": 3.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K9",
+              "value": 1.0,
+              "raw": true,
+              "weight": 3.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K10",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K11",
+              "value": 1.0,
+              "raw": true,
+              "weight": 3.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K12",
+              "value": 0.0,
+              "raw": false,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K13",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K14",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K15",
+              "value": 0.0,
+              "raw": false,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K16",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K17",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K18",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K19",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K20",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K21",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K22",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K23",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K24",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K25",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K26",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "conforms"
+            }
+          ],
+          "kind": "programmatic"
+        }
+      }
+    ]
+  }
+}

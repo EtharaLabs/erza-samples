@@ -1,0 +1,351 @@
+{
+ "admission": {
+  "reasons": [],
+  "refused": false
+ },
+ "compiled": {
+  "K1": 0,
+  "K2": 1,
+  "K3": 0,
+  "K4": 0,
+  "K5": 1,
+  "K6": 1,
+  "K7": 1
+ },
+ "failures": {
+  "K1": "AssertionError: template:candidate-crash #0: state machine safety: node 2 applied (index 2, term 1, \"x\"), another node applied (term 1, \"y\")\nassert not ['template:candidate-crash #0: state machine safety: node 2 applied (index 2, term 1, \"x\"), another node applied (term...didate-crash #5: state machine safety: node 2 applied (index 2, term 1, \"x\"), another node applied (term 1, \"y\")', ...]",
+  "K3": "AssertionError: template:stale-ack-read-async #0: linearizable read: read r1 at node 1 answered index 2, but index 5 was applied before it was issued\nassert not ['template:stale-ack-read-async #0: linearizable read: read r1 at node 1 answered index 2, but index 5 was applied bef...ad-async #5: linearizable read: read r1 at node 3 answered index 2, but index 5 was applied before it was issued', ...]",
+  "K4": "AssertionError: template:stale-ack-read #0: linearizable read: read r1 at node 1 answered index 2, but index 5 was applied before it was issued\nassert not ['template:stale-ack-read #0: linearizable read: read r1 at node 1 answered index 2, but index 5 was applied before it...ack-read #5: linearizable read: read r1 at node 3 answered index 2, but index 5 was applied before it was issued', ...]"
+ },
+ "named": {
+  "count": 8,
+  "files": [
+   "safety_regression_test.go"
+  ],
+  "named": {
+   ".": [
+    "TestRegressionApplyResponseOnlyAcknowledgesItsBatch",
+    "TestRegressionAsyncSingletonPreVote",
+    "TestRegressionCampaignWaitsForQueuedConfiguration",
+    "TestRegressionDuplicateAppendDurability",
+    "TestRegressionDuplicateVoteAcrossCrash",
+    "TestRegressionSnapshotConfigurationAfterQueuedConfChange",
+    "TestRegressionSnapshotWaitsForApply",
+    "TestRegressionSplitLeadersApplyAndRead"
+   ]
+  },
+  "report": true,
+  "too_many": false
+ },
+ "named_outcomes": {
+  "TestRegressionApplyResponseOnlyAcknowledgesItsBatch": {
+   "shipped": "exit:1",
+   "submitted": "0"
+  },
+  "TestRegressionAsyncSingletonPreVote": {
+   "shipped": "exit:1",
+   "submitted": "0"
+  },
+  "TestRegressionCampaignWaitsForQueuedConfiguration": {
+   "shipped": "exit:1",
+   "submitted": "0"
+  },
+  "TestRegressionDuplicateAppendDurability": {
+   "shipped": "exit:1",
+   "submitted": "0"
+  },
+  "TestRegressionDuplicateVoteAcrossCrash": {
+   "shipped": "exit:1",
+   "submitted": "0"
+  },
+  "TestRegressionSnapshotConfigurationAfterQueuedConfChange": {
+   "shipped": "exit:1",
+   "submitted": "0"
+  },
+  "TestRegressionSnapshotWaitsForApply": {
+   "shipped": "exit:1",
+   "submitted": "0"
+  },
+  "TestRegressionSplitLeadersApplyAndRead": {
+   "shipped": "exit:1",
+   "submitted": "0"
+  }
+ },
+ "steps": [
+  {
+   "all_reaped": true,
+   "budget_left": 1345,
+   "cap": 130.0,
+   "cpu": 1.432,
+   "limit": 130.0,
+   "outcome": "0",
+   "ran": true,
+   "step": "harness_build",
+   "wall": 1.438
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1343.568,
+   "cap": 122.0,
+   "cpu": 3.263,
+   "limit": 122.0,
+   "outcome": "exit:1",
+   "ran": true,
+   "step": "CA",
+   "wall": 3.272
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1340.305,
+   "cap": 45.0,
+   "cpu": 1.238,
+   "limit": 45.0,
+   "outcome": "0",
+   "ran": true,
+   "step": "CB",
+   "wall": 1.287
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1339.067,
+   "cap": 28.0,
+   "cpu": 0.674,
+   "limit": 28.0,
+   "outcome": "exit:1",
+   "ran": true,
+   "step": "CRA",
+   "wall": 0.699
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1338.393,
+   "cap": 77.0,
+   "cpu": 1.921,
+   "limit": 77.0,
+   "outcome": "exit:1",
+   "ran": true,
+   "step": "CR",
+   "wall": 1.951
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1336.472,
+   "cap": 144.0,
+   "cpu": 3.743,
+   "limit": 144.0,
+   "outcome": "0",
+   "ran": true,
+   "step": "CS",
+   "wall": 3.753
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1332.729,
+   "cap": 444.0,
+   "cpu": 5.273,
+   "limit": 444.0,
+   "outcome": "0",
+   "ran": true,
+   "step": "ck",
+   "wall": 5.798
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1327.457,
+   "cap": 120.0,
+   "cpu": 2.703,
+   "limit": 120.0,
+   "outcome": "0",
+   "ran": true,
+   "step": "named_build:shipped:.",
+   "wall": 2.687
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1324.753,
+   "cap": 10.0,
+   "cpu": 0.004,
+   "limit": 10.0,
+   "outcome": "exit:1",
+   "ran": true,
+   "step": "named_run:shipped:TestRegressionApplyResponseOnlyAcknowledgesItsBatch",
+   "wall": 0.06
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1324.749,
+   "cap": 10.0,
+   "cpu": 0.004,
+   "limit": 10.0,
+   "outcome": "exit:1",
+   "ran": true,
+   "step": "named_run:shipped:TestRegressionAsyncSingletonPreVote",
+   "wall": 0.057
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1324.745,
+   "cap": 10.0,
+   "cpu": 0.004,
+   "limit": 10.0,
+   "outcome": "exit:1",
+   "ran": true,
+   "step": "named_run:shipped:TestRegressionCampaignWaitsForQueuedConfiguration",
+   "wall": 0.056
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1324.741,
+   "cap": 10.0,
+   "cpu": 0.004,
+   "limit": 10.0,
+   "outcome": "exit:1",
+   "ran": true,
+   "step": "named_run:shipped:TestRegressionDuplicateAppendDurability",
+   "wall": 0.061
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1324.737,
+   "cap": 10.0,
+   "cpu": 0.005,
+   "limit": 10.0,
+   "outcome": "exit:1",
+   "ran": true,
+   "step": "named_run:shipped:TestRegressionDuplicateVoteAcrossCrash",
+   "wall": 0.061
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1324.733,
+   "cap": 10.0,
+   "cpu": 0.004,
+   "limit": 10.0,
+   "outcome": "exit:1",
+   "ran": true,
+   "step": "named_run:shipped:TestRegressionSnapshotConfigurationAfterQueuedConfChange",
+   "wall": 0.051
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1324.729,
+   "cap": 10.0,
+   "cpu": 0.005,
+   "limit": 10.0,
+   "outcome": "exit:1",
+   "ran": true,
+   "step": "named_run:shipped:TestRegressionSnapshotWaitsForApply",
+   "wall": 0.059
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1324.724,
+   "cap": 10.0,
+   "cpu": 0.004,
+   "limit": 10.0,
+   "outcome": "exit:1",
+   "ran": true,
+   "step": "named_run:shipped:TestRegressionSplitLeadersApplyAndRead",
+   "wall": 0.061
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1324.721,
+   "cap": 120.0,
+   "cpu": 2.379,
+   "limit": 120.0,
+   "outcome": "0",
+   "ran": true,
+   "step": "named_build:submitted:.",
+   "wall": 2.369
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1322.342,
+   "cap": 10.0,
+   "cpu": 0.004,
+   "limit": 10.0,
+   "outcome": "0",
+   "ran": true,
+   "step": "named_run:submitted:TestRegressionApplyResponseOnlyAcknowledgesItsBatch",
+   "wall": 0.056
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1322.337,
+   "cap": 10.0,
+   "cpu": 0.004,
+   "limit": 10.0,
+   "outcome": "0",
+   "ran": true,
+   "step": "named_run:submitted:TestRegressionAsyncSingletonPreVote",
+   "wall": 0.06
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1322.333,
+   "cap": 10.0,
+   "cpu": 0.003,
+   "limit": 10.0,
+   "outcome": "0",
+   "ran": true,
+   "step": "named_run:submitted:TestRegressionCampaignWaitsForQueuedConfiguration",
+   "wall": 0.057
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1322.33,
+   "cap": 10.0,
+   "cpu": 0.003,
+   "limit": 10.0,
+   "outcome": "0",
+   "ran": true,
+   "step": "named_run:submitted:TestRegressionDuplicateAppendDurability",
+   "wall": 0.054
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1322.327,
+   "cap": 10.0,
+   "cpu": 0.004,
+   "limit": 10.0,
+   "outcome": "0",
+   "ran": true,
+   "step": "named_run:submitted:TestRegressionDuplicateVoteAcrossCrash",
+   "wall": 0.057
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1322.323,
+   "cap": 10.0,
+   "cpu": 0.003,
+   "limit": 10.0,
+   "outcome": "0",
+   "ran": true,
+   "step": "named_run:submitted:TestRegressionSnapshotConfigurationAfterQueuedConfChange",
+   "wall": 0.051
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1322.319,
+   "cap": 10.0,
+   "cpu": 0.003,
+   "limit": 10.0,
+   "outcome": "0",
+   "ran": true,
+   "step": "named_run:submitted:TestRegressionSnapshotWaitsForApply",
+   "wall": 0.053
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1322.316,
+   "cap": 10.0,
+   "cpu": 0.004,
+   "limit": 10.0,
+   "outcome": "0",
+   "ran": true,
+   "step": "named_run:submitted:TestRegressionSplitLeadersApplyAndRead",
+   "wall": 0.052
+  }
+ ]
+}

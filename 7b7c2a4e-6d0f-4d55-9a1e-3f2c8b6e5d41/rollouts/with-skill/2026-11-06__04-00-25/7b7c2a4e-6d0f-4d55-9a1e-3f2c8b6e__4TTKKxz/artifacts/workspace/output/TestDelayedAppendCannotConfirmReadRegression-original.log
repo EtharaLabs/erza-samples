@@ -1,0 +1,18 @@
+--- FAIL: TestDelayedAppendCannotConfirmReadRegression (0.00s)
+    --- FAIL: TestDelayedAppendCannotConfirmReadRegression/false (0.00s)
+        safety_regression_test.go:99: 
+            	Error Trace:	/workspace/raft/safety_regression_test.go:99
+            	            				/workspace/raft/safety_regression_test.go:397
+            	Error:      	"2" is not greater than or equal to "4"
+            	Test:       	TestDelayedAppendCannotConfirmReadRegression/false
+            	Messages:   	stale read "after-new-leader"
+    --- FAIL: TestDelayedAppendCannotConfirmReadRegression/true (0.00s)
+        safety_regression_test.go:99: 
+            	Error Trace:	/workspace/raft/safety_regression_test.go:99
+            	            				/workspace/raft/safety_regression_test.go:397
+            	Error:      	"2" is not greater than or equal to "4"
+            	Test:       	TestDelayedAppendCannotConfirmReadRegression/true
+            	Messages:   	stale read "after-new-leader"
+FAIL
+exit status 1
+FAIL	go.etcd.io/raft/v3	0.004s

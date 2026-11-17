@@ -1,0 +1,19 @@
+title: Broken Link Fixture
+description: A held-out site with one real broken internal link.
+url: https://broken-fixture.pagecraft.test
+author: Fixture Desk
+language: en
+posts_dir: posts
+pages_dir: pages
+assets_dir: assets
+output_dir: _site
+permalinks: true
+pagination:
+  per_page: 1
+navigation:
+  - label: Home
+    url: /
+  - label: Links
+    url: /links/
+  - label: Retired notes
+    url: /retired-notes.html

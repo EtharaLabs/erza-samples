@@ -1,0 +1,307 @@
+{
+  "reward": {
+    "kind": "group",
+    "score": 0.6788,
+    "aggregation": "weighted-mean",
+    "components": [
+      {
+        "name": "judge",
+        "weight": 21.0,
+        "detail": {
+          "score": 0.3333,
+          "criteria": [
+            {
+              "id": "J1",
+              "name": "J1",
+              "value": 0.0,
+              "raw": "no",
+              "weight": 3.0,
+              "description": "/workspace/output/REPAIR_REPORT.md gives, for every cause of nonconformance it claims, a reproducing input together with the character type and the floating-point type it is parsed as.",
+              "reasoning": "The five main causes (fast path, parity, overflow, endpoint comparison, suffix scanning) each give an input with character type and floating-point type. But the report also claims the exponent-saturation defect ('the old cap could fail when an extremely long significand offsets a large explicit exponent') and a product-uncertainty defect ('restores the uncertainty handling') as corrections of shipped behaviour, and gives no reproducing input, character type, or floating-point type for either; it explicitly says the saturation case was 'not reproduced' and the product case had 'no concrete failing shipped input'."
+            },
+            {
+              "id": "J2",
+              "name": "J2",
+              "value": 0.0,
+              "raw": "no",
+              "weight": 1.0,
+              "description": "/workspace/output/REPAIR_REPORT.md gives, for every cause of nonconformance it claims that changes a result bit pattern, the bit pattern the contract requires for that cause's reproducing input. A claimed cause that changes only the cost of conversion needs no bit pattern.",
+              "reasoning": "Required bit patterns are given for the three bit-changing causes with reproductions (0x430999999999999c, 0x43a4ed76e5237b08, 0x7ff0000000000000), and the two cost-only causes need none. However, the claimed exponent-saturation defect and the claimed product-uncertainty defect would both change result bits, and no required bit pattern is given for either."
+            },
+            {
+              "id": "J3",
+              "name": "J3",
+              "value": 0.0,
+              "raw": "no",
+              "weight": 1.0,
+              "description": "/workspace/output/REPAIR_REPORT.md gives, for every cause of nonconformance it claims that changes a result bit pattern, the bit pattern the unrepaired library produced for that cause's reproducing input. A claimed cause that changes only the cost of conversion needs no bit pattern.",
+              "reasoning": "Produced bit patterns are given for the fast-path, parity, and overflow causes (0x430999999999999d, 0x43a4ed76e5237b07, 0x7ff310d0379e57d0), but none is given for the claimed exponent-saturation defect or the claimed product-uncertainty defect, both of which would change bits."
+            },
+            {
+              "id": "J4",
+              "name": "J4",
+              "value": 0.0,
+              "raw": "no",
+              "weight": 3.0,
+              "description": "/workspace/output/REPAIR_REPORT.md names, for every cause of nonconformance it claims that changes a bit pattern, a test file under /workspace/fast_float/tests/ as that cause's regression test; a cause that only breaks the bound on the cost of conversion needs none.",
+              "reasoning": "tests/decimal_contract.cpp is named for the fast-path, parity, and overflow causes. For the claimed exponent-saturation defect the report states the regression 'does not reproduce this cancellation defect', and no regression test is named for the claimed product-uncertainty defect, so not every bit-changing claimed cause has a named regression test."
+            },
+            {
+              "id": "J5",
+              "name": "J5",
+              "value": 0.0,
+              "raw": "no",
+              "weight": 1.0,
+              "description": "/workspace/output/REPAIR_REPORT.md marks each of its claims as verified by running code or as inferred without running code.",
+              "reasoning": "The per-cause sections do mark claims (verified by running code, verified by inspection, inferred). But the interaction claims in the 'Interactions and validation' section (the fast path hiding the midpoint defect, the endpoint error magnifying the suffix scanning, etc.) carry no verified/inferred marking, so not every claim is marked."
+            },
+            {
+              "id": "J6",
+              "name": "J6",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 3.0,
+              "description": "/workspace/output/REPAIR_REPORT.md states how the causes of nonconformance it claims interact with one another, or states that they do not interact.",
+              "reasoning": "The report has an explicit 'Interactions and validation' section stating how the causes interact: the oversized fast path can hide the midpoint defect, overflow affects both APIs through the shared routine, the endpoint error exposes the exact path and magnifies suffix scanning, etc."
+            },
+            {
+              "id": "J7",
+              "name": "J7",
+              "value": 0.0,
+              "raw": "yes",
+              "weight": 5.0,
+              "description": "/workspace/output/REPAIR_REPORT.md claims as a cause of nonconformance something that is not one of the causes listed in the reference answer.",
+              "reasoning": "The report claims that the product path failed to mark an all-one low product word as unresolved and that its repair 'restores the uncertainty handling', treating this as a shipped defect requiring exact fallback in both APIs. This is not one of the seven reference causes (the only product-step cause is the parity test), so it is a claimed cause outside the reference list.",
+              "negate": true
+            },
+            {
+              "id": "J8",
+              "name": "J8",
+              "value": 1.0,
+              "raw": "no",
+              "weight": 1.0,
+              "description": "/workspace/output/REPAIR_REPORT.md presents two of the causes listed in the reference answer as one single cause.",
+              "reasoning": "Each claimed cause maps to a single reference cause: fast path (3), parity (1), overflow (4), endpoint comparison (5), suffix scanning (6), exponent saturation (7). Cause 2 is not claimed. No two reference causes are merged.",
+              "negate": true
+            },
+            {
+              "id": "J9",
+              "name": "J9",
+              "value": 1.0,
+              "raw": "no",
+              "weight": 3.0,
+              "description": "/workspace/output/REPAIR_REPORT.md states an interaction between causes, or the absence of one, that the reference answer contradicts.",
+              "reasoning": "The stated interaction that the oversized fast path hid the midpoint defect matches reference interaction 1. The other stated interactions (shared rounding routine between APIs, endpoint error exposing the exact path where suffix scanning lives) are consistent with the reference's related facts and are not contradicted. No pair from the reference list is claimed to be non-interacting.",
+              "negate": true
+            }
+          ],
+          "kind": "llm",
+          "judge": {
+            "model": "anthropic/claude-fable-5-1",
+            "reasoning_effort": "medium",
+            "timeout": 300,
+            "files": [
+              "/workspace/output/REPAIR_REPORT.md"
+            ],
+            "atif_trajectory": null,
+            "reference": "/opt/grader/reference/REFERENCE.md",
+            "mode": "batched"
+          },
+          "judge_output": "{\"J1\":{\"score\":\"no\",\"reasoning\":\"The five main causes (fast path, parity, overflow, endpoint comparison, suffix scanning) each give an input with character type and floating-point type. But the report also claims the exponent-saturation defect ('the old cap could fail when an extremely long significand offsets a large explicit exponent') and a product-uncertainty defect ('restores the uncertainty handling') as corrections of shipped behaviour, and gives no reproducing input, character type, or floating-point type for either; it explicitly says the saturation case was 'not reproduced' and the product case had 'no concrete failing shipped input'.\"},\"J2\":{\"score\":\"no\",\"reasoning\":\"Required bit patterns are given for the three bit-changing causes with reproductions (0x430999999999999c, 0x43a4ed76e5237b08, 0x7ff0000000000000), and the two cost-only causes need none. However, the claimed exponent-saturation defect and the claimed product-uncertainty defect would both change result bits, and no required bit pattern is given for either.\"},\"J3\":{\"score\":\"no\",\"reasoning\":\"Produced bit patterns are given for the fast-path, parity, and overflow causes (0x430999999999999d, 0x43a4ed76e5237b07, 0x7ff310d0379e57d0), but none is given for the claimed exponent-saturation defect or the claimed product-uncertainty defect, both of which would change bits.\"},\"J4\":{\"score\":\"no\",\"reasoning\":\"tests/decimal_contract.cpp is named for the fast-path, parity, and overflow causes. For the claimed exponent-saturation defect the report states the regression 'does not reproduce this cancellation defect', and no regression test is named for the claimed product-uncertainty defect, so not every bit-changing claimed cause has a named regression test.\"},\"J5\":{\"score\":\"no\",\"reasoning\":\"The per-cause sections do mark claims (verified by running code, verified by inspection, inferred). But the interaction claims in the 'Interactions and validation' section (the fast path hiding the midpoint defect, the endpoint error magnifying the suffix scanning, etc.) carry no verified/inferred marking, so not every claim is marked.\"},\"J6\":{\"score\":\"yes\",\"reasoning\":\"The report has an explicit 'Interactions and validation' section stating how the causes interact: the oversized fast path can hide the midpoint defect, overflow affects both APIs through the shared routine, the endpoint error exposes the exact path and magnifies suffix scanning, etc.\"},\"J7\":{\"score\":\"yes\",\"reasoning\":\"The report claims that the product path failed to mark an all-one low product word as unresolved and that its repair 'restores the uncertainty handling', treating this as a shipped defect requiring exact fallback in both APIs. This is not one of the seven reference causes (the only product-step cause is the parity test), so it is a claimed cause outside the reference list.\"},\"J8\":{\"score\":\"no\",\"reasoning\":\"Each claimed cause maps to a single reference cause: fast path (3), parity (1), overflow (4), endpoint comparison (5), suffix scanning (6), exponent saturation (7). Cause 2 is not claimed. No two reference causes are merged.\"},\"J9\":{\"score\":\"no\",\"reasoning\":\"The stated interaction that the oversized fast path hid the midpoint defect matches reference interaction 1. The other stated interactions (shared rounding routine between APIs, endpoint error exposing the exact path where suffix scanning lives) are consistent with the reference's related facts and are not contradicted. No pair from the reference list is claimed to be non-interacting.\"}}"
+        }
+      },
+      {
+        "name": "test_output",
+        "weight": 116.0,
+        "detail": {
+          "score": 0.7414,
+          "criteria": [
+            {
+              "name": "K1",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K2",
+              "value": 0.0,
+              "raw": false,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K3",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K4",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K5",
+              "value": 1.0,
+              "raw": true,
+              "weight": 1.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K6",
+              "value": 1.0,
+              "raw": true,
+              "weight": 1.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K7",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K8",
+              "value": 1.0,
+              "raw": true,
+              "weight": 3.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K9",
+              "value": 1.0,
+              "raw": true,
+              "weight": 3.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K10",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K11",
+              "value": 1.0,
+              "raw": true,
+              "weight": 3.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K12",
+              "value": 0.0,
+              "raw": false,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K13",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K14",
+              "value": 0.0,
+              "raw": false,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K15",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K16",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K17",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K18",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K19",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K20",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K21",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K22",
+              "value": 0.0,
+              "raw": false,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K23",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K24",
+              "value": 0.0,
+              "raw": false,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K25",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "K26",
+              "value": 0.0,
+              "raw": false,
+              "weight": 5.0,
+              "description": "conforms"
+            }
+          ],
+          "kind": "programmatic"
+        }
+      }
+    ]
+  }
+}

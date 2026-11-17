@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <p class="eyebrow">A small publishing toolkit</p>
+  <h1>{{ site.title }}</h1>
+  {% if site.description %}<p class="hero-copy">{{ site.description }}</p>{% endif %}
+</section>
+<section aria-labelledby="latest-posts">
+  <div class="section-heading"><h2 id="latest-posts">{% if pagination.current > 1 %}Page {{ pagination.current }}{% else %}Latest writing{% endif %}</h2><span>{{ posts|length }} post{% if posts|length != 1 %}s{% endif %}</span></div>
+  <div class="post-list">
+    {% for post in posts %}{% include "postcard.html" %}{% else %}<p class="empty-state">No published posts yet. Create one with <code>pagecraft new-post "My first post"</code>.</p>{% endfor %}
+  </div>
+</section>
+{% if pagination.total > 1 %}
+<nav class="pagination" aria-label="Pagination">
+  {% if pagination.previous_url %}<a class="button secondary" href="{{ pagination.previous_url }}">← Newer</a>{% else %}<span></span>{% endif %}
+  <span>Page {{ pagination.current }} of {{ pagination.total }}</span>
+  {% if pagination.next_url %}<a class="button secondary" href="{{ pagination.next_url }}">Older →</a>{% else %}<span></span>{% endif %}
+</nav>
+{% endif %}
+{% endblock %}

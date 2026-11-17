@@ -1,0 +1,855 @@
+diff --git a/a/doc.go b/b/doc.go
+index bcec6f8..2b9f307 100644
+--- a/a/doc.go
++++ b/b/doc.go
+@@ -193,9 +193,9 @@ LocalApplyThread and carry CommittedEntries. Messages to the same target must be
+ reliably processed in order. Messages to different targets can be processed in
+ any order.
+ 
+-Each local storage message carries a slice of response messages that must
+-delivered after the corresponding storage write has been completed. These
+-responses may target the same node or may target other nodes.
++Local storage messages may carry messages to deliver after the associated
++storage operation has completed. These messages may target the same node or
++another node.
+ 
+ With Asynchronous Storage Writes enabled, the total state machine handling loop
+ will look something like this:
+@@ -386,10 +386,10 @@ stale log entries:
+ 
+ 	'MsgStorageAppend' is a message from a node to its local append storage
+ 	thread to write entries, hard state, and/or a snapshot to stable storage.
+-	The message will carry one or more responses, one of which will be a
+-	'MsgStorageAppendResp' back to itself. The responses can also contain
+-	'MsgAppResp', 'MsgVoteResp', and 'MsgPreVoteResp' messages. Used with
+-	AsynchronousStorageWrites.
++	Its Responses field may contain messages to deliver after the write completes.
++	These may include a 'MsgVote' request, 'MsgAppResp', 'MsgVoteResp', or
++	'MsgPreVoteResp' message, and a 'MsgStorageAppendResp' when append stability
++	must be acknowledged. Used with AsynchronousStorageWrites.
+ 
+ 	'MsgStorageApply' is a message from a node to its local apply storage
+ 	thread to apply committed entries. The message will carry one response,
+diff --git a/a/interaction_test.go b/b/interaction_test.go
+index 56d1820..23c521a 100644
+--- a/a/interaction_test.go
++++ b/b/interaction_test.go
+@@ -15,11 +15,13 @@
+ package raft_test
+ 
+ import (
++	"math"
+ 	"testing"
+ 
+ 	"github.com/cockroachdb/datadriven"
+ 
+ 	"go.etcd.io/raft/v3"
++	"go.etcd.io/raft/v3/raftpb"
+ 	"go.etcd.io/raft/v3/rafttest"
+ )
+ 
+@@ -36,3 +38,223 @@ func TestInteraction(t *testing.T) {
+ 		})
+ 	})
+ }
++
++func TestAsyncStorageWritesCandidateCrashSafety(t *testing.T) {
++	const initialIndex = uint64(10)
++
++	newEnv := func(preVote bool) *rafttest.InteractionEnv {
++		snapshot := raftpb.EnsureSnapshot(nil)
++		snapshot.Metadata.Index = new(initialIndex)
++		snapshot.Metadata.Term = new(uint64(1))
++		snapshot.Metadata.ConfState = &raftpb.ConfState{Voters: []uint64{1, 2, 3}}
++		cfg := raft.Config{
++			ElectionTick:    10,
++			HeartbeatTick:   1,
++			MaxSizePerMsg:   math.MaxUint64,
++			MaxInflightMsgs: math.MaxInt32,
++			Applied:         initialIndex,
++			PreVote:         preVote,
++		}
++		env := rafttest.NewInteractionEnv(&rafttest.InteractionOpts{
++			OnConfig: func(cfg *raft.Config) {
++				cfg.AsyncStorageWrites = cfg.ID == 1
++			},
++		})
++		if err := env.AddNodes(3, cfg, snapshot); err != nil {
++			t.Fatalf("test setup: add nodes: %v", err)
++		}
++		return env
++	}
++
++	// Check pre-vote independently: its higher-term responses can otherwise
++	// advance the restarted candidate's term and mask the crash schedule below.
++	preVoteEnv := newEnv(true)
++	if err := preVoteEnv.Campaign(0); err != nil {
++		t.Fatalf("test setup: start pre-vote campaign: %v", err)
++	}
++	if err := preVoteEnv.ProcessReady(0); err != nil {
++		t.Fatalf("test setup: process pre-vote Ready: %v", err)
++	}
++	if n := preVoteEnv.DeliverMsgs(raftpb.MsgPreVote, rafttest.Recipient{ID: 2}, rafttest.Recipient{ID: 3}); n != 2 {
++		t.Fatalf("safety invariant: MsgPreVote requests must remain immediately deliverable; delivered %d", n)
++	}
++	if len(preVoteEnv.Nodes[0].AppendWork) == 0 {
++		t.Fatalf("test setup: pre-vote append work was not pending")
++	}
++
++	env := newEnv(false)
++	if env.Nodes[0].Config.PreVote {
++		t.Fatalf("test setup: crash schedule unexpectedly enables PreVote")
++	}
++
++	processReady := func(idx int) {
++		t.Helper()
++		if err := env.ProcessReady(idx); err != nil {
++			t.Fatalf("test setup: process Ready for node %d: %v", idx+1, err)
++		}
++	}
++	processAppend := func() {
++		t.Helper()
++		if err := env.ProcessAppendThread(0); err != nil {
++			t.Fatalf("test setup: process node 1 append: %v", err)
++		}
++	}
++	isLeader := func() bool {
++		return env.Nodes[0].RawNode.BasicStatus().RaftState == raft.StateLeader
++	}
++	voteRecipients := []rafttest.Recipient{{ID: 2}, {ID: 3}}
++	deliverVoteRound := func() int {
++		t.Helper()
++		delivered := env.DeliverMsgs(raftpb.MsgVote, voteRecipients...)
++		for _, idx := range []int{1, 2} {
++			processReady(idx)
++		}
++		env.DeliverMsgs(raftpb.MsgVoteResp, rafttest.Recipient{ID: 1})
++		processReady(0)
++		return delivered
++	}
++
++	if err := env.Campaign(0); err != nil {
++		t.Fatalf("test setup: start campaign: %v", err)
++	}
++	processReady(0)
++	deliverVoteRound()
++
++	// If the vote requests are held back, complete the append work that publishes
++	// them. Otherwise, leave node 1's append thread stalled through the crash.
++	for attempts := 0; attempts < 8 && !isLeader(); attempts++ {
++		if len(env.Nodes[0].AppendWork) == 0 {
++			if !env.Nodes[0].RawNode.HasReady() {
++				break
++			}
++			processReady(0)
++		}
++		if len(env.Nodes[0].AppendWork) == 0 {
++			break
++		}
++		processAppend()
++		env.DeliverMsgs(-1, rafttest.Recipient{ID: 1})
++		processReady(0)
++		deliverVoteRound()
++	}
++	if !isLeader() {
++		t.Fatalf("test setup: node 1 did not become leader after its append work completed")
++	}
++
++	// Keep node 1's local append thread stalled while node 2 receives the no-op
++	// and x. Node 3 receives neither entry before node 1 crashes.
++	processReady(0)
++	if n := env.DeliverMsgs(raftpb.MsgApp, rafttest.Recipient{ID: 2}); n == 0 {
++		t.Fatalf("test setup: leader did not send its initial entry to node 2")
++	}
++	processReady(1)
++	env.DeliverMsgs(raftpb.MsgAppResp, rafttest.Recipient{ID: 1})
++	processReady(0)
++
++	if err := env.Propose(0, []byte("x")); err != nil {
++		t.Fatalf("test setup: propose x: %v", err)
++	}
++	processReady(0)
++	if n := env.DeliverMsgs(raftpb.MsgApp, rafttest.Recipient{ID: 2}); n == 0 {
++		t.Fatalf("test setup: leader did not send x to node 2")
++	}
++	processReady(1)
++	env.DeliverMsgs(raftpb.MsgAppResp, rafttest.Recipient{ID: 1})
++	processReady(0)
++
++	lastIndex, err := env.Nodes[1].Storage.LastIndex()
++	if err != nil {
++		t.Fatalf("test setup: read node 2 last index: %v", err)
++	}
++	entries, err := env.Nodes[1].Storage.Entries(lastIndex, lastIndex+1, math.MaxUint64)
++	if err != nil || len(entries) != 1 || string(entries[0].GetData()) != "x" {
++		t.Fatalf("test setup: node 2 did not persist x at its last index %d: entries=%v err=%v", lastIndex, entries, err)
++	}
++
++	// A crash discards node 1's queued append work, but not its MemoryStorage or
++	// the state machine's already-applied index.
++	node1 := &env.Nodes[0]
++	node1.AppendWork = nil
++	node1.ApplyWork = nil
++	env.Messages = nil
++	cfg := *node1.Config
++	cfg.Applied = node1.History[len(node1.History)-1].GetMetadata().GetIndex()
++	restarted, err := raft.NewRawNode(&cfg)
++	if err != nil {
++		t.Fatalf("test setup: restart node 1: %v", err)
++	}
++	node1.RawNode = restarted
++
++	if err := env.Campaign(0); err != nil {
++		t.Fatalf("test setup: restart campaign: %v", err)
++	}
++	if err := env.Stabilize(); err != nil {
++		t.Fatalf("test setup: stabilize restarted campaign: %v", err)
++	}
++	if !isLeader() {
++		status := env.Nodes[0].RawNode.BasicStatus()
++		t.Fatalf("test setup: restarted node 1 did not become leader: status=%+v trace:\n%s", status, env.Output.Builder.String())
++	}
++	if err := env.Propose(0, []byte("y")); err != nil {
++		t.Fatalf("test setup: propose y: %v", err)
++	}
++	if err := env.Stabilize(); err != nil {
++		t.Fatalf("test setup: stabilize y: %v", err)
++	}
++
++	type appliedEntry struct {
++		index   uint64
++		term    uint64
++		payload string
++	}
++	appliedByNode := make([][]appliedEntry, len(env.Nodes))
++	for nodeIdx, node := range env.Nodes {
++		previous := node.History[0].GetData()
++		for _, state := range node.History[1:] {
++			data := state.GetData()
++			if len(data) < len(previous) {
++				t.Fatalf("test setup: node %d history shrank from %d to %d bytes", nodeIdx+1, len(previous), len(data))
++			}
++			payload := string(data[len(previous):])
++			if payload != "" {
++				appliedByNode[nodeIdx] = append(appliedByNode[nodeIdx], appliedEntry{
++					index:   state.GetMetadata().GetIndex(),
++					term:    state.GetMetadata().GetTerm(),
++					payload: payload,
++				})
++			}
++			previous = data
++		}
++	}
++
++	appliedY := func(nodeIdx int) bool {
++		for _, entry := range appliedByNode[nodeIdx] {
++			if entry.payload == "y" {
++				return true
++			}
++		}
++		return false
++	}
++	if !appliedY(0) || !appliedY(2) {
++		t.Fatalf("test setup: schedule did not apply y on nodes 1 and 3")
++	}
++
++	type entryID struct {
++		index uint64
++		term  uint64
++	}
++	type firstApplication struct {
++		nodeIdx int
++		payload string
++	}
++	applications := make(map[entryID]firstApplication)
++	for nodeIdx, entries := range appliedByNode {
++		for _, entry := range entries {
++			id := entryID{index: entry.index, term: entry.term}
++			if prev, ok := applications[id]; ok && prev.payload != entry.payload {
++				t.Fatalf("safety invariant: replicas %d and %d applied %q and %q at (index, term)=(%d, %d)", prev.nodeIdx+1, nodeIdx+1, prev.payload, entry.payload, entry.index, entry.term)
++			}
++			applications[id] = firstApplication{nodeIdx: nodeIdx, payload: entry.payload}
++		}
++	}
++}
+diff --git a/a/raft.go b/b/raft.go
+index 1cd1fa4..231e19b 100644
+--- a/a/raft.go
++++ b/b/raft.go
+@@ -169,21 +169,23 @@ type Config struct {
+ 	// MsgStorageAppend carries Raft log entries to append, election votes /
+ 	// term changes / updated commit indexes to persist, and snapshots to apply.
+ 	// All writes performed in service of a MsgStorageAppend must be durable
+-	// before response messages are delivered. However, if the MsgStorageAppend
+-	// carries no response messages, durability is not required. The message
+-	// assumes the role of the Entries, HardState, and Snapshot fields in Ready.
++	// before messages in its Responses field are delivered. These messages may
++	// include a MsgVote request as well as responses to Raft messages. Pre-vote
++	// requests (MsgPreVote) remain immediately available in Ready.Messages. If a
++	// MsgStorageAppend carries no responses, durability is not required. The
++	// message assumes the role of the Entries, HardState, and Snapshot fields in
++	// Ready.
+ 	//
+ 	// MsgStorageApply carries committed entries to apply. Writes performed in
+ 	// service of a MsgStorageApply need not be durable before response messages
+ 	// are delivered. The message assumes the role of the CommittedEntries field
+ 	// in Ready.
+ 	//
+-	// Local messages each carry one or more response messages which should be
+-	// delivered after the corresponding storage write has been completed. These
+-	// responses may target the same node or may target other nodes. The storage
+-	// threads are not responsible for understanding the response messages, only
+-	// for delivering them to the correct target after performing the storage
+-	// write.
++	// Local messages may carry messages to be delivered after the corresponding
++	// storage operation has completed. These messages may target the same node or
++	// another node. The storage threads are not responsible for understanding
++	// them, only for delivering each message to its target after performing the
++	// storage operation.
+ 	AsyncStorageWrites bool
+ 
+ 	// MaxSizePerMsg limits the max byte size of each append message. Smaller
+@@ -374,7 +376,7 @@ type raft struct {
+ 	//
+ 	// Messages in this list may target other nodes or may target this node.
+ 	//
+-	// Messages in this list have the type MsgAppResp, MsgVoteResp, or
++	// Messages in this list have the type MsgAppResp, MsgVote, MsgVoteResp, or
+ 	// MsgPreVoteResp. See the comment in raft.send for details.
+ 	msgsAfterAppend []*pb.Message
+ 
+@@ -543,19 +545,20 @@ func (r *raft) send(m *pb.Message) {
+ 			m.Term = new(r.Term)
+ 		}
+ 	}
+-	if m.GetType() == pb.MsgAppResp || m.GetType() == pb.MsgVoteResp || m.GetType() == pb.MsgPreVoteResp {
++	if m.GetType() == pb.MsgAppResp ||
++		m.GetType() == pb.MsgVote ||
++		m.GetType() == pb.MsgVoteResp ||
++		m.GetType() == pb.MsgPreVoteResp {
+ 		// If async storage writes are enabled, messages added to the msgs slice
+ 		// are allowed to be sent out before unstable state (e.g. log entry
+ 		// writes and election votes) have been durably synced to the local
+ 		// disk.
+ 		//
+-		// For most message types, this is not an issue. However, response
+-		// messages that relate to "voting" on either leader election or log
+-		// appends require durability before they can be sent. It would be
+-		// incorrect to publish a vote in an election before that vote has been
+-		// synced to stable storage locally. Similarly, it would be incorrect to
+-		// acknowledge a log append to the leader before that entry has been
+-		// synced to stable storage locally.
++		// MsgVote requests and Msg{Pre,}VoteResp responses, as well as
++		// MsgAppResp append acknowledgements, require durability before they
++		// can be sent. A candidate's term and self-vote must be synced before it
++		// sends MsgVote, and a node must persist its real vote before responding.
++		// An append must be durable before it is acknowledged to the leader.
+ 		//
+ 		// Per the Raft thesis, section 3.8 Persisted state and server restarts:
+ 		//
+@@ -568,9 +571,9 @@ func (r *raft) send(m *pb.Message) {
+ 		// > commitment; this prevents committed entries from being lost or
+ 		// > “uncommitted” when servers restart
+ 		//
+-		// To enforce this durability requirement, these response messages are
+-		// queued to be sent out as soon as the current collection of unstable
+-		// state (the state that the response message was predicated upon) has
++		// To enforce this durability requirement, these messages are queued to be
++		// sent out as soon as the current collection of unstable
++		// state (the state that the message was predicated upon) has
+ 		// been durably persisted. This unstable state may have already been
+ 		// passed to a Ready struct whose persistence is in progress or may be
+ 		// waiting for the next Ready struct to begin being written to Storage.
+@@ -1204,7 +1207,8 @@ func (r *raft) Step(m *pb.Message) error {
+ 
+ 	case pb.MsgStorageApplyResp:
+ 		if len(m.GetEntries()) > 0 {
+-			r.appliedTo(r.raftLog.applying, entsSize(m.GetEntries()))
++			index := m.GetEntries()[len(m.GetEntries())-1].GetIndex()
++			r.appliedTo(index, entsSize(m.GetEntries()))
+ 			r.reduceUncommittedSize(payloadsSize(m.GetEntries()))
+ 		}
+ 
+@@ -1377,10 +1381,6 @@ func stepLeader(r *raft, m *pb.Message) error {
+ 		// an MsgAppResp to acknowledge the appended entries in the last Ready.
+ 
+ 		pr.RecentActive = true
+-		if m.GetFrom() != r.id && r.readOnly.option == ReadOnlySafe && len(r.readOnly.unconfirmedReads) > 0 {
+-			r.readOnly.recvAck(m.GetFrom(), r.readOnly.heartbeatCtx())
+-			r.releaseConfirmedReads()
+-		}
+ 
+ 		if m.GetReject() {
+ 			// RejectHint is the suggested next base entry for appending (i.e.
+@@ -1597,7 +1597,12 @@ func stepLeader(r *raft, m *pb.Message) error {
+ 		}
+ 
+ 		r.readOnly.recvAck(m.GetFrom(), m.GetContext())
+-		r.releaseConfirmedReads()
++		rss := r.readOnly.maybeAdvance(r.trk.Voters)
++		for _, rs := range rss {
++			if resp := r.responseToReadIndexReq(rs.req, rs.index); resp.GetTo() != None {
++				r.send(resp)
++			}
++		}
+ 	case pb.MsgSnapStatus:
+ 		if pr.State != tracker.StateSnapshot {
+ 			return nil
+@@ -2114,16 +2119,6 @@ func (r *raft) reduceUncommittedSize(s entryPayloadSize) {
+ 	}
+ }
+ 
+-// releaseConfirmedReads answers the read-only requests that a quorum has
+-// confirmed.
+-func (r *raft) releaseConfirmedReads() {
+-	for _, rs := range r.readOnly.maybeAdvance(r.trk.Voters) {
+-		if resp := r.responseToReadIndexReq(rs.req, rs.index); resp.GetTo() != None {
+-			r.send(resp)
+-		}
+-	}
+-}
+-
+ func releasePendingReadIndexMessages(r *raft) {
+ 	if len(r.pendingReadIndexMessages) == 0 {
+ 		// Fast path for the common case to avoid a call to storage.LastIndex()
+diff --git a/a/rawnode.go b/b/rawnode.go
+index 9090b31..fe77d81 100644
+--- a/a/rawnode.go
++++ b/b/rawnode.go
+@@ -140,7 +140,6 @@ func (rn *RawNode) readyWithoutAccept() Ready {
+ 	r := rn.raft
+ 
+ 	rd := Ready{
+-		Entries:          r.raftLog.nextUnstableEnts(),
+ 		CommittedEntries: r.raftLog.nextCommittedEnts(rn.applyUnstableEntries()),
+ 		Messages:         r.msgs,
+ 	}
+@@ -149,25 +148,27 @@ func (rn *RawNode) readyWithoutAccept() Ready {
+ 		escapingSoftSt := softSt
+ 		rd.SoftState = &escapingSoftSt
+ 	}
+-	if hardSt := r.hardState(); !isHardStateEqual(hardSt, rn.prevHardSt) {
+-		rd.HardState = hardSt
+-	}
+-	if r.raftLog.hasNextUnstableSnapshot() {
+-		rd.Snapshot = r.raftLog.nextUnstableSnapshot()
++	held := rn.storageAppendHeld()
++	if !held {
++		rd.Entries = r.raftLog.nextUnstableEnts()
++		if hardSt := r.hardState(); !isHardStateEqual(hardSt, rn.prevHardSt) {
++			rd.HardState = hardSt
++		}
++		if r.raftLog.hasNextUnstableSnapshot() {
++			rd.Snapshot = r.raftLog.nextUnstableSnapshot()
++		}
++		rd.MustSync = MustSync(r.hardState(), rn.prevHardSt, len(rd.Entries))
+ 	}
+ 	if len(r.readStates) != 0 {
+ 		rd.ReadStates = r.readStates
+ 	}
+-	rd.MustSync = MustSync(r.hardState(), rn.prevHardSt, len(rd.Entries))
+ 
+ 	if rn.asyncStorageWrites {
+ 		// If async storage writes are enabled, enqueue messages to
+ 		// local storage threads, where applicable.
+-		if needStorageAppendMsg(r, rd) {
++		if !held && needStorageAppendMsg(r, rd) {
+ 			m := newStorageAppendMsg(r, rd)
+ 			rd.Messages = append(rd.Messages, m)
+-		} else {
+-			rd.Messages = appendRemoteMsgs(rd.Messages, r.msgsAfterAppend, r.id)
+ 		}
+ 		if needStorageApplyMsg(rd) {
+ 			m := newStorageApplyMsg(r, rd)
+@@ -178,23 +179,16 @@ func (rn *RawNode) readyWithoutAccept() Ready {
+ 		// msgsAfterAppend to be sent out. The Ready struct contract
+ 		// mandates that Messages cannot be sent until after Entries
+ 		// are written to stable storage.
+-		rd.Messages = appendRemoteMsgs(rd.Messages, r.msgsAfterAppend, r.id)
++		for _, m := range r.msgsAfterAppend {
++			if m.GetTo() != r.id {
++				rd.Messages = append(rd.Messages, m)
++			}
++		}
+ 	}
+ 
+ 	return rd
+ }
+ 
+-// appendRemoteMsgs appends to dst the messages in msgs that are not addressed
+-// to the local node.
+-func appendRemoteMsgs(dst, msgs []*pb.Message, self uint64) []*pb.Message {
+-	for _, m := range msgs {
+-		if m.GetTo() != self {
+-			dst = append(dst, m)
+-		}
+-	}
+-	return dst
+-}
+-
+ // MustSync returns true if the hard state and count of Raft entries indicate
+ // that a synchronous write to persistent storage is required.
+ func MustSync(st, prevst *pb.HardState, entsnum int) bool {
+@@ -208,10 +202,12 @@ func MustSync(st, prevst *pb.HardState, entsnum int) bool {
+ 
+ func needStorageAppendMsg(r *raft, rd Ready) bool {
+ 	// Return true if log entries, hard state, or a snapshot need to be written
+-	// to stable storage.
++	// to stable storage. Also return true if any messages are contingent on all
++	// prior MsgStorageAppend being processed.
+ 	return len(rd.Entries) > 0 ||
+ 		!IsEmptyHardState(rd.HardState) ||
+-		!IsEmptySnap(rd.Snapshot)
++		!IsEmptySnap(rd.Snapshot) ||
++		len(r.msgsAfterAppend) > 0
+ }
+ 
+ func needStorageAppendRespMsg(r *raft, rd Ready) bool {
+@@ -224,9 +220,8 @@ func needStorageAppendRespMsg(r *raft, rd Ready) bool {
+ 
+ // newStorageAppendMsg creates the message that should be sent to the local
+ // append thread to instruct it to append log entries, write an updated hard
+-// state, and apply a snapshot. The message also carries a set of responses
+-// that should be delivered after the rest of the message is processed. Used
+-// with AsyncStorageWrites.
++// state, and apply a snapshot. The message also carries messages to deliver
++// after the rest of the message is processed. Used with AsyncStorageWrites.
+ func newStorageAppendMsg(r *raft, rd Ready) *pb.Message {
+ 	m := &pb.Message{
+ 		Type:    pb.MsgStorageAppend.Enum(),
+@@ -249,9 +244,9 @@ func newStorageAppendMsg(r *raft, rd Ready) *pb.Message {
+ 	if !IsEmptySnap(rd.Snapshot) {
+ 		m.Snapshot = rd.Snapshot
+ 	}
+-	// Attach all messages in msgsAfterAppend as responses to be delivered after
+-	// the message is processed, along with a self-directed MsgStorageAppendResp
+-	// to acknowledge the entry stability.
++	// Attach all messages in msgsAfterAppend to be delivered after the message
++	// is processed, along with a self-directed MsgStorageAppendResp to acknowledge
++	// the entry stability.
+ 	//
+ 	// NB: it is important for performance that MsgStorageAppendResp message be
+ 	// handled after self-directed MsgAppResp messages on the leader (which will
+@@ -433,8 +428,10 @@ func (rn *RawNode) acceptReady(rd Ready) {
+ 		}
+ 	}
+ 	rn.raft.msgs = nil
+-	rn.raft.msgsAfterAppend = nil
+-	rn.raft.raftLog.acceptUnstable()
++	if !rn.storageAppendHeld() {
++		rn.raft.msgsAfterAppend = nil
++		rn.raft.raftLog.acceptUnstable()
++	}
+ 	if len(rd.CommittedEntries) > 0 {
+ 		ents := rd.CommittedEntries
+ 		index := ents[len(ents)-1].GetIndex()
+@@ -444,6 +441,17 @@ func (rn *RawNode) acceptReady(rd Ready) {
+ 	traceReady(rn.raft)
+ }
+ 
++// storageAppendHeld returns whether nothing is to be handed out to the append
++// thread for now. With AsyncStorageWrites, a snapshot waits until the committed
++// entries handed out before it are applied, so that it is applied after them.
++// The entries after the snapshot, a HardState committing it and the messages
++// sent once they are stable wait with it. Without AsyncStorageWrites, the
++// snapshot's Ready comes after the previous Advance, so this never holds.
++func (rn *RawNode) storageAppendHeld() bool {
++	l := rn.raft.raftLog
++	return rn.asyncStorageWrites && l.hasNextUnstableSnapshot() && l.applying > l.applied
++}
++
+ // applyUnstableEntries returns whether entries are allowed to be applied once
+ // they are known to be committed but before they have been written locally to
+ // stable storage.
+@@ -458,16 +466,18 @@ func (rn *RawNode) HasReady() bool {
+ 	if softSt := r.softState(); !softSt.equal(rn.prevSoftSt) {
+ 		return true
+ 	}
+-	if hardSt := r.hardState(); !IsEmptyHardState(hardSt) && !isHardStateEqual(hardSt, rn.prevHardSt) {
+-		return true
+-	}
+-	if r.raftLog.hasNextUnstableSnapshot() {
+-		return true
++	if !rn.storageAppendHeld() {
++		if hardSt := r.hardState(); !IsEmptyHardState(hardSt) && !isHardStateEqual(hardSt, rn.prevHardSt) {
++			return true
++		}
++		if r.raftLog.hasNextUnstableSnapshot() || len(r.msgsAfterAppend) > 0 || r.raftLog.hasNextUnstableEnts() {
++			return true
++		}
+ 	}
+-	if len(r.msgs) > 0 || len(r.msgsAfterAppend) > 0 {
++	if len(r.msgs) > 0 {
+ 		return true
+ 	}
+-	if r.raftLog.hasNextUnstableEnts() || r.raftLog.hasNextCommittedEnts(rn.applyUnstableEntries()) {
++	if r.raftLog.hasNextCommittedEnts(rn.applyUnstableEntries()) {
+ 		return true
+ 	}
+ 	if len(r.readStates) != 0 {
+diff --git a/a/rawnode_test.go b/b/rawnode_test.go
+index 24b92a3..ab9e52e 100644
+--- a/a/rawnode_test.go
++++ b/b/rawnode_test.go
+@@ -964,6 +964,85 @@ func TestRawNodeConsumeReady(t *testing.T) {
+ 	require.Equal(t, m2, rn.raft.msgs[0])
+ }
+ 
++// TestRawNodeAsyncSnapshotDuringApply ensures that, with AsyncStorageWrites, a
++// follower that receives a snapshot while committed entries before it are being
++// applied ends with the snapshot's state, when the append thread applies the
++// snapshot and runs ahead of the apply thread.
++func TestRawNodeAsyncSnapshotDuringApply(t *testing.T) {
++	s := newTestMemoryStorage(withPeers(1, 2, 3))
++	cfg := newTestConfig(2, 10, 1, s)
++	cfg.AsyncStorageWrites = true
++	rawNode, err := NewRawNode(cfg)
++	require.NoError(t, err)
++
++	var state []byte // the state machine: the data of the entries applied
++	var appendWork, applyWork []*pb.Message
++	ready := func() {
++		for _, m := range rawNode.Ready().Messages {
++			switch m.GetTo() {
++			case LocalAppendThread:
++				appendWork = append(appendWork, m)
++			case LocalApplyThread:
++				applyWork = append(applyWork, m)
++			}
++		}
++	}
++	respond := func(m *pb.Message) {
++		for _, r := range m.GetResponses() {
++			if r.GetTo() == 2 {
++				require.NoError(t, rawNode.Step(r))
++			}
++		}
++	}
++	// The append thread processes everything it has before the apply thread
++	// does.
++	stabilize := func() {
++		for rawNode.HasReady() || len(appendWork) > 0 || len(applyWork) > 0 {
++			ready()
++			for len(appendWork) > 0 {
++				m := appendWork[0]
++				appendWork = appendWork[1:]
++				if snap := m.GetSnapshot(); snap != nil {
++					require.NoError(t, s.ApplySnapshot(snap))
++					state = append([]byte(nil), snap.GetData()...)
++				}
++				require.NoError(t, s.Append(m.GetEntries()))
++				respond(m)
++				ready()
++			}
++			if len(applyWork) > 0 {
++				m := applyWork[0]
++				applyWork = applyWork[1:]
++				for _, e := range m.GetEntries() {
++					state = append(state, e.GetData()...)
++				}
++				respond(m)
++			}
++		}
++	}
++
++	// Leader 1 commits "a" at index 1. Its snapshot at index 2, with state
++	// "ab", arrives before the apply thread applies index 1.
++	require.NoError(t, rawNode.Step(&pb.Message{From: new(uint64(1)), To: new(uint64(2)), Term: new(uint64(1)),
++		Type: pb.MsgApp.Enum(), Index: new(uint64(0)), LogTerm: new(uint64(0)), Commit: new(uint64(1)),
++		Entries: []*pb.Entry{{Term: new(uint64(1)), Index: new(uint64(1)), Data: []byte("a")}}}))
++	ready()
++	for len(appendWork) > 0 {
++		m := appendWork[0]
++		appendWork = appendWork[1:]
++		require.NoError(t, s.Append(m.GetEntries()))
++		respond(m)
++		ready()
++	}
++	require.Len(t, applyWork, 1)
++	require.NoError(t, rawNode.Step(&pb.Message{From: new(uint64(1)), To: new(uint64(2)), Term: new(uint64(1)),
++		Type: pb.MsgSnap.Enum(), Snapshot: &pb.Snapshot{Data: []byte("ab"), Metadata: &pb.SnapshotMetadata{
++			Index: new(uint64(2)), Term: new(uint64(1)), ConfState: &pb.ConfState{Voters: []uint64{1, 2, 3}}}}}))
++	stabilize()
++
++	assert.Equal(t, "ab", string(state))
++}
++
+ func BenchmarkRawNode(b *testing.B) {
+ 	cases := []struct {
+ 		name  string
+diff --git a/a/testdata/async_storage_writes.txt b/b/testdata/async_storage_writes.txt
+index 02e59e5..f11e24d 100644
+--- a/a/testdata/async_storage_writes.txt
++++ b/b/testdata/async_storage_writes.txt
+@@ -27,11 +27,22 @@ stabilize
+   Lead:0 State:StateCandidate
+   HardState Term:1 Vote:1 Commit:10
+   Messages:
+-  1->2 MsgVote Term:1 Log:1/10
+-  1->3 MsgVote Term:1 Log:1/10
+   1->AppendThread MsgStorageAppend Term:1 Log:0/0 Commit:10 Vote:1 Responses:[
+     1->1 MsgVoteResp Term:1 Log:0/0
++    1->2 MsgVote Term:1 Log:1/10
++    1->3 MsgVote Term:1 Log:1/10
+   ]
++> 1 processing append thread
++  Processing:
++  1->AppendThread MsgStorageAppend Term:1 Log:0/0 Commit:10 Vote:1
++  Responses:
++  1->1 MsgVoteResp Term:1 Log:0/0
++  1->2 MsgVote Term:1 Log:1/10
++  1->3 MsgVote Term:1 Log:1/10
++> 1 receiving messages
++  1->1 MsgVoteResp Term:1 Log:0/0
++  INFO 1 received MsgVoteResp from 1 at term 1
++  INFO 1 has received 1 MsgVoteResp votes and 0 vote rejections
+ > 2 receiving messages
+   1->2 MsgVote Term:1 Log:1/10
+   INFO 2 [term: 0] received a MsgVote message with higher term from 1 [term: 1]
+@@ -42,11 +53,6 @@ stabilize
+   INFO 3 [term: 0] received a MsgVote message with higher term from 1 [term: 1]
+   INFO 3 became follower at term 1
+   INFO 3 [logterm: 1, index: 10, vote: 0] cast MsgVote for 1 [logterm: 1, index: 10] at term 1
+-> 1 processing append thread
+-  Processing:
+-  1->AppendThread MsgStorageAppend Term:1 Log:0/0 Commit:10 Vote:1
+-  Responses:
+-  1->1 MsgVoteResp Term:1 Log:0/0
+ > 2 handling Ready
+   Ready MustSync=true:
+   HardState Term:1 Vote:1 Commit:10
+@@ -61,10 +67,6 @@ stabilize
+   3->AppendThread MsgStorageAppend Term:1 Log:0/0 Commit:10 Vote:1 Responses:[
+     3->1 MsgVoteResp Term:1 Log:0/0
+   ]
+-> 1 receiving messages
+-  1->1 MsgVoteResp Term:1 Log:0/0
+-  INFO 1 received MsgVoteResp from 1 at term 1
+-  INFO 1 has received 1 MsgVoteResp votes and 0 vote rejections
+ > 2 processing append thread
+   Processing:
+   2->AppendThread MsgStorageAppend Term:1 Log:0/0 Commit:10 Vote:1
+diff --git a/a/testdata/async_storage_writes_append_aba_race.txt b/b/testdata/async_storage_writes_append_aba_race.txt
+index 83964fe..e216dc5 100644
+--- a/a/testdata/async_storage_writes_append_aba_race.txt
++++ b/b/testdata/async_storage_writes_append_aba_race.txt
+@@ -88,15 +88,41 @@ Ready MustSync=true:
+ Lead:0 State:StateCandidate
+ HardState Term:2 Vote:3 Commit:11
+ Messages:
++3->AppendThread MsgStorageAppend Term:2 Log:0/0 Commit:11 Vote:3 Responses:[
++  3->1 MsgVote Term:2 Log:1/11
++  3->2 MsgVote Term:2 Log:1/11
++  3->3 MsgVoteResp Term:2 Log:0/0
++  3->4 MsgVote Term:2 Log:1/11
++  3->5 MsgVote Term:2 Log:1/11
++  3->6 MsgVote Term:2 Log:1/11
++  3->7 MsgVote Term:2 Log:1/11
++]
++
++deliver-msgs 4 5 6
++----
++no messages
++
++process-ready 4 5 6
++----
++> 4 handling Ready
++  <empty Ready>
++> 5 handling Ready
++  <empty Ready>
++> 6 handling Ready
++  <empty Ready>
++
++process-append-thread 3
++----
++Processing:
++3->AppendThread MsgStorageAppend Term:2 Log:0/0 Commit:11 Vote:3
++Responses:
+ 3->1 MsgVote Term:2 Log:1/11
+ 3->2 MsgVote Term:2 Log:1/11
++3->3 MsgVoteResp Term:2 Log:0/0
+ 3->4 MsgVote Term:2 Log:1/11
+ 3->5 MsgVote Term:2 Log:1/11
+ 3->6 MsgVote Term:2 Log:1/11
+ 3->7 MsgVote Term:2 Log:1/11
+-3->AppendThread MsgStorageAppend Term:2 Log:0/0 Commit:11 Vote:3 Responses:[
+-  3->3 MsgVoteResp Term:2 Log:0/0
+-]
+ 
+ deliver-msgs 4 5 6
+ ----
+@@ -140,13 +166,8 @@ process-ready 4 5 6
+     6->3 MsgVoteResp Term:2 Log:0/0
+   ]
+ 
+-process-append-thread 3 4 5 6
++process-append-thread 4 5 6
+ ----
+-> 3 processing append thread
+-  Processing:
+-  3->AppendThread MsgStorageAppend Term:2 Log:0/0 Commit:11 Vote:3
+-  Responses:
+-  3->3 MsgVoteResp Term:2 Log:0/0
+ > 4 processing append thread
+   Processing:
+   4->AppendThread MsgStorageAppend Term:2 Log:0/0 Commit:11 Vote:3
+@@ -252,15 +273,41 @@ Ready MustSync=true:
+ Lead:0 State:StateCandidate
+ HardState Term:3 Vote:4 Commit:11
+ Messages:
++4->AppendThread MsgStorageAppend Term:3 Log:0/0 Commit:11 Vote:4 Responses:[
++  4->1 MsgVote Term:3 Log:1/11
++  4->2 MsgVote Term:3 Log:1/11
++  4->3 MsgVote Term:3 Log:1/11
++  4->4 MsgVoteResp Term:3 Log:0/0
++  4->5 MsgVote Term:3 Log:1/11
++  4->6 MsgVote Term:3 Log:1/11
++  4->7 MsgVote Term:3 Log:1/11
++]
++
++deliver-msgs 5 6 7
++----
++no messages
++
++process-ready 5 6 7
++----
++> 5 handling Ready
++  <empty Ready>
++> 6 handling Ready
++  <empty Ready>
++> 7 handling Ready
++  <empty Ready>
++
++process-append-thread 4
++----
++Processing:
++4->AppendThread MsgStorageAppend Term:3 Log:0/0 Commit:11 Vote:4
++Responses:
+ 4->1 MsgVote Term:3 Log:1/11
+ 4->2 MsgVote Term:3 Log:1/11
+ 4->3 MsgVote Term:3 Log:1/11
++4->4 MsgVoteResp Term:3 Log:0/0
+ 4->5 MsgVote Term:3 Log:1/11
+ 4->6 MsgVote Term:3 Log:1/11
+ 4->7 MsgVote Term:3 Log:1/11
+-4->AppendThread MsgStorageAppend Term:3 Log:0/0 Commit:11 Vote:4 Responses:[
+-  4->4 MsgVoteResp Term:3 Log:0/0
+-]
+ 
+ deliver-msgs 5 6 7
+ ----
+@@ -302,13 +349,8 @@ process-ready 5 6 7
+     7->4 MsgVoteResp Term:3 Log:0/0
+   ]
+ 
+-process-append-thread 4 5 6 7
++process-append-thread 5 6 7
+ ----
+-> 4 processing append thread
+-  Processing:
+-  4->AppendThread MsgStorageAppend Term:3 Log:0/0 Commit:11 Vote:4
+-  Responses:
+-  4->4 MsgVoteResp Term:3 Log:0/0
+ > 5 processing append thread
+   Processing:
+   5->AppendThread MsgStorageAppend Term:3 Log:0/0 Commit:11 Vote:4

@@ -1,0 +1,22 @@
+diff --git a/src/dateutil/rrule.py b/src/dateutil/rrule.py
+index fee3d30..8609181 100644
+--- a/src/dateutil/rrule.py
++++ b/src/dateutil/rrule.py
+@@ -1217,9 +1217,15 @@ class _iterinfo:
+                         i += 1
+                         if self.wdaymask[i] == rr._wkst:
+                             break
+-                if 1 in rr._byweekno:
++                nyearweekday = (self.yearweekday+self.yearlen) % 7
++                nno1wkst = (7-nyearweekday+rr._wkst) % 7
++                if nno1wkst >= 4:
++                    nwyearlen = self.nextyearlen+(nyearweekday-rr._wkst) % 7
++                else:
++                    nwyearlen = self.nextyearlen-nno1wkst
++                nnumweeks = nwyearlen//7+nwyearlen % 7//4
++                if 1 in rr._byweekno or -nnumweeks in rr._byweekno:
+                     # Check week number 1 of next year as well
+-                    # TODO: Check -numweeks for next year.
+                     i = no1wkst+numweeks*7
+                     if no1wkst != firstwkst:
+                         i -= 7-firstwkst

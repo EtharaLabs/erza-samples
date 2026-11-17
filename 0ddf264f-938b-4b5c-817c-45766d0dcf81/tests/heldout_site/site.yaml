@@ -1,0 +1,33 @@
+title: Workbench Field Notes
+description: A held-out notebook of bench repairs, measurements and small hardware projects.
+url: https://field-notes.pagecraft.test
+author: Bench Desk
+language: en
+posts_dir: posts
+pages_dir: pages
+assets_dir: assets
+output_dir: _site
+permalinks: true
+pagination:
+  per_page: 2
+feed:
+  enabled: true
+  filename: feed.xml
+  posts_limit: 20
+sitemap:
+  enabled: true
+  filename: sitemap.xml
+robots:
+  enabled: true
+  filename: robots.txt
+theme:
+  mode: light
+navigation:
+  - label: Home
+    url: /
+  - label: Colophon
+    url: /colophon/
+  - label: Tags
+    url: /tags.html
+  - label: Archive
+    url: /archive.html

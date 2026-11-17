@@ -1,0 +1,10 @@
+--- FAIL: TestAdversarialSchedulesRegression (1.06s)
+    --- FAIL: TestAdversarialSchedulesRegression/true/false/true/72 (0.00s)
+        safety_regression_test.go:257: 
+            	Error Trace:	/workspace/raft/safety_regression_test.go:257
+            	            				/workspace/raft/safety_regression_test.go:504
+            	Error:      	"2" is not greater than "3"
+            	Test:       	TestAdversarialSchedulesRegression/true/false/true/72
+FAIL
+exit status 1
+FAIL	go.etcd.io/raft/v3	1.061s

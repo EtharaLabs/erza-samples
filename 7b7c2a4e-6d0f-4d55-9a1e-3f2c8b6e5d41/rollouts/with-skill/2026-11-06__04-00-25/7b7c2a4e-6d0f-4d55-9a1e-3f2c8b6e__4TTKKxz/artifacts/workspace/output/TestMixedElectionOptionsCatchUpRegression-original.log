@@ -1,0 +1,20 @@
+--- FAIL: TestMixedElectionOptionsCatchUpRegression (0.00s)
+    --- FAIL: TestMixedElectionOptionsCatchUpRegression/false (0.00s)
+        safety_regression_test.go:690: 
+            	Error Trace:	/workspace/raft/safety_regression_test.go:690
+            	Error:      	Not equal: 
+            	            	expected: 0x3
+            	            	actual  : 0x2
+            	Test:       	TestMixedElectionOptionsCatchUpRegression/false
+            	Messages:   	healed peer cannot catch up with mixed election options
+    --- FAIL: TestMixedElectionOptionsCatchUpRegression/true (0.00s)
+        safety_regression_test.go:690: 
+            	Error Trace:	/workspace/raft/safety_regression_test.go:690
+            	Error:      	Not equal: 
+            	            	expected: 0x3
+            	            	actual  : 0x2
+            	Test:       	TestMixedElectionOptionsCatchUpRegression/true
+            	Messages:   	healed peer cannot catch up with mixed election options
+FAIL
+exit status 1
+FAIL	go.etcd.io/raft/v3	0.004s

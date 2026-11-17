@@ -1,0 +1,64 @@
+schema_version = "1.4"
+artifacts = [
+  "/workspace/raft",
+  "/workspace/output",
+]
+
+reward_type = "bounded_continuous"
+
+[task]
+name = "ethara/7b7c2a4e-6d0f-4d55-9a1e-3f2c8b6e5d41"
+version = "0.1.0"
+description = "Bring a copy of the Go Raft library go.etcd.io/raft/v3 into conformance with Raft's safety properties under crashes, message loss and reordering, partitions, and asynchronous storage, and write a repair report."
+authors = [{ name = "shraiy.khaddar", email = "shraiy.khaddar@ethara.ai" }]
+keywords = ["debugging", "go", "raft", "consensus", "distributed-systems", "fault-tolerance"]
+
+[metadata]
+difficulty = "hard"
+category = "software-engineering"
+subcategory = "debugging"
+task_type = ["debugging", "repair"]
+modality = ["source-code", "structured-text"]
+interface = ["terminal", "go"]
+skill_type = ["debugging-heuristic", "specification-reading"]
+tags = ["etcd-raft", "consensus", "linearizability", "durability", "deterministic-simulation", "go"]
+null_floor = 0.0
+platforms = ["linux/amd64", "linux/arm64"]
+
+[verifier]
+timeout_sec = 3600.0
+user = "root"
+network_mode = "allowlist"
+allowed_hosts = ["api.anthropic.com", "api.openai.com", "host.docker.internal"]
+environment_mode = "separate"
+
+[verifier.env]
+ANTHROPIC_API_BASE = "${ANTHROPIC_API_BASE:-https://api.anthropic.com}"
+ANTHROPIC_API_KEY = "${ANTHROPIC_API_KEY:-}"
+OPENAI_API_KEY = "${OPENAI_API_KEY:-}"
+OPENAI_BASE_URL = "${OPENAI_BASE_URL:-https://api.openai.com/v1}"
+
+[verifier.environment]
+network_mode = "allowlist"
+allowed_hosts = ["api.anthropic.com", "api.openai.com", "host.docker.internal"]
+build_timeout_sec = 3600.0
+cpus = 2
+memory_mb = 4096
+storage_mb = 10240
+gpus = 0
+
+[agent]
+timeout_sec = 10800.0
+user = "1000:1000"
+network_mode = "allowlist"
+allowed_hosts = ["api.openai.com", "api.anthropic.com"]
+
+[environment]
+network_mode = "no-network"
+build_timeout_sec = 3600.0
+cpus = 2
+memory_mb = 4096
+storage_mb = 10240
+gpus = 0
+workdir = "/workspace"
+skills_dir = "/harbor/skills"

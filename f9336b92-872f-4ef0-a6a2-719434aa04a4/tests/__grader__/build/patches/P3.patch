@@ -1,0 +1,13 @@
+diff --git a/src/dateutil/rrule.py b/src/dateutil/rrule.py
+index c23d5c3..66374ee 100644
+--- a/src/dateutil/rrule.py
++++ b/src/dateutil/rrule.py
+@@ -825,6 +825,8 @@ class rrule(rrulebase):
+         else:
+             from . import tz
+             exists = tz.datetime_exists
++            if until:
++                until = until.astimezone(self._tzinfo)
+ 
+         ii = _iterinfo(self)
+         ii.rebuild(year, month)

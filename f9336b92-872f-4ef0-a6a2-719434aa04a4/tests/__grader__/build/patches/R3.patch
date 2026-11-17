@@ -1,0 +1,67 @@
+diff --git a/src/dateutil/rrule.py b/src/dateutil/rrule.py
+index 2e1eba8..a61d20e 100644
+--- a/src/dateutil/rrule.py
++++ b/src/dateutil/rrule.py
+@@ -814,6 +814,12 @@ class rrule(rrulebase):
+             year, month, day, _, _, _, weekday, _, _ = \
+                 datetime.date.fromordinal(max(weekstart, 1)).timetuple()
+ 
++        if self._tzinfo is None:
++            exists = None
++        else:
++            from . import tz
++            exists = tz.datetime_exists
++
+         ii = _iterinfo(self)
+         ii.rebuild(year, month)
+ 
+@@ -868,21 +874,31 @@ class rrule(rrulebase):
+ 
+             # Output results
+             if bysetpos and timeset:
++                if max(bysetpos) < 0:
++                    step, limit = -1, -min(bysetpos)
++                elif min(bysetpos) > 0:
++                    step, limit = 1, max(bysetpos)
++                else:
++                    step, limit = 1, None
++                candidates = []
++                for i in dayset[start:end][::step]:
++                    if i is not None:
++                        date = datetime.date.fromordinal(ii.yearordinal + i)
++                        for time in timeset[::step]:
++                            res = datetime.datetime.combine(date, time)
++                            if exists is None or exists(res):
++                                candidates.append(res)
++                        if limit is not None and len(candidates) >= limit:
++                            break
+                 poslist = []
+                 for pos in bysetpos:
+-                    if pos < 0:
+-                        daypos, timepos = divmod(pos, len(timeset))
+-                    else:
+-                        daypos, timepos = divmod(pos-1, len(timeset))
++                    if pos * step > 0:
++                        pos = abs(pos) - 1
+                     try:
+-                        i = [x for x in dayset[start:end]
+-                             if x is not None][daypos]
+-                        time = timeset[timepos]
++                        res = candidates[pos]
+                     except IndexError:
+                         pass
+                     else:
+-                        date = datetime.date.fromordinal(ii.yearordinal+i)
+-                        res = datetime.datetime.combine(date, time)
+                         if res not in poslist:
+                             poslist.append(res)
+                 poslist.sort()
+@@ -904,6 +920,8 @@ class rrule(rrulebase):
+                         date = datetime.date.fromordinal(ii.yearordinal + i)
+                         for time in timeset:
+                             res = datetime.datetime.combine(date, time)
++                            if exists is not None and not exists(res):
++                                continue
+                             if until and res > until:
+                                 self._len = total
+                                 return

@@ -1,0 +1,13 @@
+--- FAIL: TestCompactedSnapshotRetryRegression (0.00s)
+    safety_regression_test.go:75: 
+        	Error Trace:	/workspace/raft/safety_regression_test.go:75
+        	            				/workspace/raft/safety_regression_test.go:145
+        	            				/workspace/raft/safety_regression_test.go:617
+        	Error:      	Not equal: 
+        	            	expected: 0x5
+        	            	actual  : 0x3
+        	Test:       	TestCompactedSnapshotRetryRegression
+        	Messages:   	node 2 applies duplicate, gap, or reversal
+FAIL
+exit status 1
+FAIL	go.etcd.io/raft/v3	0.004s

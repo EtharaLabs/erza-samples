@@ -1,0 +1,95 @@
+[judge]
+judge = "anthropic/claude-fable-5-1"
+prompt_template = "judge/prompt.md"
+files = ["/workspace/output/REPAIR_REPORT.md"]
+reference = "/opt/grader/reference/REFERENCE.md"
+
+[[criterion]]
+id = "J1"
+name = "J1"
+description = "/workspace/output/REPAIR_REPORT.md gives, for every cause listed in the reference answer, a sequence of message deliveries, crashes, or storage-thread steps under which the library as shipped violates a stated property."
+type = "binary"
+weight = 3
+negate = false
+
+[criterion.annotations]
+mode = "judged"
+obligation = "D2"
+dimension = "process"
+requirement = 1
+evidence = ["tests/judge/prompt.md"]
+
+[[criterion]]
+id = "J2"
+name = "J2"
+description = "/workspace/output/REPAIR_REPORT.md names, for every cause listed in the reference answer, the stated property that cause violates."
+type = "binary"
+weight = 1
+negate = false
+
+[criterion.annotations]
+mode = "judged"
+obligation = "D2"
+dimension = "coverage"
+requirement = 2
+evidence = ["tests/judge/prompt.md"]
+
+[[criterion]]
+id = "J3"
+name = "J3"
+description = "/workspace/output/REPAIR_REPORT.md marks each of its claims as verified by running code or as inferred without running code."
+type = "binary"
+weight = 1
+negate = false
+
+[criterion.annotations]
+mode = "judged"
+obligation = "D2"
+dimension = "craft"
+requirement = 3
+evidence = ["tests/judge/prompt.md"]
+
+[[criterion]]
+id = "J4"
+name = "J4"
+description = "/workspace/output/REPAIR_REPORT.md states, for the causes listed in the reference answer, which of them must be repaired together for a stated property to hold."
+type = "binary"
+weight = 1
+negate = false
+
+[criterion.annotations]
+mode = "judged"
+obligation = "D2"
+dimension = "process"
+requirement = 4
+evidence = ["tests/judge/prompt.md"]
+
+[[criterion]]
+id = "J5"
+name = "J5"
+description = "/workspace/output/REPAIR_REPORT.md attributes a violation that the reference answer lists to a cause that the reference answer does not list for that violation."
+type = "binary"
+weight = 3
+negate = true
+
+[criterion.annotations]
+mode = "judged"
+obligation = "D2"
+dimension = "robustness"
+requirement = 5
+evidence = ["tests/judge/prompt.md"]
+
+[[criterion]]
+id = "J6"
+name = "J6"
+description = "/workspace/output/REPAIR_REPORT.md states a dependence or independence between causes that the reference answer contradicts."
+type = "binary"
+weight = 1
+negate = true
+
+[criterion.annotations]
+mode = "judged"
+obligation = "D2"
+dimension = "robustness"
+requirement = 6
+evidence = ["tests/judge/prompt.md"]

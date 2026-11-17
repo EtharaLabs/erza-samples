@@ -1,0 +1,403 @@
+{
+ "admission": {
+  "reasons": [],
+  "refused": false
+ },
+ "compiled": {
+  "K1": 0,
+  "K2": 1,
+  "K3": 1,
+  "K4": 1,
+  "K5": 1,
+  "K6": 1,
+  "K7": 1
+ },
+ "failures": {
+  "K1": "AssertionError: template:candidate-crash #0: state machine safety: node 2 applied (index 2, term 1, \"x\"), another node applied (term 1, \"y\")\nassert not ['template:candidate-crash #0: state machine safety: node 2 applied (index 2, term 1, \"x\"), another node applied (term...didate-crash #5: state machine safety: node 2 applied (index 2, term 1, \"x\"), another node applied (term 1, \"y\")', ...]"
+ },
+ "named": {
+  "count": 10,
+  "files": [
+   "safety_regression_test.go"
+  ],
+  "named": {
+   ".": [
+    "TestAdversarialSchedulesRegression",
+    "TestApplyResponseTracksCompletedBatchRegression",
+    "TestAsyncDuplicateAppendDurabilityRegression",
+    "TestAsyncDuplicateVoteDurabilityRegression",
+    "TestAsyncSingletonPreVoteProgressRegression",
+    "TestCompactedSnapshotRetryRegression",
+    "TestDelayedAppendCannotConfirmReadRegression",
+    "TestMixedElectionOptionsCatchUpRegression",
+    "TestSnapshotWaitsForApplyThreadRegression",
+    "TestSnapshotWaitsForExactApplyCompletionRegression"
+   ]
+  },
+  "report": true,
+  "too_many": false
+ },
+ "named_outcomes": {
+  "TestAdversarialSchedulesRegression": {
+   "shipped": "exit:2",
+   "submitted": "0"
+  },
+  "TestApplyResponseTracksCompletedBatchRegression": {
+   "shipped": "exit:1",
+   "submitted": "0"
+  },
+  "TestAsyncDuplicateAppendDurabilityRegression": {
+   "shipped": "exit:1",
+   "submitted": "0"
+  },
+  "TestAsyncDuplicateVoteDurabilityRegression": {
+   "shipped": "exit:1",
+   "submitted": "0"
+  },
+  "TestAsyncSingletonPreVoteProgressRegression": {
+   "shipped": "exit:1",
+   "submitted": "0"
+  },
+  "TestCompactedSnapshotRetryRegression": {
+   "shipped": "exit:1",
+   "submitted": "0"
+  },
+  "TestDelayedAppendCannotConfirmReadRegression": {
+   "shipped": "exit:1",
+   "submitted": "0"
+  },
+  "TestMixedElectionOptionsCatchUpRegression": {
+   "shipped": "exit:1",
+   "submitted": "0"
+  },
+  "TestSnapshotWaitsForApplyThreadRegression": {
+   "shipped": "exit:1",
+   "submitted": "0"
+  },
+  "TestSnapshotWaitsForExactApplyCompletionRegression": {
+   "shipped": "exit:1",
+   "submitted": "0"
+  }
+ },
+ "steps": [
+  {
+   "all_reaped": true,
+   "budget_left": 1345,
+   "cap": 130.0,
+   "cpu": 1.775,
+   "limit": 130.0,
+   "outcome": "0",
+   "ran": true,
+   "step": "harness_build",
+   "wall": 1.736
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1343.225,
+   "cap": 122.0,
+   "cpu": 3.824,
+   "limit": 122.0,
+   "outcome": "exit:1",
+   "ran": true,
+   "step": "CA",
+   "wall": 3.859
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1339.401,
+   "cap": 45.0,
+   "cpu": 1.26,
+   "limit": 45.0,
+   "outcome": "0",
+   "ran": true,
+   "step": "CB",
+   "wall": 1.274
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1338.14,
+   "cap": 28.0,
+   "cpu": 0.674,
+   "limit": 28.0,
+   "outcome": "0",
+   "ran": true,
+   "step": "CRA",
+   "wall": 0.701
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1337.466,
+   "cap": 77.0,
+   "cpu": 2.026,
+   "limit": 77.0,
+   "outcome": "0",
+   "ran": true,
+   "step": "CR",
+   "wall": 2.036
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1335.44,
+   "cap": 144.0,
+   "cpu": 4.105,
+   "limit": 144.0,
+   "outcome": "0",
+   "ran": true,
+   "step": "CS",
+   "wall": 4.121
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1331.335,
+   "cap": 444.0,
+   "cpu": 6.11,
+   "limit": 444.0,
+   "outcome": "0",
+   "ran": true,
+   "step": "ck",
+   "wall": 6.562
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1325.225,
+   "cap": 120.0,
+   "cpu": 3.0,
+   "limit": 120.0,
+   "outcome": "0",
+   "ran": true,
+   "step": "named_build:shipped:.",
+   "wall": 2.98
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1322.224,
+   "cap": 10.0,
+   "cpu": 1.07,
+   "limit": 10.0,
+   "outcome": "exit:2",
+   "ran": true,
+   "step": "named_run:shipped:TestAdversarialSchedulesRegression",
+   "wall": 1.116
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1321.155,
+   "cap": 10.0,
+   "cpu": 0.005,
+   "limit": 10.0,
+   "outcome": "exit:1",
+   "ran": true,
+   "step": "named_run:shipped:TestApplyResponseTracksCompletedBatchRegression",
+   "wall": 0.054
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1321.15,
+   "cap": 10.0,
+   "cpu": 0.004,
+   "limit": 10.0,
+   "outcome": "exit:1",
+   "ran": true,
+   "step": "named_run:shipped:TestAsyncDuplicateAppendDurabilityRegression",
+   "wall": 0.052
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1321.145,
+   "cap": 10.0,
+   "cpu": 0.005,
+   "limit": 10.0,
+   "outcome": "exit:1",
+   "ran": true,
+   "step": "named_run:shipped:TestAsyncDuplicateVoteDurabilityRegression",
+   "wall": 0.057
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1321.14,
+   "cap": 10.0,
+   "cpu": 0.005,
+   "limit": 10.0,
+   "outcome": "exit:1",
+   "ran": true,
+   "step": "named_run:shipped:TestAsyncSingletonPreVoteProgressRegression",
+   "wall": 0.055
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1321.135,
+   "cap": 10.0,
+   "cpu": 0.004,
+   "limit": 10.0,
+   "outcome": "exit:1",
+   "ran": true,
+   "step": "named_run:shipped:TestCompactedSnapshotRetryRegression",
+   "wall": 0.056
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1321.13,
+   "cap": 10.0,
+   "cpu": 0.006,
+   "limit": 10.0,
+   "outcome": "exit:1",
+   "ran": true,
+   "step": "named_run:shipped:TestDelayedAppendCannotConfirmReadRegression",
+   "wall": 0.051
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1321.125,
+   "cap": 10.0,
+   "cpu": 0.005,
+   "limit": 10.0,
+   "outcome": "exit:1",
+   "ran": true,
+   "step": "named_run:shipped:TestMixedElectionOptionsCatchUpRegression",
+   "wall": 0.054
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1321.119,
+   "cap": 10.0,
+   "cpu": 0.006,
+   "limit": 10.0,
+   "outcome": "exit:1",
+   "ran": true,
+   "step": "named_run:shipped:TestSnapshotWaitsForApplyThreadRegression",
+   "wall": 0.053
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1321.113,
+   "cap": 10.0,
+   "cpu": 0.005,
+   "limit": 10.0,
+   "outcome": "exit:1",
+   "ran": true,
+   "step": "named_run:shipped:TestSnapshotWaitsForExactApplyCompletionRegression",
+   "wall": 0.055
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1321.108,
+   "cap": 120.0,
+   "cpu": 2.89,
+   "limit": 120.0,
+   "outcome": "0",
+   "ran": true,
+   "step": "named_build:submitted:.",
+   "wall": 2.873
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1318.218,
+   "cap": 10.0,
+   "cpu": 1.258,
+   "limit": 10.0,
+   "outcome": "0",
+   "ran": true,
+   "step": "named_run:submitted:TestAdversarialSchedulesRegression",
+   "wall": 1.3
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1316.96,
+   "cap": 10.0,
+   "cpu": 0.005,
+   "limit": 10.0,
+   "outcome": "0",
+   "ran": true,
+   "step": "named_run:submitted:TestApplyResponseTracksCompletedBatchRegression",
+   "wall": 0.057
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1316.955,
+   "cap": 10.0,
+   "cpu": 0.006,
+   "limit": 10.0,
+   "outcome": "0",
+   "ran": true,
+   "step": "named_run:submitted:TestAsyncDuplicateAppendDurabilityRegression",
+   "wall": 0.053
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1316.949,
+   "cap": 10.0,
+   "cpu": 0.006,
+   "limit": 10.0,
+   "outcome": "0",
+   "ran": true,
+   "step": "named_run:submitted:TestAsyncDuplicateVoteDurabilityRegression",
+   "wall": 0.052
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1316.943,
+   "cap": 10.0,
+   "cpu": 0.004,
+   "limit": 10.0,
+   "outcome": "0",
+   "ran": true,
+   "step": "named_run:submitted:TestAsyncSingletonPreVoteProgressRegression",
+   "wall": 0.056
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1316.938,
+   "cap": 10.0,
+   "cpu": 0.006,
+   "limit": 10.0,
+   "outcome": "0",
+   "ran": true,
+   "step": "named_run:submitted:TestCompactedSnapshotRetryRegression",
+   "wall": 0.055
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1316.932,
+   "cap": 10.0,
+   "cpu": 0.007,
+   "limit": 10.0,
+   "outcome": "0",
+   "ran": true,
+   "step": "named_run:submitted:TestDelayedAppendCannotConfirmReadRegression",
+   "wall": 0.052
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1316.925,
+   "cap": 10.0,
+   "cpu": 0.005,
+   "limit": 10.0,
+   "outcome": "0",
+   "ran": true,
+   "step": "named_run:submitted:TestMixedElectionOptionsCatchUpRegression",
+   "wall": 0.052
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1316.92,
+   "cap": 10.0,
+   "cpu": 0.007,
+   "limit": 10.0,
+   "outcome": "0",
+   "ran": true,
+   "step": "named_run:submitted:TestSnapshotWaitsForApplyThreadRegression",
+   "wall": 0.057
+  },
+  {
+   "all_reaped": true,
+   "budget_left": 1316.913,
+   "cap": 10.0,
+   "cpu": 0.006,
+   "limit": 10.0,
+   "outcome": "0",
+   "ran": true,
+   "step": "named_run:submitted:TestSnapshotWaitsForExactApplyCompletionRegression",
+   "wall": 0.057
+  }
+ ]
+}

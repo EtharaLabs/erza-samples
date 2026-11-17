@@ -1,0 +1,168 @@
+{
+  "reward": {
+    "kind": "group",
+    "score": 0.5577,
+    "aggregation": "weighted-mean",
+    "components": [
+      {
+        "name": "judge",
+        "weight": 13.0,
+        "detail": {
+          "score": 0.7692,
+          "criteria": [
+            {
+              "id": "J01",
+              "name": "J01",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 5.0,
+              "description": "At least one cause that /workspace/output/NOTES.md reports is the same defect as a cause in the reference answer.",
+              "reasoning": "The note's two causes \u2014 negative BYSETPOS reversing days but not times in rrule._iter, and UNTIL compared by wall time after conversion to DTSTART's zone in rrule._iter \u2014 are the same defects as reference causes C-P2 and C-P3."
+            },
+            {
+              "id": "J02",
+              "name": "J02",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 1.0,
+              "description": "For every cause in /workspace/output/NOTES.md that matches a reference cause, the note gives the RFC 5545 section and quotes the wording of the clause the reference answer gives for that cause.",
+              "reasoning": "For the BYSETPOS cause the note cites \u00a73.3.10 and quotes the clause that BYSETPOS operates on the set of instances in one interval and the nth-occurrence wording, matching the reference's clause for C-P2. For the UNTIL cause it cites \u00a73.3.10 and quotes the inclusive-bound wording and the UTC requirement, matching the reference's clause for C-P3."
+            },
+            {
+              "id": "J03",
+              "name": "J03",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 1.0,
+              "description": "For every cause in /workspace/output/NOTES.md that matches a reference cause, the note names the function or code path in src/dateutil/rrule.py where the reference answer places that cause.",
+              "reasoning": "Both causes are placed in src/dateutil/rrule.py, rrule._iter: the BYSETPOS candidate collection (reference: candidate walk in rrule._iter) and the UNTIL conversion/comparison (reference: rrule._iter converts UNTIL)."
+            },
+            {
+              "id": "J04",
+              "name": "J04",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 1.0,
+              "description": "For every cause in /workspace/output/NOTES.md that matches a reference cause, the note shows a rule whose instance lists before and after the change exhibit that cause.",
+              "reasoning": "For BYSETPOS the note gives DAILY;BYHOUR=9,18;BYSETPOS=-1;COUNT=3 with before list (Jan 2,3,4 at 09:00) and after list (Jan 1,2,3 at 18:00), showing the earliest-time-of-last-day error. For UNTIL it gives the America/New_York MINUTELY rule with UNTIL=20241103T060000Z, before list (00:30, 01:00) and after list (00:30, 01:00, 01:30), showing the dropped instance."
+            },
+            {
+              "id": "J05",
+              "name": "J05",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 1.0,
+              "description": "For every cause /workspace/output/NOTES.md reports, the note marks its evidence and its result as verified by running something or as inferred without running anything.",
+              "reasoning": "Each cause's evidence is labeled: the BYSETPOS before list is stated as run and the after list as regression-tested; the UNTIL before list is explicitly marked as inferred from code and not run, the after list as exercised by the regression test; the interaction section is marked as inferred, not run."
+            },
+            {
+              "id": "J06",
+              "name": "J06",
+              "value": 0.0,
+              "raw": "no",
+              "weight": 3.0,
+              "description": "/workspace/output/NOTES.md names an input that the reference answer lists as wrong only because two causes act on it, and says what that input returns when only one of the two is repaired.",
+              "reasoning": "The note's interaction section only speculates generically about a rule combining negative BYSETPOS with an aware UNTIL in a repeated hour; it names no concrete input, and none of the reference's two-cause inputs (e.g., MONTHLY;BYDAY=MO,-1FR;BYHOUR=9,17;BYSETPOS=-1 or YEARLY;BYDAY=FR,20MO) appears, nor is any single-repair result for such an input given."
+            },
+            {
+              "id": "J07",
+              "name": "J07",
+              "value": 1.0,
+              "raw": "no",
+              "weight": 1.0,
+              "description": "/workspace/output/NOTES.md makes a causal claim that falls in one of the rejected claim classes of the reference answer.",
+              "reasoning": "The note reports only causes matching C-P2 and C-P3, describes what the code did wrong and what was changed, locates both in rrule.py, and makes no claim about BYMONTHDAY under YEARLY or BYDAY intersection being correct; no rejected claim class R1\u2013R5 is triggered.",
+              "negate": true
+            }
+          ],
+          "kind": "llm",
+          "judge": {
+            "model": "anthropic/claude-fable-5-1",
+            "reasoning_effort": "medium",
+            "timeout": 300,
+            "files": [
+              "/workspace/output/NOTES.md"
+            ],
+            "atif_trajectory": null,
+            "reference": "/opt/grader/reference/REFERENCE.md",
+            "mode": "batched"
+          },
+          "judge_output": "{\"J01\":{\"score\":\"yes\",\"reasoning\":\"The note's two causes \u2014 negative BYSETPOS reversing days but not times in rrule._iter, and UNTIL compared by wall time after conversion to DTSTART's zone in rrule._iter \u2014 are the same defects as reference causes C-P2 and C-P3.\"},\"J02\":{\"score\":\"yes\",\"reasoning\":\"For the BYSETPOS cause the note cites \u00a73.3.10 and quotes the clause that BYSETPOS operates on the set of instances in one interval and the nth-occurrence wording, matching the reference's clause for C-P2. For the UNTIL cause it cites \u00a73.3.10 and quotes the inclusive-bound wording and the UTC requirement, matching the reference's clause for C-P3.\"},\"J03\":{\"score\":\"yes\",\"reasoning\":\"Both causes are placed in src/dateutil/rrule.py, rrule._iter: the BYSETPOS candidate collection (reference: candidate walk in rrule._iter) and the UNTIL conversion/comparison (reference: rrule._iter converts UNTIL).\"},\"J04\":{\"score\":\"yes\",\"reasoning\":\"For BYSETPOS the note gives DAILY;BYHOUR=9,18;BYSETPOS=-1;COUNT=3 with before list (Jan 2,3,4 at 09:00) and after list (Jan 1,2,3 at 18:00), showing the earliest-time-of-last-day error. For UNTIL it gives the America/New_York MINUTELY rule with UNTIL=20241103T060000Z, before list (00:30, 01:00) and after list (00:30, 01:00, 01:30), showing the dropped instance.\"},\"J05\":{\"score\":\"yes\",\"reasoning\":\"Each cause's evidence is labeled: the BYSETPOS before list is stated as run and the after list as regression-tested; the UNTIL before list is explicitly marked as inferred from code and not run, the after list as exercised by the regression test; the interaction section is marked as inferred, not run.\"},\"J06\":{\"score\":\"no\",\"reasoning\":\"The note's interaction section only speculates generically about a rule combining negative BYSETPOS with an aware UNTIL in a repeated hour; it names no concrete input, and none of the reference's two-cause inputs (e.g., MONTHLY;BYDAY=MO,-1FR;BYHOUR=9,17;BYSETPOS=-1 or YEARLY;BYDAY=FR,20MO) appears, nor is any single-repair result for such an input given.\"},\"J07\":{\"score\":\"no\",\"reasoning\":\"The note reports only causes matching C-P2 and C-P3, describes what the code did wrong and what was changed, locates both in rrule.py, and makes no claim about BYMONTHDAY under YEARLY or BYDAY intersection being correct; no rejected claim class R1\u2013R5 is triggered.\"}}"
+        }
+      },
+      {
+        "name": "test_output",
+        "weight": 39.0,
+        "detail": {
+          "score": 0.4872,
+          "criteria": [
+            {
+              "name": "C01",
+              "value": 0.0,
+              "raw": false,
+              "weight": 5.0,
+              "description": "C01: every case of its category matches the reference"
+            },
+            {
+              "name": "C02",
+              "value": 0.0,
+              "raw": false,
+              "weight": 5.0,
+              "description": "C02: every case of its category matches the reference"
+            },
+            {
+              "name": "C03",
+              "value": 0.0,
+              "raw": false,
+              "weight": 5.0,
+              "description": "C03: every case of its category matches the reference"
+            },
+            {
+              "name": "C04",
+              "value": 0.0,
+              "raw": false,
+              "weight": 5.0,
+              "description": "C04: every case of its category matches the reference"
+            },
+            {
+              "name": "C05",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "C05: every case of its category matches the reference"
+            },
+            {
+              "name": "C06",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "C06: the check passes"
+            },
+            {
+              "name": "C07",
+              "value": 1.0,
+              "raw": true,
+              "weight": 3.0,
+              "description": "C07: the check passes"
+            },
+            {
+              "name": "C08",
+              "value": 1.0,
+              "raw": true,
+              "weight": 3.0,
+              "description": "C08: the prohibited change is absent"
+            },
+            {
+              "name": "C09",
+              "value": 1.0,
+              "raw": true,
+              "weight": 3.0,
+              "description": "C09: the prohibited change is absent"
+            }
+          ],
+          "kind": "programmatic"
+        }
+      }
+    ]
+  }
+}

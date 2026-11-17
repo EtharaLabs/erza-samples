@@ -1,0 +1,19 @@
+diff --git a/src/dateutil/rrule.py b/src/dateutil/rrule.py
+index 20e08c7..2e1eba8 100644
+--- a/src/dateutil/rrule.py
++++ b/src/dateutil/rrule.py
+@@ -1223,11 +1223,10 @@ class _iterinfo:
+                         lno1wkst = (7-lyearweekday+rr._wkst) % 7
+                         lyearlen = 365+calendar.isleap(year-1)
+                         if lno1wkst >= 4:
+-                            lno1wkst = 0
+-                            lnumweeks = 52+(lyearlen +
+-                                            (lyearweekday-rr._wkst) % 7) % 7//4
++                            lwyearlen = lyearlen+(lyearweekday-rr._wkst) % 7
+                         else:
+-                            lnumweeks = 52+(self.yearlen-no1wkst) % 7//4
++                            lwyearlen = lyearlen-lno1wkst
++                        lnumweeks = lwyearlen//7+lwyearlen % 7//4
+                     else:
+                         lnumweeks = -1
+                     if lnumweeks in rr._byweekno:

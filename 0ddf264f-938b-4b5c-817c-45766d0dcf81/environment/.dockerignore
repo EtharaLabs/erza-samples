@@ -1,0 +1,11 @@
+*
+!Dockerfile
+!requirements.lock
+!repo/
+!repo/**
+repo/**/__pycache__
+repo/**/*.pyc
+repo/**/.pytest_cache
+repo/**/_site
+repo/**/.pagecraft
+repo/**/*.egg-info

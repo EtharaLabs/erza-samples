@@ -1,0 +1,16 @@
+diff --git a/src/dateutil/rrule.py b/src/dateutil/rrule.py
+index bea764f..20e08c7 100644
+--- a/src/dateutil/rrule.py
++++ b/src/dateutil/rrule.py
+@@ -809,6 +809,11 @@ class rrule(rrulebase):
+         byminute = self._byminute
+         bysecond = self._bysecond
+ 
++        if freq == WEEKLY and bysetpos:
++            weekstart = self._dtstart.toordinal() - (weekday - wkst) % 7
++            year, month, day, _, _, _, weekday, _, _ = \
++                datetime.date.fromordinal(max(weekstart, 1)).timetuple()
++
+         ii = _iterinfo(self)
+         ii.rebuild(year, month)
+ 

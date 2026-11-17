@@ -1,0 +1,161 @@
+[judge]
+judge = "anthropic/claude-fable-5-1"
+prompt_template = "judge/prompt.md"
+files = ["/workspace/output/REPAIR_REPORT.md"]
+reference = "/opt/grader/reference/REFERENCE.md"
+
+[[criterion]]
+id = "J1"
+name = "J1"
+description = "/workspace/output/REPAIR_REPORT.md gives, for every cause of nonconformance it claims, a reproducing input together with the character type and the floating-point type it is parsed as."
+type = "binary"
+weight = 3
+negate = false
+
+[criterion.annotations]
+mode = "judged"
+type = "VALUE"
+obligation = "D2"
+dimension = "process"
+requirement = 1
+evidence = ["tests/judge/prompt.md"]
+residue = "which input belongs to which claimed cause is a pairing in free text; no path, key, number, or regular expression over the report decides it"
+
+[[criterion]]
+id = "J2"
+name = "J2"
+description = "/workspace/output/REPAIR_REPORT.md gives, for every cause of nonconformance it claims that changes a result bit pattern, the bit pattern the contract requires for that cause's reproducing input. A claimed cause that changes only the cost of conversion needs no bit pattern."
+type = "binary"
+weight = 1
+negate = false
+
+[criterion.annotations]
+mode = "judged"
+type = "VALUE"
+obligation = "D2"
+dimension = "process"
+requirement = 2
+evidence = ["tests/judge/prompt.md"]
+residue = "which stated bit pattern belongs to which claimed cause is a pairing in free text"
+
+[[criterion]]
+id = "J3"
+name = "J3"
+description = "/workspace/output/REPAIR_REPORT.md gives, for every cause of nonconformance it claims that changes a result bit pattern, the bit pattern the unrepaired library produced for that cause's reproducing input. A claimed cause that changes only the cost of conversion needs no bit pattern."
+type = "binary"
+weight = 1
+negate = false
+
+[criterion.annotations]
+mode = "judged"
+type = "VALUE"
+obligation = "D2"
+dimension = "process"
+requirement = 3
+evidence = ["tests/judge/prompt.md"]
+residue = "which stated bit pattern belongs to which claimed cause is a pairing in free text"
+
+[[criterion]]
+id = "J4"
+name = "J4"
+description = "/workspace/output/REPAIR_REPORT.md names, for every cause of nonconformance it claims that changes a bit pattern, a test file under /workspace/fast_float/tests/ as that cause's regression test; a cause that only breaks the bound on the cost of conversion needs none."
+type = "binary"
+weight = 3
+negate = false
+
+[criterion.annotations]
+mode = "judged"
+type = "VALUE"
+obligation = "D2"
+dimension = "coverage"
+requirement = 4
+evidence = ["tests/judge/prompt.md"]
+residue = "which named test belongs to which claimed cause is a pairing in free text"
+
+[[criterion]]
+id = "J5"
+name = "J5"
+description = "/workspace/output/REPAIR_REPORT.md marks each of its claims as verified by running code or as inferred without running code."
+type = "binary"
+weight = 1
+negate = false
+
+[criterion.annotations]
+mode = "judged"
+type = "VALUE"
+obligation = "D2"
+dimension = "craft"
+requirement = 5
+evidence = ["tests/judge/prompt.md"]
+residue = "what counts as one claim in free text, and whether each carries a verified or inferred marking, is semantic"
+
+[[criterion]]
+id = "J6"
+name = "J6"
+description = "/workspace/output/REPAIR_REPORT.md states how the causes of nonconformance it claims interact with one another, or states that they do not interact."
+type = "binary"
+weight = 3
+negate = false
+
+[criterion.annotations]
+mode = "judged"
+type = "VALUE"
+obligation = "D2"
+dimension = "process"
+requirement = 6
+evidence = ["tests/judge/prompt.md"]
+residue = "whether a passage states an interaction between causes is semantic"
+
+[[criterion]]
+id = "J7"
+name = "J7"
+description = "/workspace/output/REPAIR_REPORT.md claims as a cause of nonconformance something that is not one of the causes listed in the reference answer."
+type = "binary"
+weight = 5
+negate = true
+
+[criterion.annotations]
+mode = "judged"
+type = "ABSENCE"
+obligation = "D2"
+dimension = "robustness"
+requirement = 7
+evidence = ["tests/judge/prompt.md"]
+residue = "whether a claimed cause is one of the reference causes, possibly described at a finer grain or in other words, is settled only against the reference answer"
+
+[[criterion]]
+id = "J8"
+name = "J8"
+description = "/workspace/output/REPAIR_REPORT.md presents two of the causes listed in the reference answer as one single cause."
+type = "binary"
+weight = 1
+negate = true
+
+[criterion.annotations]
+mode = "judged"
+type = "ABSENCE"
+obligation = "D2"
+dimension = "coverage"
+requirement = 8
+evidence = ["tests/judge/prompt.md"]
+residue = "whether one claimed cause covers two reference causes is settled only against the reference answer"
+
+[[criterion]]
+id = "J9"
+name = "J9"
+description = "/workspace/output/REPAIR_REPORT.md states an interaction between causes, or the absence of one, that the reference answer contradicts."
+type = "binary"
+weight = 3
+negate = true
+
+[criterion.annotations]
+mode = "judged"
+type = "ABSENCE"
+obligation = "D2"
+dimension = "robustness"
+requirement = 9
+evidence = ["tests/judge/prompt.md"]
+residue = "whether a stated interaction agrees with or contradicts the reference interactions is semantic"
+
+[scoring]
+aggregation = "weighted-mean"

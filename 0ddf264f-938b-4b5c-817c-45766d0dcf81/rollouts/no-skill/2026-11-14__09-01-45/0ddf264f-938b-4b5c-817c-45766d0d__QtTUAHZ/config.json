@@ -1,0 +1,23 @@
+{
+    "task": {
+        "path": "tasks/0ddf264f-938b-4b5c-817c-45766d0dcf81"
+    },
+    "trial_name": "0ddf264f-938b-4b5c-817c-45766d0d__QtTUAHZ",
+    "trials_dir": "jobs/2026-11-14__09-01-45",
+    "agent": {
+        "name": "codex",
+        "model_name": "openai/gpt-6.1-sol",
+        "extra_allowed_hosts": [
+            "host.docker.internal"
+        ],
+        "kwargs": {
+            "reasoning_effort": "high",
+            "reasoning_summary": "detailed"
+        },
+        "env": {
+            "OPENAI_BASE_URL": "http://host.docker.internal:8766/v1",
+            "OPENAI_API_KEY": "WRmm****kJQ"
+        }
+    },
+    "job_id": "d9c1f1c1-aa8d-4782-8ea7-ac1105152092"
+}

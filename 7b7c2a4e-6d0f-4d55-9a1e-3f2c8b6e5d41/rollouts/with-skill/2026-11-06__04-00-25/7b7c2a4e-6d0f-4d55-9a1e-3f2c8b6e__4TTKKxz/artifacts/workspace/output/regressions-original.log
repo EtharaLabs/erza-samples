@@ -1,0 +1,134 @@
+--- FAIL: TestAsyncDuplicateVoteDurabilityRegression (0.00s)
+    safety_regression_test.go:68: 
+        	Error Trace:	/workspace/raft/safety_regression_test.go:68
+        	            				/workspace/raft/safety_regression_test.go:172
+        	            				/workspace/raft/safety_regression_test.go:300
+        	Error:      	Should be true
+        	Test:       	TestAsyncDuplicateVoteDurabilityRegression
+        	Messages:   	two leaders in term 2: 1 and 3
+--- FAIL: TestAsyncDuplicateAppendDurabilityRegression (0.00s)
+    safety_regression_test.go:78: 
+        	Error Trace:	/workspace/raft/safety_regression_test.go:78
+        	            				/workspace/raft/safety_regression_test.go:145
+        	            				/workspace/raft/safety_regression_test.go:522
+        	            				/workspace/raft/safety_regression_test.go:339
+        	Error:      	Not equal: 
+        	            	expected: "2/0/6c6f7374"
+        	            	actual  : "3/0/"
+        	            	
+        	            	Diff:
+        	            	--- Expected
+        	            	+++ Actual
+        	            	@@ -1 +1 @@
+        	            	-2/0/6c6f7374
+        	            	+3/0/
+        	Test:       	TestAsyncDuplicateAppendDurabilityRegression
+        	Messages:   	conflicting application at 3
+--- FAIL: TestDelayedAppendCannotConfirmReadRegression (0.00s)
+    --- FAIL: TestDelayedAppendCannotConfirmReadRegression/false (0.00s)
+        safety_regression_test.go:99: 
+            	Error Trace:	/workspace/raft/safety_regression_test.go:99
+            	            				/workspace/raft/safety_regression_test.go:387
+            	Error:      	"2" is not greater than or equal to "4"
+            	Test:       	TestDelayedAppendCannotConfirmReadRegression/false
+            	Messages:   	stale read "after-new-leader"
+    --- FAIL: TestDelayedAppendCannotConfirmReadRegression/true (0.00s)
+        safety_regression_test.go:99: 
+            	Error Trace:	/workspace/raft/safety_regression_test.go:99
+            	            				/workspace/raft/safety_regression_test.go:387
+            	Error:      	"2" is not greater than or equal to "4"
+            	Test:       	TestDelayedAppendCannotConfirmReadRegression/true
+            	Messages:   	stale read "after-new-leader"
+--- FAIL: TestApplyResponseTracksCompletedBatchRegression (0.00s)
+    safety_regression_test.go:414: 
+        	Error Trace:	/workspace/raft/safety_regression_test.go:414
+        	Error:      	Not equal: 
+        	            	expected: 0x2
+        	            	actual  : 0x3
+        	Test:       	TestApplyResponseTracksCompletedBatchRegression
+        	Messages:   	first completion acknowledged the second pending batch
+--- FAIL: TestSnapshotWaitsForApplyThreadRegression (0.00s)
+    safety_regression_test.go:75: 
+        	Error Trace:	/workspace/raft/safety_regression_test.go:75
+        	            				/workspace/raft/safety_regression_test.go:145
+        	            				/workspace/raft/safety_regression_test.go:421
+        	Error:      	Not equal: 
+        	            	expected: 0x6
+        	            	actual  : 0x2
+        	Test:       	TestSnapshotWaitsForApplyThreadRegression
+        	Messages:   	node 1 applies duplicate, gap, or reversal
+--- FAIL: TestSnapshotWaitsForExactApplyCompletionRegression (0.00s)
+    safety_regression_test.go:75: 
+        	Error Trace:	/workspace/raft/safety_regression_test.go:75
+        	            				/workspace/raft/safety_regression_test.go:145
+        	            				/workspace/raft/safety_regression_test.go:439
+        	Error:      	Not equal: 
+        	            	expected: 0x6
+        	            	actual  : 0x3
+        	Test:       	TestSnapshotWaitsForExactApplyCompletionRegression
+        	Messages:   	node 1 applies duplicate, gap, or reversal
+--- FAIL: TestAdversarialSchedulesRegression (0.83s)
+    --- FAIL: TestAdversarialSchedulesRegression/false/false/false/60 (0.00s)
+        safety_regression_test.go:257: 
+            	Error Trace:	/workspace/raft/safety_regression_test.go:257
+            	            				/workspace/raft/safety_regression_test.go:504
+            	Error:      	"2" is not greater than "4"
+            	Test:       	TestAdversarialSchedulesRegression/false/false/false/60
+    --- FAIL: TestAdversarialSchedulesRegression/true/false/true/4 (0.00s)
+        safety_regression_test.go:257: 
+            	Error Trace:	/workspace/raft/safety_regression_test.go:257
+            	            				/workspace/raft/safety_regression_test.go:504
+            	Error:      	"2" is not greater than "3"
+            	Test:       	TestAdversarialSchedulesRegression/true/false/true/4
+    --- FAIL: TestAdversarialSchedulesRegression/true/false/true/41 (0.00s)
+        safety_regression_test.go:257: 
+            	Error Trace:	/workspace/raft/safety_regression_test.go:257
+            	            				/workspace/raft/safety_regression_test.go:504
+            	Error:      	"2" is not greater than "3"
+            	Test:       	TestAdversarialSchedulesRegression/true/false/true/41
+    --- FAIL: TestAdversarialSchedulesRegression/true/false/true/57 (0.00s)
+        safety_regression_test.go:257: 
+            	Error Trace:	/workspace/raft/safety_regression_test.go:257
+            	            				/workspace/raft/safety_regression_test.go:504
+            	Error:      	"2" is not greater than "3"
+            	Test:       	TestAdversarialSchedulesRegression/true/false/true/57
+    --- FAIL: TestAdversarialSchedulesRegression/true/false/true/84 (0.00s)
+        safety_regression_test.go:257: 
+            	Error Trace:	/workspace/raft/safety_regression_test.go:257
+            	            				/workspace/raft/safety_regression_test.go:504
+            	Error:      	"2" is not greater than "3"
+            	Test:       	TestAdversarialSchedulesRegression/true/false/true/84
+    --- FAIL: TestAdversarialSchedulesRegression/true/true/false/38 (0.00s)
+panic: tocommit(3) is out of range [lastIndex(2)]. Was the raft log corrupted, truncated, or lost? [recovered, repanicked]
+
+goroutine 650 [running]:
+testing.tRunner.func1.2({0x35a660, 0x589c9fb5c6b0})
+	/usr/local/go/src/testing/testing.go:1974 +0x1a0
+testing.tRunner.func1()
+	/usr/local/go/src/testing/testing.go:1977 +0x318
+panic({0x35a660?, 0x589c9fb5c6b0?})
+	/usr/local/go/src/runtime/panic.go:860 +0x12c
+log.(*Logger).Panicf(0x589c9fa3d830, {0x3f94b3?, 0x20?}, {0x589c9fa20120?, 0x1?, 0x2?})
+	/usr/local/go/src/log/log.go:319 +0x88
+go.etcd.io/raft/v3.(*DefaultLogger).Panicf(0x0?, {0x3f94b3?, 0xd?}, {0x589c9fa20120?, 0x589c9fa7db78?, 0x26bf4c?})
+	/workspace/raft/logger.go:137 +0x28
+go.etcd.io/raft/v3.(*raftLog).commitTo(0x589c9fdf0dc0, 0x3)
+	/workspace/raft/log.go:326 +0xe4
+go.etcd.io/raft/v3.(*raft).handleHeartbeat(0x589c9fd33b00, 0x589c9fbe81a0)
+	/workspace/raft/raft.go:1826 +0x44
+go.etcd.io/raft/v3.stepFollower(0x589c9fd33b00, 0x589c9fbe81a0)
+	/workspace/raft/raft.go:1727 +0x2dc
+go.etcd.io/raft/v3.(*raft).Step(0x589c9fd33b00, 0x589c9fbe81a0)
+	/workspace/raft/raft.go:1264 +0xee0
+go.etcd.io/raft/v3.(*RawNode).Step(0x405b40?, 0x589c9fbdb110?)
+	/workspace/raft/rawnode.go:124 +0x15c
+go.etcd.io/raft/v3.(*safetySim).deliver(0x589c9fd31e00, 0x589c9fbdb110)
+	/workspace/raft/safety_regression_test.go:168 +0x7c
+go.etcd.io/raft/v3.TestAdversarialSchedulesRegression.func1(0x589c9fb10248?)
+	/workspace/raft/safety_regression_test.go:498 +0x508
+testing.tRunner(0x589c9fb10248, 0x589c9fcb4210)
+	/usr/local/go/src/testing/testing.go:2036 +0xc4
+created by testing.(*T).Run in goroutine 16
+	/usr/local/go/src/testing/testing.go:2101 +0x3a8
+exit status 2
+FAIL	go.etcd.io/raft/v3	0.833s

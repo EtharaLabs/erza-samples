@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="listing-page"><p class="eyebrow">Explore</p><h1>Tags</h1><p class="article-dek">A loose index of the ideas, tools, and topics collected here.</p>
+  <div class="term-grid">{% for tag in tags %}<a class="term-card" href="{{ tag.url }}"><strong>#{{ tag.name }}</strong><span>{{ tag.count }} post{% if tag.count != 1 %}s{% endif %}</span></a>{% else %}<p class="empty-state">No tags have been added yet.</p>{% endfor %}</div>
+</section>
+{% endblock %}

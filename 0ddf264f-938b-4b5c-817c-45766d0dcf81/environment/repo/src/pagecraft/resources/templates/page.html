@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block content %}
+<article class="article page">
+  <header class="article-header"><p class="eyebrow">Page</p><h1>{{ page.title }}</h1>{% if page.description %}<p class="article-dek">{{ page.description }}</p>{% endif %}</header>
+  <div class="prose">{{ page.html }}</div>
+</article>
+{% endblock %}

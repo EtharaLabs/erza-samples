@@ -1,0 +1,113 @@
+[judge]
+judge = "anthropic/claude-fable-5-1"
+prompt_template = "judge/prompt.md"
+files = ["/workspace/output/NOTES.md"]
+reference = "/opt/grader/reference/REFERENCE.md"
+
+[[criterion]]
+id = "J01"
+name = "J01"
+description = "At least one cause that /workspace/output/NOTES.md reports is the same defect as a cause in the reference answer."
+type = "binary"
+weight = 5
+negate = false
+
+[criterion.annotations]
+mode = "judged"
+type = "VALUE"
+obligation = "L3"
+dimension = "outcome"
+evidence = "notes_file"
+
+[[criterion]]
+id = "J02"
+name = "J02"
+description = "For every cause in /workspace/output/NOTES.md that matches a reference cause, the note gives the RFC 5545 section and quotes the wording of the clause the reference answer gives for that cause."
+type = "binary"
+weight = 1
+negate = false
+
+[criterion.annotations]
+mode = "judged"
+type = "VALUE"
+obligation = "L3"
+dimension = "coverage"
+evidence = "notes_file"
+
+[[criterion]]
+id = "J03"
+name = "J03"
+description = "For every cause in /workspace/output/NOTES.md that matches a reference cause, the note names the function or code path in src/dateutil/rrule.py where the reference answer places that cause."
+type = "binary"
+weight = 1
+negate = false
+
+[criterion.annotations]
+mode = "judged"
+type = "VALUE"
+obligation = "L3"
+dimension = "coverage"
+evidence = "notes_file"
+
+[[criterion]]
+id = "J04"
+name = "J04"
+description = "For every cause in /workspace/output/NOTES.md that matches a reference cause, the note shows a rule whose instance lists before and after the change exhibit that cause."
+type = "binary"
+weight = 1
+negate = false
+
+[criterion.annotations]
+mode = "judged"
+type = "VALUE"
+obligation = "L3"
+dimension = "process"
+evidence = "notes_file"
+
+[[criterion]]
+id = "J05"
+name = "J05"
+description = "For every cause /workspace/output/NOTES.md reports, the note marks its evidence and its result as verified by running something or as inferred without running anything."
+type = "binary"
+weight = 1
+negate = false
+
+[criterion.annotations]
+mode = "judged"
+type = "VALUE"
+obligation = "L3"
+dimension = "process"
+evidence = "notes_file"
+
+[[criterion]]
+id = "J06"
+name = "J06"
+description = "/workspace/output/NOTES.md names an input that the reference answer lists as wrong only because two causes act on it, and says what that input returns when only one of the two is repaired."
+type = "binary"
+weight = 3
+negate = false
+
+[criterion.annotations]
+mode = "judged"
+type = "VALUE"
+obligation = "L3"
+dimension = "coverage"
+evidence = "notes_file"
+
+[[criterion]]
+id = "J07"
+name = "J07"
+description = "/workspace/output/NOTES.md makes a causal claim that falls in one of the rejected claim classes of the reference answer."
+type = "binary"
+weight = 1
+negate = true
+
+[criterion.annotations]
+mode = "judged"
+type = "ABSENCE"
+obligation = "L3"
+dimension = "constraints"
+evidence = "notes_file"
+
+[scoring]
+aggregation = "weighted-mean"

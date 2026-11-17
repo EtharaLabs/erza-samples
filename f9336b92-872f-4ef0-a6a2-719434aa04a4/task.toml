@@ -1,0 +1,65 @@
+schema_version = "1.4"
+artifacts = [
+  { source = "/workspace/dateutil", exclude = [".pytest_cache", "__pycache__", ".hypothesis"] },
+  "/workspace/output",
+]
+
+reward_type = "bounded_continuous"
+
+[task]
+name = "ethara/f9336b92-872f-4ef0-a6a2-719434aa04a4"
+version = "1.0.0"
+description = "Make python-dateutil's recurrence expansion conform to RFC 5545 sections 3.3.5, 3.3.10, and 3.8.5.3 through its public rrule API, with a regression test per repaired cause and a root-cause note."
+authors = [{ name = "shraiy.khaddar", email = "shraiy.khaddar@ethara.ai" }]
+keywords = ["debugging", "python", "rfc5545", "icalendar", "recurrence", "specification-conformance", "rewardkit"]
+
+[metadata]
+difficulty = "hard"
+category = "software-engineering"
+subcategory = "debugging"
+task_type = ["debugging", "repair"]
+modality = ["source-code", "structured-text"]
+interface = ["terminal", "python"]
+skill_type = ["debugging-heuristic", "specification-reading"]
+tags = ["rrule", "rfc-5545", "recurrence", "time-zones", "python-dateutil"]
+null_floor = 0.0
+discrimination_weight = 0.5
+platforms = ["linux/amd64", "linux/arm64"]
+
+[verifier]
+timeout_sec = 3600.0
+user = "root"
+network_mode = "allowlist"
+allowed_hosts = ["api.anthropic.com", "api.openai.com", "host.docker.internal"]
+environment_mode = "separate"
+
+[verifier.env]
+ANTHROPIC_API_BASE = "${ANTHROPIC_API_BASE:-https://api.anthropic.com}"
+ANTHROPIC_API_KEY = "${ANTHROPIC_API_KEY:-}"
+OPENAI_API_KEY = "${OPENAI_API_KEY:-}"
+OPENAI_BASE_URL = "${OPENAI_BASE_URL:-https://api.openai.com/v1}"
+
+[verifier.environment]
+network_mode = "allowlist"
+allowed_hosts = ["api.anthropic.com", "api.openai.com", "host.docker.internal"]
+build_timeout_sec = 3600.0
+cpus = 2
+memory_mb = 4096
+storage_mb = 10240
+gpus = 0
+
+[agent]
+timeout_sec = 10800.0
+user = "1000:1000"
+network_mode = "allowlist"
+allowed_hosts = ["api.openai.com", "api.anthropic.com"]
+
+[environment]
+network_mode = "no-network"
+build_timeout_sec = 3600.0
+cpus = 2
+memory_mb = 4096
+storage_mb = 10240
+gpus = 0
+workdir = "/workspace"
+skills_dir = "/harbor/skills"

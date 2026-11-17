@@ -1,0 +1,379 @@
+[judge]
+judge = "anthropic/claude-fable-5-1"
+mode = "individual"
+files = ["/app/output/note.md"]
+
+[[criterion]]
+id = "j01_d1_location"
+name = "j01_d1_location"
+description = "The note at /app/output/note.md locates the incremental build manifest defect at module and function level, in the manifest loading code of the builder module."
+type = "binary"
+weight = 3
+negate = false
+[criterion.annotations]
+mode = "judged"
+type = "VALUE"
+obligation = "D2"
+dimension = "coverage"
+evidence = "written_note"
+residue = "naming a code location in prose is free text; no deterministic check can match every valid phrasing of a module and function reference"
+
+[[criterion]]
+id = "j02_d1_symptom"
+name = "j02_d1_symptom"
+description = "The note at /app/output/note.md states an observable symptom of the manifest defect: an incremental rebuild skips no unchanged output, or leaves the output of removed content, such as a tag page, in place."
+type = "binary"
+weight = 3
+negate = false
+[criterion.annotations]
+mode = "judged"
+type = "VALUE"
+obligation = "D2"
+dimension = "outcome"
+evidence = "written_note"
+residue = "the stated symptom is prose; the compiled incremental checks grade the repaired behaviour, not the account of it"
+
+[[criterion]]
+id = "j03_d1_propagation"
+name = "j03_d1_propagation"
+description = "The note at /app/output/note.md states that the empty previous manifest carries into the incremental build, so the skip step skips no unchanged output and the stale-output step removes no orphaned output."
+type = "binary"
+weight = 3
+negate = false
+[criterion.annotations]
+mode = "judged"
+type = "EFFECT"
+obligation = "D2"
+dimension = "outcome"
+evidence = "written_note"
+residue = "propagation to two downstream steps is a causal claim in prose; the compiled checks grade the repaired behaviour, not the account of it"
+
+[[criterion]]
+id = "j04_d1_fix_and_why"
+name = "j04_d1_fix_and_why"
+description = "The note at /app/output/note.md states a fix in the manifest load or save code that makes the loader accept the manifest the saver writes, and states why that repairs the stage producing the empty previous manifest rather than the downstream skip or stale-output steps; any correct fix at that stage passes."
+type = "binary"
+weight = 3
+negate = false
+[criterion.annotations]
+mode = "judged"
+type = "INVARIANT"
+obligation = "D2"
+dimension = "craft"
+evidence = "written_note"
+residue = "a fix justification is an argument in prose, and several correct fixes exist at the generating stage; the compiled checks grade the repaired behaviour, not the reasoning"
+
+[[criterion]]
+id = "j05_d1_evidence"
+name = "j05_d1_evidence"
+description = "The note at /app/output/note.md gives the concrete evidence used to localize the manifest defect, such as the key the saver writes differing from the key the loader reads, a skipped count of zero, or a stale output left after a rebuild."
+type = "binary"
+weight = 1
+negate = false
+[criterion.annotations]
+mode = "judged"
+type = "VALUE"
+obligation = "D2"
+dimension = "process"
+evidence = "written_note"
+residue = "process is graded only through the account the note gives, which only a judge can read"
+
+[[criterion]]
+id = "j06_d1_verification"
+name = "j06_d1_verification"
+description = "The note at /app/output/note.md names a command run or a test whose result changed that verified the manifest fix."
+type = "binary"
+weight = 1
+negate = false
+[criterion.annotations]
+mode = "judged"
+type = "EFFECT"
+obligation = "D2"
+dimension = "process"
+evidence = "written_note"
+residue = "the verification account is prose; the compiled checks re-verify behaviour independently of what the note claims"
+
+[[criterion]]
+id = "j07_d2_location"
+name = "j07_d2_location"
+description = "The note at /app/output/note.md locates the feed lastBuildDate defect at module and function level, in the RSS feed builder of the rss module."
+type = "binary"
+weight = 3
+negate = false
+[criterion.annotations]
+mode = "judged"
+type = "VALUE"
+obligation = "D2"
+dimension = "coverage"
+evidence = "written_note"
+residue = "naming a code location in prose is free text; no deterministic check can match every valid phrasing of a module and function reference"
+
+[[criterion]]
+id = "j08_d2_symptom"
+name = "j08_d2_symptom"
+description = "The note at /app/output/note.md states that the channel lastBuildDate of the generated feed is older than the updated date of a revised post."
+type = "binary"
+weight = 3
+negate = false
+[criterion.annotations]
+mode = "judged"
+type = "VALUE"
+obligation = "D2"
+dimension = "outcome"
+evidence = "written_note"
+residue = "the stated symptom and its cause are prose; the compiled feed checks grade the value, not the explanation"
+
+[[criterion]]
+id = "j09_d2_propagation"
+name = "j09_d2_propagation"
+description = "The note at /app/output/note.md states how the stale channel lastBuildDate carries past the feed builder into the generated feed."
+type = "binary"
+weight = 3
+negate = false
+[criterion.annotations]
+mode = "judged"
+type = "EFFECT"
+obligation = "D2"
+dimension = "outcome"
+evidence = "written_note"
+residue = "the downstream effect on feed consumers is a causal claim in prose that no deterministic check can decide"
+
+[[criterion]]
+id = "j10_d2_fix_and_why"
+name = "j10_d2_fix_and_why"
+description = "The note at /app/output/note.md states a fix in the feed builder that makes the channel lastBuildDate account for the updated date of each post, and states why that repairs the stage computing the wrong channel date rather than item dates or the generated feed file; any correct fix at that stage passes."
+type = "binary"
+weight = 3
+negate = false
+[criterion.annotations]
+mode = "judged"
+type = "INVARIANT"
+obligation = "D2"
+dimension = "craft"
+evidence = "written_note"
+residue = "a fix justification is an argument in prose, and several correct fixes exist at the generating stage; the compiled feed checks grade the value, not the reasoning"
+
+[[criterion]]
+id = "j11_d2_evidence"
+name = "j11_d2_evidence"
+description = "The note at /app/output/note.md gives the concrete evidence used to localize the feed defect, such as the channel lastBuildDate value compared with the updated date of a revised post or with that post item date."
+type = "binary"
+weight = 1
+negate = false
+[criterion.annotations]
+mode = "judged"
+type = "VALUE"
+obligation = "D2"
+dimension = "process"
+evidence = "written_note"
+residue = "process is graded only through the account the note gives, which only a judge can read"
+
+[[criterion]]
+id = "j12_d2_verification"
+name = "j12_d2_verification"
+description = "The note at /app/output/note.md names a command run or a test whose result changed that verified the feed fix."
+type = "binary"
+weight = 1
+negate = false
+[criterion.annotations]
+mode = "judged"
+type = "EFFECT"
+obligation = "D2"
+dimension = "process"
+evidence = "written_note"
+residue = "the verification account is prose; the compiled checks re-verify behaviour independently of what the note claims"
+
+[[criterion]]
+id = "j13_d3_location"
+name = "j13_d3_location"
+description = "The note at /app/output/note.md locates the check link resolution defect at module and function level, in the internal link validation code of the builder module that the check command uses."
+type = "binary"
+weight = 3
+negate = false
+[criterion.annotations]
+mode = "judged"
+type = "VALUE"
+obligation = "D2"
+dimension = "coverage"
+evidence = "written_note"
+residue = "naming a code location in prose is free text; no deterministic check can match every valid phrasing of a module and function reference"
+
+[[criterion]]
+id = "j14_d3_symptom"
+name = "j14_d3_symptom"
+description = "The note at /app/output/note.md states that the check command reports a directory-style route, such as a pagination page route, as a broken internal link although the build writes that page as an index.html file."
+type = "binary"
+weight = 3
+negate = false
+[criterion.annotations]
+mode = "judged"
+type = "VALUE"
+obligation = "D2"
+dimension = "outcome"
+evidence = "written_note"
+residue = "the described symptom is prose; the compiled checks grade exit status, not the account"
+
+[[criterion]]
+id = "j15_d3_propagation"
+name = "j15_d3_propagation"
+description = "The note at /app/output/note.md states that the false broken-link report carries past the validator into the result of the check command, so check fails on a correctly built site, for example where check gates a publish or CI step."
+type = "binary"
+weight = 3
+negate = false
+[criterion.annotations]
+mode = "judged"
+type = "EFFECT"
+obligation = "D2"
+dimension = "outcome"
+evidence = "written_note"
+residue = "the effect of a validator error on the check result and its users is a causal claim in prose"
+
+[[criterion]]
+id = "j16_d3_fix_and_why"
+name = "j16_d3_fix_and_why"
+description = "The note at /app/output/note.md states a fix in the link validation code that resolves a directory-style route to the index.html file the build writes, and states why that repairs the validator producing the false report rather than the pages, the links or the report; any correct fix at that stage passes."
+type = "binary"
+weight = 3
+negate = false
+[criterion.annotations]
+mode = "judged"
+type = "INVARIANT"
+obligation = "D2"
+dimension = "craft"
+evidence = "written_note"
+residue = "a fix justification is an argument in prose, and several correct fixes exist at the generating stage; the compiled checks grade exit status, not the reasoning"
+
+[[criterion]]
+id = "j17_d3_evidence"
+name = "j17_d3_evidence"
+description = "The note at /app/output/note.md gives the concrete evidence used to localize the check defect, such as the reported route existing on disk as an index.html file, or the validator and the output writer mapping that route to different paths."
+type = "binary"
+weight = 1
+negate = false
+[criterion.annotations]
+mode = "judged"
+type = "VALUE"
+obligation = "D2"
+dimension = "process"
+evidence = "written_note"
+residue = "process is graded only through the account the note gives, which only a judge can read"
+
+[[criterion]]
+id = "j18_d3_verification"
+name = "j18_d3_verification"
+description = "The note at /app/output/note.md names a command run or a test whose result changed that verified the check fix."
+type = "binary"
+weight = 1
+negate = false
+[criterion.annotations]
+mode = "judged"
+type = "EFFECT"
+obligation = "D2"
+dimension = "process"
+evidence = "written_note"
+residue = "the verification account is prose; the compiled checks re-verify behaviour independently of what the note claims"
+
+[[criterion]]
+id = "j19_extra_defects_evidenced"
+name = "j19_extra_defects_evidenced"
+description = "The note at /app/output/note.md claims no defect beyond the manifest loader, feed lastBuildDate, check link resolution and sitemap lastmod defects. A claimed defect is a statement that the shipped Pagecraft code produces a wrong output or behaviour. After those four fixes the shipped build chain and its full test suite produce correct output, so any further claimed defect fails this item, whatever file, function, output or command it names. A residual risk, limitation or untested case stated as such, without asserting wrong behaviour, is not a claimed defect. A defect the note describes in more than one section or at more than one call site counts as one of those four. One statement is true and is not a claimed defect for this item: that `pagecraft build --full` still uses the existing build manifest (it skips unchanged assets and removes stale outputs recorded there) although its help text says it ignores the manifest."
+type = "binary"
+weight = 3
+negate = false
+[criterion.annotations]
+mode = "judged"
+type = "INVARIANT"
+obligation = "D2"
+dimension = "robustness"
+evidence = "written_note"
+residue = "whether a sentence asserts wrong behaviour in the shipped code or only states a risk is a reading judgement over open-ended prose"
+
+[[criterion]]
+id = "j20_d4_location"
+name = "j20_d4_location"
+description = "The note at /app/output/note.md locates the sitemap lastmod defect at module and function level, in the sitemap entries that the page renderer of the builder module assembles."
+type = "binary"
+weight = 3
+negate = false
+[criterion.annotations]
+mode = "judged"
+type = "VALUE"
+obligation = "D2"
+dimension = "coverage"
+evidence = "written_note"
+residue = "naming a code location in prose is free text; no deterministic check can match every valid phrasing of a module and function reference"
+
+[[criterion]]
+id = "j21_d4_symptom"
+name = "j21_d4_symptom"
+description = "The note at /app/output/note.md states that the lastmod of the derived sitemap entries, such as the home page, the index pages or the tag and category pages, is older than the updated date of a revised post."
+type = "binary"
+weight = 3
+negate = false
+[criterion.annotations]
+mode = "judged"
+type = "VALUE"
+obligation = "D2"
+dimension = "outcome"
+evidence = "written_note"
+residue = "the stated symptom and its cause are prose; the compiled sitemap checks grade the value, not the explanation"
+
+[[criterion]]
+id = "j22_d4_propagation"
+name = "j22_d4_propagation"
+description = "The note at /app/output/note.md states how the stale lastmod carries past the sitemap entries into the generated sitemap."
+type = "binary"
+weight = 3
+negate = false
+[criterion.annotations]
+mode = "judged"
+type = "EFFECT"
+obligation = "D2"
+dimension = "outcome"
+evidence = "written_note"
+residue = "the downstream effect on sitemap consumers is a causal claim in prose that no deterministic check can decide"
+
+[[criterion]]
+id = "j23_d4_fix_and_why"
+name = "j23_d4_fix_and_why"
+description = "The note at /app/output/note.md states a fix in the sitemap entry code of the builder that makes the shared lastmod of the derived entries account for the updated date of each post, and states why that repairs the stage computing the wrong date rather than the post entries, the sitemap writer or the generated sitemap file; any correct fix at that stage passes."
+type = "binary"
+weight = 3
+negate = false
+[criterion.annotations]
+mode = "judged"
+type = "INVARIANT"
+obligation = "D2"
+dimension = "craft"
+evidence = "written_note"
+residue = "a fix justification is an argument in prose, and several correct fixes exist at the generating stage; the compiled sitemap checks grade the value, not the reasoning"
+
+[[criterion]]
+id = "j24_d4_evidence"
+name = "j24_d4_evidence"
+description = "The note at /app/output/note.md gives the concrete evidence used to localize the sitemap defect, such as the lastmod of a derived entry compared with the lastmod of a revised post entry or with that post updated date."
+type = "binary"
+weight = 1
+negate = false
+[criterion.annotations]
+mode = "judged"
+type = "VALUE"
+obligation = "D2"
+dimension = "process"
+evidence = "written_note"
+residue = "process is graded only through the account the note gives, which only a judge can read"
+
+[[criterion]]
+id = "j25_d4_verification"
+name = "j25_d4_verification"
+description = "The note at /app/output/note.md names a command run or a test whose result changed that verified the sitemap fix."
+type = "binary"
+weight = 1
+negate = false
+[criterion.annotations]
+mode = "judged"
+type = "EFFECT"
+obligation = "D2"
+dimension = "process"
+evidence = "written_note"
+residue = "the verification account is prose; the compiled checks re-verify behaviour independently of what the note claims"

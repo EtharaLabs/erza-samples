@@ -1,0 +1,6 @@
+# Fallback scoring when the LLM judge returns no result: the same root aggregate as
+# tests/reward.toml, with the compiled group scored as usual and the judged group at 0.
+[[reward]]
+name = "reward"
+aggregation = "weighted-mean"
+weights = { test_output = 62, judge = 59 }

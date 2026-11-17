@@ -1,0 +1,36 @@
+diff --git a/src/dateutil/rrule.py b/src/dateutil/rrule.py
+index 2795159..2c80256 100644
+--- a/src/dateutil/rrule.py
++++ b/src/dateutil/rrule.py
+@@ -1222,12 +1222,8 @@ class _iterinfo:
+                         if self.wdaymask[i] == rr._wkst:
+                             break
+                 nyearweekday = (self.yearweekday+self.yearlen) % 7
+-                nno1wkst = (7-nyearweekday+rr._wkst) % 7
+-                if nno1wkst >= 4:
+-                    nwyearlen = self.nextyearlen+(nyearweekday-rr._wkst) % 7
+-                else:
+-                    nwyearlen = self.nextyearlen-nno1wkst
+-                nnumweeks = nwyearlen//7+nwyearlen % 7//4
++                nnumweeks = 52+(nyearweekday == 3 or
++                                nyearweekday == 2 and self.nextyearlen == 366)
+                 if 1 in rr._byweekno or -nnumweeks in rr._byweekno:
+                     # Check week number 1 of next year as well
+                     i = no1wkst+numweeks*7
+@@ -1250,13 +1246,9 @@ class _iterinfo:
+                     # this year.
+                     if -1 not in rr._byweekno:
+                         lyearweekday = datetime.date(year-1, 1, 1).weekday()
+-                        lno1wkst = (7-lyearweekday+rr._wkst) % 7
+-                        lyearlen = 365+calendar.isleap(year-1)
+-                        if lno1wkst >= 4:
+-                            lwyearlen = lyearlen+(lyearweekday-rr._wkst) % 7
+-                        else:
+-                            lwyearlen = lyearlen-lno1wkst
+-                        lnumweeks = lwyearlen//7+lwyearlen % 7//4
++                        lnumweeks = 52+(lyearweekday == 3 or
++                                        lyearweekday == 2 and
++                                        calendar.isleap(year-1))
+                     else:
+                         lnumweeks = -1
+                     if lnumweeks in rr._byweekno:

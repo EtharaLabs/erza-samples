@@ -1,0 +1,378 @@
+{
+  "reward": {
+    "kind": "group",
+    "score": 0.9752,
+    "aggregation": "weighted-mean",
+    "components": [
+      {
+        "name": "judge",
+        "weight": 59.0,
+        "detail": {
+          "score": 0.9492,
+          "criteria": [
+            {
+              "id": "j01_d1_location",
+              "name": "j01_d1_location",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 3.0,
+              "description": "The note at /app/output/note.md locates the incremental build manifest defect at module and function level, in the manifest loading code of the builder module.",
+              "reasoning": "Section 1 of the note explicitly locates the incremental build manifest defect at module and function level: `builder.py`, `Builder._load_manifest()` (line 104) and `_save_manifest()` (line 117), explaining that the loader checked `version` while the writer stored `schema`. This places the defect in the manifest loading code of the builder module as required."
+            },
+            {
+              "id": "j02_d1_symptom",
+              "name": "j02_d1_symptom",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 3.0,
+              "description": "The note at /app/output/note.md states an observable symptom of the manifest defect: an incremental rebuild skips no unchanged output, or leaves the output of removed content, such as a tag page, in place.",
+              "reasoning": "The note explicitly states observable symptoms of the manifest defect in Section 1 ('Saved manifests were rejected when loaded'): 'No-op builds rewrote everything, and stale cleanup had no previous paths to remove. Obsolete articles, taxonomies, pagination and assets could remain...' It also provides baseline evidence that 'Two consecutive example CLI builds each generated all 24 files and skipped 0' and that 'unchanged builds skipped nothing, deleted content remained.' These satisfy the criterion of describing that an incremental rebuild skips nothing and leaves removed content (including taxonomies/tag pages) in place."
+            },
+            {
+              "id": "j03_d1_propagation",
+              "name": "j03_d1_propagation",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 3.0,
+              "description": "The note at /app/output/note.md states that the empty previous manifest carries into the incremental build, so the skip step skips no unchanged output and the stale-output step removes no orphaned output.",
+              "reasoning": "Section 1 of the note states that because the reader checked `version` while the writer stored `schema`, every subsequent builder discarded the saved hashes (i.e., proceeded with an effectively empty previous manifest), that 'No-op builds rewrote everything' (skip step skipped nothing, corroborated by the baseline evidence of consecutive builds generating all 24 files and skipping 0), and that 'stale cleanup had no previous paths to remove' so obsolete articles, taxonomies, pagination and assets could remain. This captures both downstream consequences required by the criterion."
+            },
+            {
+              "id": "j04_d1_fix_and_why",
+              "name": "j04_d1_fix_and_why",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 3.0,
+              "description": "The note at /app/output/note.md states a fix in the manifest load or save code that makes the loader accept the manifest the saver writes, and states why that repairs the stage producing the empty previous manifest rather than the downstream skip or stale-output steps; any correct fix at that stage passes.",
+              "reasoning": "Section 1 of the note identifies the manifest load/save mismatch (saver writes `schema: 2`, loader checks `version`), states the fix (loader reads the same `schema` field the writer emits), and explains why that repairs the stage producing the empty previous manifest: every subsequent builder discarded valid hashes, so no-op builds rewrote everything and stale cleanup had no previous paths to remove. It explicitly frames this as restoring the state consumed by both output synchronization and asset cleanup 'rather than treating each stale artifact separately', i.e., fixing the upstream manifest stage rather than the downstream skip or stale-output steps. This satisfies the criterion."
+            },
+            {
+              "id": "j05_d1_evidence",
+              "name": "j05_d1_evidence",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 1.0,
+              "description": "The note at /app/output/note.md gives the concrete evidence used to localize the manifest defect, such as the key the saver writes differing from the key the loader reads, a skipped count of zero, or a stale output left after a rebuild.",
+              "reasoning": "The note provides concrete evidence localizing the manifest defect: it states the writer stored `schema: 2` while the reader checked `version` (key mismatch between saver and loader, with line references to `_load_manifest()` line 104 and `_save_manifest()` line 117), cites that two consecutive example builds each generated all 24 files and skipped 0, and notes that deleted content remained / stale cleanup had no previous paths to remove. It also shows post-fix verification (0 generated, 24 skipped). This satisfies the criterion."
+            },
+            {
+              "id": "j06_d1_verification",
+              "name": "j06_d1_verification",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 1.0,
+              "description": "The note at /app/output/note.md names a command run or a test whose result changed that verified the manifest fix.",
+              "reasoning": "The note explicitly names commands and tests whose results changed after the manifest fix. For the manifest fix (section 1), it states that before the fix `python -m pytest` reported 3 failed/19 passed (including 'unchanged builds skipped nothing' and 'deleted content remained') and two consecutive `PYTHONPATH=src python -m pagecraft.cli build --project example --json` runs each generated 24 and skipped 0; after the fix the same unchanged example build generates 0 and skips 24, and pytest reports 22 passed. It also names `/app/output/verify_chain.py` with rename/delete assertions confirming stale file removal. These are specific commands/tests whose results changed, verifying the manifest fix."
+            },
+            {
+              "id": "j07_d2_location",
+              "name": "j07_d2_location",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 3.0,
+              "description": "The note at /app/output/note.md locates the feed lastBuildDate defect at module and function level, in the RSS feed builder of the rss module.",
+              "reasoning": "Section 5 of the note explicitly locates the feed lastBuildDate defect at module and function level: 'Location: rss.py, build_rss() (line 14)', describing that the channel lastBuildDate used the maximum publication date across all input posts and ignoring updated dates and the feed limit. This identifies the RSS feed builder function in the rss module as required."
+            },
+            {
+              "id": "j08_d2_symptom",
+              "name": "j08_d2_symptom",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 3.0,
+              "description": "The note at /app/output/note.md states that the channel lastBuildDate of the generated feed is older than the updated date of a revised post.",
+              "reasoning": "The note explicitly states the symptom: in the baseline evidence section it says `hello-pagecraft.md` has `date: 2026-08-15` and `updated: 2026-08-18`, yet RSS `lastBuildDate` said `Sat, 15 Aug 2026 00:00:00 GMT`. Section 5 reiterates that 'An updated item could carry August 18 in `atom:updated` while the channel still claimed August 15' because lastBuildDate used the maximum publication date rather than the updated date. This clearly describes the channel lastBuildDate being older than the updated date of a revised post."
+            },
+            {
+              "id": "j09_d2_propagation",
+              "name": "j09_d2_propagation",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 3.0,
+              "description": "The note at /app/output/note.md states how the stale channel lastBuildDate carries past the feed builder into the generated feed.",
+              "reasoning": "Section 5 of the note explicitly traces the stale channel date downstream: it explains that `build_rss()` computed `lastBuildDate` from the maximum publication date over all input posts (ignoring `updated` and the `posts_limit` slice), that the generated feed therefore carried a channel date (Aug 15) contradicting an item's `atom:updated` (Aug 18), and that 'Feed clients consumed inconsistent freshness metadata even though item publication dates were correct.' The baseline evidence section also shows the stale value appearing in the actual generated example feed (`Sat, 15 Aug 2026 00:00:00 GMT`). Together this states how the stale value passes through the feed builder into the emitted feed and on to consumers, satisfying the propagation requirement."
+            },
+            {
+              "id": "j10_d2_fix_and_why",
+              "name": "j10_d2_fix_and_why",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 3.0,
+              "description": "The note at /app/output/note.md states a fix in the feed builder that makes the channel lastBuildDate account for the updated date of each post, and states why that repairs the stage computing the wrong channel date rather than item dates or the generated feed file; any correct fix at that stage passes.",
+              "reasoning": "Section 5 of the note states a fix in the feed builder (`rss.py`, `build_rss()`): slice the feed items first and compute the channel `lastBuildDate` as the maximum of `updated or date` over the emitted items. It explains why this is the right stage: channel `lastBuildDate` used only publication dates while item `atom:updated` reflected revisions, item `pubDate` values were correct and remain unchanged, and the fix belongs in the feed generator because it owns both the selected items and channel metadata (as opposed to item dates or the emitted feed file). Evidence includes the baseline mismatch (channel Aug 15 vs updated Aug 18) and a probe showing the channel date following an updated post's revision date while its pubDate stays unchanged."
+            },
+            {
+              "id": "j11_d2_evidence",
+              "name": "j11_d2_evidence",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 1.0,
+              "description": "The note at /app/output/note.md gives the concrete evidence used to localize the feed defect, such as the channel lastBuildDate value compared with the updated date of a revised post or with that post item date.",
+              "reasoning": "The note provides concrete evidence localizing the feed defect: it states the example post `hello-pagecraft.md` has `date: 2026-08-15` and `updated: 2026-08-18`, while the baseline RSS `lastBuildDate` said `Sat, 15 Aug 2026 00:00:00 GMT`. Section 5 further explains that an updated item could carry August 18 in `atom:updated` while the channel still claimed August 15, and references the parsed baseline feed exposing the discrepancy, plus probe results (channel moving to Aug 20 with pubDate remaining Aug 4, and `Tue, 18 Aug 2026 00:00:00 GMT` when the feed is limited to one item). This matches the criterion of comparing lastBuildDate with the revised post's updated date and item date."
+            },
+            {
+              "id": "j12_d2_verification",
+              "name": "j12_d2_verification",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 1.0,
+              "description": "The note at /app/output/note.md names a command run or a test whose result changed that verified the feed fix.",
+              "reasoning": "The note names concrete commands and reports results that verified the feed (RSS) fix. Baseline evidence states the shipped feed's lastBuildDate was 'Sat, 15 Aug 2026 00:00:00 GMT' despite an article updated Aug 18. For the fix in section 5 it describes the probe (explicitly named in the commands list as `python /app/output/verify_chain.py`) confirming the channel lastBuildDate moves to August 20 when an older post is updated while pubDate stays August 4, and that limiting to one item yields 'Tue, 18 Aug 2026 00:00:00 GMT'. Section 6 likewise reports the probe's parsed results (04:00:00 GMT, 2026-08-18T04:00:00Z) for the UTC conversion. Together with the rebuilt example (`build --project example --json`, retained in example-clean-build.json) these constitute named command runs whose feed-related results changed from the baseline, verifying the fix."
+            },
+            {
+              "id": "j13_d3_location",
+              "name": "j13_d3_location",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 3.0,
+              "description": "The note at /app/output/note.md locates the check link resolution defect at module and function level, in the internal link validation code of the builder module that the check command uses.",
+              "reasoning": "Section 3 of the note explicitly locates the check link resolution defect at module and function level: `builder.py`, `_internal_link_issues()` (line 391), which is the internal link validation code used by the check command. It also names the shared `route_to_output()` mapping in `content.py` that should have been used. This satisfies the criterion."
+            },
+            {
+              "id": "j14_d3_symptom",
+              "name": "j14_d3_symptom",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 3.0,
+              "description": "The note at /app/output/note.md states that the check command reports a directory-style route, such as a pagination page route, as a broken internal link although the build writes that page as an index.html file.",
+              "reasoning": "The note explicitly states in the baseline evidence that 'Example check exited 1, reporting /page/2/ as unresolved despite page/2/index.html existing,' and in section 3 that 'Generation mapped /page/2/ to page/2/index.html. Validation stripped the leading slash and looked for page/2/. Correct generated pagination therefore caused check to exit 1.' This directly describes the check command reporting a directory-style pagination route as a broken internal link even though the build writes it as an index.html file."
+            },
+            {
+              "id": "j15_d3_propagation",
+              "name": "j15_d3_propagation",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 3.0,
+              "description": "The note at /app/output/note.md states that the false broken-link report carries past the validator into the result of the check command, so check fails on a correctly built site, for example where check gates a publish or CI step.",
+              "reasoning": "Section 3 of the note explicitly states the propagation: the validator's incorrect route-to-file mapping made correct generated pagination (`/page/2/` -> `page/2/index.html`) be reported as unresolved, and \"Correct generated pagination therefore caused `check` to exit 1.\" The baseline evidence section also says \"check rejected a valid paginated site\" and \"Example check exited 1, reporting `/page/2/` as unresolved despite `page/2/index.html` existing.\" This conveys that the false broken-link report carries past the validator into the check command's exit status, causing check to fail on a correctly built site. The note does not explicitly mention publish/CI gating, but the criterion presents that only as an example; the core propagation claim is clearly stated."
+            },
+            {
+              "id": "j16_d3_fix_and_why",
+              "name": "j16_d3_fix_and_why",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 3.0,
+              "description": "The note at /app/output/note.md states a fix in the link validation code that resolves a directory-style route to the index.html file the build writes, and states why that repairs the validator producing the false report rather than the pages, the links or the report; any correct fix at that stage passes.",
+              "reasoning": "Section 3 of the note states a fix in the link validation code (`_internal_link_issues()` in builder.py): after resolving relative URLs and extracting the path, validation now uses `route_to_output()` \u2014 the same mapping the generator uses to send directory routes like `/page/2/` to `page/2/index.html`. It explains the failure as the validator stripping the leading slash and looking for `page/2/` (a path that doesn't exist) while generation correctly wrote `page/2/index.html`, so the generated pagination and links were correct and the false report came from the checker computing the wrong lookup key. This explicitly locates the defect in the validator stage rather than the pages, links, or report, and the fix (resolving directory routes to index.html) is a correct fix at that stage."
+            },
+            {
+              "id": "j17_d3_evidence",
+              "name": "j17_d3_evidence",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 1.0,
+              "description": "The note at /app/output/note.md gives the concrete evidence used to localize the check defect, such as the reported route existing on disk as an index.html file, or the validator and the output writer mapping that route to different paths.",
+              "reasoning": "The note provides concrete localization evidence for the check defect: it states the baseline `check` exited 1 reporting `/page/2/` as unresolved 'despite `page/2/index.html` existing', and in section 3 it explicitly contrasts the two mappings \u2014 generation (via `route_to_output()`) mapped `/page/2/` to `page/2/index.html` while validation in `_internal_link_issues()` stripped the leading slash and looked for `page/2/`. This matches both forms of evidence named in the criterion (route existing on disk as index.html, and validator vs. writer mapping the route to different paths)."
+            },
+            {
+              "id": "j18_d3_verification",
+              "name": "j18_d3_verification",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 1.0,
+              "description": "The note at /app/output/note.md names a command run or a test whose result changed that verified the check fix.",
+              "reasoning": "The note names specific commands and test results that verified the check fix: the baseline `python -m pytest` reported 3 failed/19 passed, one of which was that check rejected a valid paginated site; after the fix `python -m pytest` reports 22 passed. More directly, it names `PYTHONPATH=src python -m pagecraft.cli check --project example --json` whose result changed from exit 1 (reporting `/page/2/` as unresolved) to exit 0 with `valid: true` and no issues. It also cites `python /app/output/verify_chain.py` link assertions covering directory permalinks and a genuinely broken link."
+            },
+            {
+              "id": "j19_extra_defects_evidenced",
+              "name": "j19_extra_defects_evidenced",
+              "value": 0.0,
+              "raw": "no",
+              "weight": 3.0,
+              "description": "The note at /app/output/note.md claims no defect beyond the manifest loader, feed lastBuildDate, check link resolution and sitemap lastmod defects. A claimed defect is a statement that the shipped Pagecraft code produces a wrong output or behaviour. After those four fixes the shipped build chain and its full test suite produce correct output, so any further claimed defect fails this item, whatever file, function, output or command it names. A residual risk, limitation or untested case stated as such, without asserting wrong behaviour, is not a claimed defect. A defect the note describes in more than one section or at more than one call site counts as one of those four. One statement is true and is not a claimed defect for this item: that `pagecraft build --full` still uses the existing build manifest (it skips unchanged assets and removes stale outputs recorded there) although its help text says it ignores the manifest.",
+              "reasoning": "The note claims eight defects. Items 1 (manifest loader), 3 (check link resolution), 4 (sitemap lastmod) and 5 (feed lastBuildDate) correspond to the four permitted defects. However, items 2 (skip decisions trusting manifest hashes without checking destination bytes), 6 (RSS UTC conversion failing for aware non-UTC callers), 7 (feed_generated reporting availability rather than a write) and 8 (Builder reuse retaining operation state) each assert that the shipped code produces wrong output or behaviour and are presented as defects with fixes, not as residual risks or limitations. The criterion states that after the four fixes the shipped build chain is correct, so any further claimed defect fails this item regardless of the file or function named. None of the extra claims is the permitted true statement about `build --full` using the manifest."
+            },
+            {
+              "id": "j20_d4_location",
+              "name": "j20_d4_location",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 3.0,
+              "description": "The note at /app/output/note.md locates the sitemap lastmod defect at module and function level, in the sitemap entries that the page renderer of the builder module assembles.",
+              "reasoning": "Section 4 of the note explicitly locates the sitemap lastmod defect at module and function level: '`builder.py`, `_render_outputs()` sitemap-entry construction (line 351)', noting that `discovery.py` only serializes the supplied entries. This identifies the builder module, the page-rendering function (`_render_outputs`), and the sitemap entries assembled there, matching the criterion."
+            },
+            {
+              "id": "j21_d4_symptom",
+              "name": "j21_d4_symptom",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 3.0,
+              "description": "The note at /app/output/note.md states that the lastmod of the derived sitemap entries, such as the home page, the index pages or the tag and category pages, is older than the updated date of a revised post.",
+              "reasoning": "The note explicitly states the symptom: in the baseline evidence it says `hello-pagecraft.md` has `date: 2026-08-15` and `updated: 2026-08-18`, and that while the article's own sitemap entry said August 18, the 'home/collection entries said August 15' \u2014 i.e., the lastmod of derived entries (home, pagination, tag/category pages) was older than the revised post's updated date. Section 4 reinforces this by explaining that one global `max(post.date)` was copied to every collection so 'Updates disappeared,' and that the fix uses `updated or date` for home, pagination, tag/category, taxonomy index and archive entries."
+            },
+            {
+              "id": "j22_d4_propagation",
+              "name": "j22_d4_propagation",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 3.0,
+              "description": "The note at /app/output/note.md states how the stale lastmod carries past the sitemap entries into the generated sitemap.",
+              "reasoning": "Section 4 of the note explicitly traces the stale lastmod downstream: the wrong `max(post.date)` value is computed in `_render_outputs()` sitemap-entry construction, copied to every collection entry, and then `discovery.py` 'faithfully emitted those wrong inputs' into the generated sitemap XML, noting that changing XML formatting would not fix it. The baseline evidence section further shows the resulting stale August 15 lastmod appearing in the shipped sitemap's home/collection entries. This states how the stale value carries past entry construction into the generated sitemap."
+            },
+            {
+              "id": "j23_d4_fix_and_why",
+              "name": "j23_d4_fix_and_why",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 3.0,
+              "description": "The note at /app/output/note.md states a fix in the sitemap entry code of the builder that makes the shared lastmod of the derived entries account for the updated date of each post, and states why that repairs the stage computing the wrong date rather than the post entries, the sitemap writer or the generated sitemap file; any correct fix at that stage passes.",
+              "reasoning": "Section 4 of the note locates the fix in `builder.py`, `_render_outputs()` sitemap-entry construction, which is the builder's sitemap entry code. It states the fix: compute each post's change date as `updated or date` (consistent with individual post entries) and derive the shared lastmod for home/pagination/tag/category/taxonomy/archive entries from their own members instead of a single global `max(post.date)`. It explains why this is the correct stage: the individual article entries already carried the updated date (August 18), while `discovery.py` (the sitemap writer) only serializes the supplied entries and 'faithfully emitted those wrong inputs; changing XML formatting would not fix them' \u2014 i.e., the defect is in the stage computing the date, not the post entries, the writer, or the generated XML. The fix additionally accounts for collection membership, which goes beyond but includes the required repair, so it is a correct fix at that stage."
+            },
+            {
+              "id": "j24_d4_evidence",
+              "name": "j24_d4_evidence",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 1.0,
+              "description": "The note at /app/output/note.md gives the concrete evidence used to localize the sitemap defect, such as the lastmod of a derived entry compared with the lastmod of a revised post entry or with that post updated date.",
+              "reasoning": "The note gives concrete evidence localizing the sitemap defect. In the baseline section it states that `hello-pagecraft.md` has `date: 2026-08-15` and `updated: 2026-08-18`, that its article sitemap entry already said August 18, but that the home/collection (derived) entries said August 15, and that the HTML-only tag was assigned August 15 even though its sole post was dated August 4. Section 4 further pins the cause to one global `max(post.date)` in `_render_outputs()` at line 351 and gives post-fix per-collection dates (home Aug 18, HTML tag Aug 4, Tooling Aug 12, page 2 Aug 9) plus a separating probe. This is exactly the kind of comparison of a derived entry's lastmod against the revised post's updated date that the criterion requires."
+            },
+            {
+              "id": "j25_d4_verification",
+              "name": "j25_d4_verification",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 1.0,
+              "description": "The note at /app/output/note.md names a command run or a test whose result changed that verified the sitemap fix.",
+              "reasoning": "Section 4 describes the sitemap fix and states the pre-fix values (home/collection entries said August 15) versus post-fix values (home August 18, HTML tag August 4, Tooling category August 12, page 2 August 9), verified by XML assertions and a separating probe. The 'Commands and retained evidence' section then names the concrete command that ran these checks: `python /app/output/verify_chain.py`, explicitly listing 'date' assertions among those that pass and pointing to 'sitemap date maps in /app/output/verification.json'. So the note names a command whose observed result (sitemap collection dates changing from a global August 15 to per-collection correct dates) verified the sitemap fix. It is somewhat indirect since section 4 itself does not name the script, but the linkage is explicit enough to satisfy the criterion."
+            }
+          ],
+          "kind": "llm",
+          "judge": {
+            "model": "anthropic/claude-fable-5-1",
+            "reasoning_effort": "medium",
+            "timeout": 300,
+            "files": [
+              "/app/output/note.md"
+            ],
+            "atif_trajectory": null,
+            "reference": null,
+            "mode": "individual"
+          },
+          "judge_output": "--- j01_d1_location ---\n{\"score\":\"yes\",\"reasoning\":\"Section 1 of the note explicitly locates the incremental build manifest defect at module and function level: `builder.py`, `Builder._load_manifest()` (line 104) and `_save_manifest()` (line 117), explaining that the loader checked `version` while the writer stored `schema`. This places the defect in the manifest loading code of the builder module as required.\"}\n\n--- j02_d1_symptom ---\n{\"score\":\"yes\",\"reasoning\":\"The note explicitly states observable symptoms of the manifest defect in Section 1 ('Saved manifests were rejected when loaded'): 'No-op builds rewrote everything, and stale cleanup had no previous paths to remove. Obsolete articles, taxonomies, pagination and assets could remain...' It also provides baseline evidence that 'Two consecutive example CLI builds each generated all 24 files and skipped 0' and that 'unchanged builds skipped nothing, deleted content remained.' These satisfy the criterion of describing that an incremental rebuild skips nothing and leaves removed content (including taxonomies/tag pages) in place.\"}\n\n--- j03_d1_propagation ---\n{\"score\":\"yes\",\"reasoning\":\"Section 1 of the note states that because the reader checked `version` while the writer stored `schema`, every subsequent builder discarded the saved hashes (i.e., proceeded with an effectively empty previous manifest), that 'No-op builds rewrote everything' (skip step skipped nothing, corroborated by the baseline evidence of consecutive builds generating all 24 files and skipping 0), and that 'stale cleanup had no previous paths to remove' so obsolete articles, taxonomies, pagination and assets could remain. This captures both downstream consequences required by the criterion.\"}\n\n--- j04_d1_fix_and_why ---\n{\"score\":\"yes\",\"reasoning\":\"Section 1 of the note identifies the manifest load/save mismatch (saver writes `schema: 2`, loader checks `version`), states the fix (loader reads the same `schema` field the writer emits), and explains why that repairs the stage producing the empty previous manifest: every subsequent builder discarded valid hashes, so no-op builds rewrote everything and stale cleanup had no previous paths to remove. It explicitly frames this as restoring the state consumed by both output synchronization and asset cleanup 'rather than treating each stale artifact separately', i.e., fixing the upstream manifest stage rather than the downstream skip or stale-output steps. This satisfies the criterion.\"}\n\n--- j05_d1_evidence ---\n{\"score\":\"yes\",\"reasoning\":\"The note provides concrete evidence localizing the manifest defect: it states the writer stored `schema: 2` while the reader checked `version` (key mismatch between saver and loader, with line references to `_load_manifest()` line 104 and `_save_manifest()` line 117), cites that two consecutive example builds each generated all 24 files and skipped 0, and notes that deleted content remained / stale cleanup had no previous paths to remove. It also shows post-fix verification (0 generated, 24 skipped). This satisfies the criterion.\"}\n\n--- j06_d1_verification ---\n{\"score\":\"yes\",\"reasoning\":\"The note explicitly names commands and tests whose results changed after the manifest fix. For the manifest fix (section 1), it states that before the fix `python -m pytest` reported 3 failed/19 passed (including 'unchanged builds skipped nothing' and 'deleted content remained') and two consecutive `PYTHONPATH=src python -m pagecraft.cli build --project example --json` runs each generated 24 and skipped 0; after the fix the same unchanged example build generates 0 and skips 24, and pytest reports 22 passed. It also names `/app/output/verify_chain.py` with rename/delete assertions confirming stale file removal. These are specific commands/tests whose results changed, verifying the manifest fix.\"}\n\n--- j07_d2_location ---\n{\"score\":\"yes\",\"reasoning\":\"Section 5 of the note explicitly locates the feed lastBuildDate defect at module and function level: 'Location: rss.py, build_rss() (line 14)', describing that the channel lastBuildDate used the maximum publication date across all input posts and ignoring updated dates and the feed limit. This identifies the RSS feed builder function in the rss module as required.\"}\n\n--- j08_d2_symptom ---\n{\"score\": \"yes\", \"reasoning\": \"The note explicitly states the symptom: in the baseline evidence section it says `hello-pagecraft.md` has `date: 2026-08-15` and `updated: 2026-08-18`, yet RSS `lastBuildDate` said `Sat, 15 Aug 2026 00:00:00 GMT`. Section 5 reiterates that 'An updated item could carry August 18 in `atom:updated` while the channel still claimed August 15' because lastBuildDate used the maximum publication date rather than the updated date. This clearly describes the channel lastBuildDate being older than the updated date of a revised post.\"}\n\n--- j09_d2_propagation ---\n{\"score\":\"yes\",\"reasoning\":\"Section 5 of the note explicitly traces the stale channel date downstream: it explains that `build_rss()` computed `lastBuildDate` from the maximum publication date over all input posts (ignoring `updated` and the `posts_limit` slice), that the generated feed therefore carried a channel date (Aug 15) contradicting an item's `atom:updated` (Aug 18), and that 'Feed clients consumed inconsistent freshness metadata even though item publication dates were correct.' The baseline evidence section also shows the stale value appearing in the actual generated example feed (`Sat, 15 Aug 2026 00:00:00 GMT`). Together this states how the stale value passes through the feed builder into the emitted feed and on to consumers, satisfying the propagation requirement.\"}\n\n--- j10_d2_fix_and_why ---\n{\"score\":\"yes\",\"reasoning\":\"Section 5 of the note states a fix in the feed builder (`rss.py`, `build_rss()`): slice the feed items first and compute the channel `lastBuildDate` as the maximum of `updated or date` over the emitted items. It explains why this is the right stage: channel `lastBuildDate` used only publication dates while item `atom:updated` reflected revisions, item `pubDate` values were correct and remain unchanged, and the fix belongs in the feed generator because it owns both the selected items and channel metadata (as opposed to item dates or the emitted feed file). Evidence includes the baseline mismatch (channel Aug 15 vs updated Aug 18) and a probe showing the channel date following an updated post's revision date while its pubDate stays unchanged.\"}\n\n--- j11_d2_evidence ---\n{\"score\":\"yes\",\"reasoning\":\"The note provides concrete evidence localizing the feed defect: it states the example post `hello-pagecraft.md` has `date: 2026-08-15` and `updated: 2026-08-18`, while the baseline RSS `lastBuildDate` said `Sat, 15 Aug 2026 00:00:00 GMT`. Section 5 further explains that an updated item could carry August 18 in `atom:updated` while the channel still claimed August 15, and references the parsed baseline feed exposing the discrepancy, plus probe results (channel moving to Aug 20 with pubDate remaining Aug 4, and `Tue, 18 Aug 2026 00:00:00 GMT` when the feed is limited to one item). This matches the criterion of comparing lastBuildDate with the revised post's updated date and item date.\"}\n\n--- j12_d2_verification ---\n{\"score\":\"yes\",\"reasoning\":\"The note names concrete commands and reports results that verified the feed (RSS) fix. Baseline evidence states the shipped feed's lastBuildDate was 'Sat, 15 Aug 2026 00:00:00 GMT' despite an article updated Aug 18. For the fix in section 5 it describes the probe (explicitly named in the commands list as `python /app/output/verify_chain.py`) confirming the channel lastBuildDate moves to August 20 when an older post is updated while pubDate stays August 4, and that limiting to one item yields 'Tue, 18 Aug 2026 00:00:00 GMT'. Section 6 likewise reports the probe's parsed results (04:00:00 GMT, 2026-08-18T04:00:00Z) for the UTC conversion. Together with the rebuilt example (`build --project example --json`, retained in example-clean-build.json) these constitute named command runs whose feed-related results changed from the baseline, verifying the fix.\"}\n\n--- j13_d3_location ---\n{\"score\":\"yes\",\"reasoning\":\"Section 3 of the note explicitly locates the check link resolution defect at module and function level: `builder.py`, `_internal_link_issues()` (line 391), which is the internal link validation code used by the check command. It also names the shared `route_to_output()` mapping in `content.py` that should have been used. This satisfies the criterion.\"}\n\n--- j14_d3_symptom ---\n{\"score\":\"yes\",\"reasoning\":\"The note explicitly states in the baseline evidence that 'Example check exited 1, reporting /page/2/ as unresolved despite page/2/index.html existing,' and in section 3 that 'Generation mapped /page/2/ to page/2/index.html. Validation stripped the leading slash and looked for page/2/. Correct generated pagination therefore caused check to exit 1.' This directly describes the check command reporting a directory-style pagination route as a broken internal link even though the build writes it as an index.html file.\"}\n\n--- j15_d3_propagation ---\n{\"score\":\"yes\",\"reasoning\":\"Section 3 of the note explicitly states the propagation: the validator's incorrect route-to-file mapping made correct generated pagination (`/page/2/` -> `page/2/index.html`) be reported as unresolved, and \\\"Correct generated pagination therefore caused `check` to exit 1.\\\" The baseline evidence section also says \\\"check rejected a valid paginated site\\\" and \\\"Example check exited 1, reporting `/page/2/` as unresolved despite `page/2/index.html` existing.\\\" This conveys that the false broken-link report carries past the validator into the check command's exit status, causing check to fail on a correctly built site. The note does not explicitly mention publish/CI gating, but the criterion presents that only as an example; the core propagation claim is clearly stated.\"}\n\n--- j16_d3_fix_and_why ---\n{\"score\":\"yes\",\"reasoning\":\"Section 3 of the note states a fix in the link validation code (`_internal_link_issues()` in builder.py): after resolving relative URLs and extracting the path, validation now uses `route_to_output()` \u2014 the same mapping the generator uses to send directory routes like `/page/2/` to `page/2/index.html`. It explains the failure as the validator stripping the leading slash and looking for `page/2/` (a path that doesn't exist) while generation correctly wrote `page/2/index.html`, so the generated pagination and links were correct and the false report came from the checker computing the wrong lookup key. This explicitly locates the defect in the validator stage rather than the pages, links, or report, and the fix (resolving directory routes to index.html) is a correct fix at that stage.\"}\n\n--- j17_d3_evidence ---\n{\"score\":\"yes\",\"reasoning\":\"The note provides concrete localization evidence for the check defect: it states the baseline `check` exited 1 reporting `/page/2/` as unresolved 'despite `page/2/index.html` existing', and in section 3 it explicitly contrasts the two mappings \u2014 generation (via `route_to_output()`) mapped `/page/2/` to `page/2/index.html` while validation in `_internal_link_issues()` stripped the leading slash and looked for `page/2/`. This matches both forms of evidence named in the criterion (route existing on disk as index.html, and validator vs. writer mapping the route to different paths).\"}\n\n--- j18_d3_verification ---\n{\"score\":\"yes\",\"reasoning\":\"The note names specific commands and test results that verified the check fix: the baseline `python -m pytest` reported 3 failed/19 passed, one of which was that check rejected a valid paginated site; after the fix `python -m pytest` reports 22 passed. More directly, it names `PYTHONPATH=src python -m pagecraft.cli check --project example --json` whose result changed from exit 1 (reporting `/page/2/` as unresolved) to exit 0 with `valid: true` and no issues. It also cites `python /app/output/verify_chain.py` link assertions covering directory permalinks and a genuinely broken link.\"}\n\n--- j19_extra_defects_evidenced ---\n{\"score\":\"no\",\"reasoning\":\"The note claims eight defects. Items 1 (manifest loader), 3 (check link resolution), 4 (sitemap lastmod) and 5 (feed lastBuildDate) correspond to the four permitted defects. However, items 2 (skip decisions trusting manifest hashes without checking destination bytes), 6 (RSS UTC conversion failing for aware non-UTC callers), 7 (feed_generated reporting availability rather than a write) and 8 (Builder reuse retaining operation state) each assert that the shipped code produces wrong output or behaviour and are presented as defects with fixes, not as residual risks or limitations. The criterion states that after the four fixes the shipped build chain is correct, so any further claimed defect fails this item regardless of the file or function named. None of the extra claims is the permitted true statement about `build --full` using the manifest.\"}\n\n--- j20_d4_location ---\n{\"score\":\"yes\",\"reasoning\":\"Section 4 of the note explicitly locates the sitemap lastmod defect at module and function level: '`builder.py`, `_render_outputs()` sitemap-entry construction (line 351)', noting that `discovery.py` only serializes the supplied entries. This identifies the builder module, the page-rendering function (`_render_outputs`), and the sitemap entries assembled there, matching the criterion.\"}\n\n--- j21_d4_symptom ---\n{\"score\": \"yes\", \"reasoning\": \"The note explicitly states the symptom: in the baseline evidence it says `hello-pagecraft.md` has `date: 2026-08-15` and `updated: 2026-08-18`, and that while the article's own sitemap entry said August 18, the 'home/collection entries said August 15' \u2014 i.e., the lastmod of derived entries (home, pagination, tag/category pages) was older than the revised post's updated date. Section 4 reinforces this by explaining that one global `max(post.date)` was copied to every collection so 'Updates disappeared,' and that the fix uses `updated or date` for home, pagination, tag/category, taxonomy index and archive entries.\"}\n\n--- j22_d4_propagation ---\n{\"score\":\"yes\",\"reasoning\":\"Section 4 of the note explicitly traces the stale lastmod downstream: the wrong `max(post.date)` value is computed in `_render_outputs()` sitemap-entry construction, copied to every collection entry, and then `discovery.py` 'faithfully emitted those wrong inputs' into the generated sitemap XML, noting that changing XML formatting would not fix it. The baseline evidence section further shows the resulting stale August 15 lastmod appearing in the shipped sitemap's home/collection entries. This states how the stale value carries past entry construction into the generated sitemap.\"}\n\n--- j23_d4_fix_and_why ---\n{\"score\":\"yes\",\"reasoning\":\"Section 4 of the note locates the fix in `builder.py`, `_render_outputs()` sitemap-entry construction, which is the builder's sitemap entry code. It states the fix: compute each post's change date as `updated or date` (consistent with individual post entries) and derive the shared lastmod for home/pagination/tag/category/taxonomy/archive entries from their own members instead of a single global `max(post.date)`. It explains why this is the correct stage: the individual article entries already carried the updated date (August 18), while `discovery.py` (the sitemap writer) only serializes the supplied entries and 'faithfully emitted those wrong inputs; changing XML formatting would not fix them' \u2014 i.e., the defect is in the stage computing the date, not the post entries, the writer, or the generated XML. The fix additionally accounts for collection membership, which goes beyond but includes the required repair, so it is a correct fix at that stage.\"}\n\n--- j24_d4_evidence ---\n{\"score\":\"yes\",\"reasoning\":\"The note gives concrete evidence localizing the sitemap defect. In the baseline section it states that `hello-pagecraft.md` has `date: 2026-08-15` and `updated: 2026-08-18`, that its article sitemap entry already said August 18, but that the home/collection (derived) entries said August 15, and that the HTML-only tag was assigned August 15 even though its sole post was dated August 4. Section 4 further pins the cause to one global `max(post.date)` in `_render_outputs()` at line 351 and gives post-fix per-collection dates (home Aug 18, HTML tag Aug 4, Tooling Aug 12, page 2 Aug 9) plus a separating probe. This is exactly the kind of comparison of a derived entry's lastmod against the revised post's updated date that the criterion requires.\"}\n\n--- j25_d4_verification ---\n{\"score\":\"yes\",\"reasoning\":\"Section 4 describes the sitemap fix and states the pre-fix values (home/collection entries said August 15) versus post-fix values (home August 18, HTML tag August 4, Tooling category August 12, page 2 August 9), verified by XML assertions and a separating probe. The 'Commands and retained evidence' section then names the concrete command that ran these checks: `python /app/output/verify_chain.py`, explicitly listing 'date' assertions among those that pass and pointing to 'sitemap date maps in /app/output/verification.json'. So the note names a command whose observed result (sitemap collection dates changing from a global August 15 to per-collection correct dates) verified the sitemap fix. It is somewhat indirect since section 4 itself does not name the script, but the linkage is explicit enough to satisfy the criterion.\"}"
+        }
+      },
+      {
+        "name": "test_output",
+        "weight": 62.0,
+        "detail": {
+          "score": 1.0,
+          "criteria": [
+            {
+              "name": "c01_incremental_skips",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "incremental rebuild after a tag rename skips exactly the unchanged held-out outputs"
+            },
+            {
+              "name": "c02_incremental_writes",
+              "value": 1.0,
+              "raw": true,
+              "weight": 3.0,
+              "description": "incremental rebuild after a tag rename writes exactly the changed held-out outputs"
+            },
+            {
+              "name": "c03_incremental_removes_stale",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "incremental rebuild after a tag rename reports removing exactly the orphaned outputs"
+            },
+            {
+              "name": "c04_feed_last_build_date",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "held-out feed lastBuildDate equals the newest updated-or-published post timestamp"
+            },
+            {
+              "name": "c05_valid_site",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "check exits 0 with no issues on the valid held-out site"
+            },
+            {
+              "name": "c06_broken_link",
+              "value": 1.0,
+              "raw": true,
+              "weight": 3.0,
+              "description": "check exits 1 on the held-out broken-link site and reports exactly the real broken link"
+            },
+            {
+              "name": "c07_pagination_route_links",
+              "value": 1.0,
+              "raw": true,
+              "weight": 3.0,
+              "description": "every directory-style route the held-out build generates is built and not reported by check"
+            },
+            {
+              "name": "c08_updated_date_variant",
+              "value": 1.0,
+              "raw": true,
+              "weight": 3.0,
+              "description": "adding an updated date to the oldest held-out post moves the feed lastBuildDate to it"
+            },
+            {
+              "name": "c09_renamed_tag_tree_and_manifest",
+              "value": 1.0,
+              "raw": true,
+              "weight": 3.0,
+              "description": "after the tag rename the output tree and manifest hold the renamed tag page and no orphan"
+            },
+            {
+              "name": "c10_clean_then_idle_rebuild",
+              "value": 1.0,
+              "raw": true,
+              "weight": 1.0,
+              "description": "clean removes output and cache, the next build writes everything and an idle rebuild skips everything"
+            },
+            {
+              "name": "c11_upstream_suite_passes",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "the restored upstream suite passes in full per the JUnit XML report"
+            },
+            {
+              "name": "k1_sitemap_index_dates",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "held-out sitemap lastmod of the archive, tag index and category index equals the newest updated-or-published post date"
+            },
+            {
+              "name": "k2_sitemap_index_dates_variant",
+              "value": 1.0,
+              "raw": true,
+              "weight": 3.0,
+              "description": "adding an updated date to the oldest held-out post moves the sitemap lastmod of the archive, tag index and category index to it"
+            },
+            {
+              "name": "r1_protected_paths_modified",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "R1 prohibited act: a protected test file or the vendored LICENSE was modified"
+            },
+            {
+              "name": "r2_tests_disabled_or_config_changed",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "R2 prohibited act: a test was disabled, skipped, xfailed, deleted or deselected, or pytest config changed"
+            },
+            {
+              "name": "r3_generated_output_handwritten",
+              "value": 1.0,
+              "raw": true,
+              "weight": 3.0,
+              "description": "R3 prohibited act: generated output was hand-written into the repository tree"
+            }
+          ],
+          "kind": "programmatic"
+        }
+      }
+    ]
+  }
+}

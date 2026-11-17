@@ -1,0 +1,16 @@
+diff --git a/src/dateutil/rrule.py b/src/dateutil/rrule.py
+index 66374ee..c781714 100644
+--- a/src/dateutil/rrule.py
++++ b/src/dateutil/rrule.py
+@@ -1264,8 +1264,10 @@ class _iterinfo:
+                 if rr._bymonth:
+                     for month in rr._bymonth:
+                         ranges.append(self.mrange[month-1:month+1])
+-                else:
++                elif any(n < 0 for _, n in rr._bynweekday):
+                     ranges = [(0, self.yearlen)]
++                else:
++                    ranges = [(self.mrange[month-1], self.yearlen)]
+             elif rr._freq == MONTHLY:
+                 ranges = [self.mrange[month-1:month+1]]
+             if ranges:

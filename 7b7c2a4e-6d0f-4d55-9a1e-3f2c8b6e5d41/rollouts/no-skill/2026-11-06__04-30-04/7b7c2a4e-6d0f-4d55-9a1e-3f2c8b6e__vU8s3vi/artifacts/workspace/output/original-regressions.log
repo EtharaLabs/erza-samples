@@ -1,0 +1,244 @@
+raft2026/11/05 23:08:41 INFO: 1 switched to configuration voters=(1 2 3)
+raft2026/11/05 23:08:41 INFO: 1 became follower at term 0
+raft2026/11/05 23:08:41 INFO: newRaft 1 [peers: [1,2,3], term: 0, commit: 0, applied: 0, lastindex: 0, lastterm: 0]
+raft2026/11/05 23:08:41 INFO: 2 switched to configuration voters=(1 2 3)
+raft2026/11/05 23:08:41 INFO: 2 became follower at term 0
+raft2026/11/05 23:08:41 INFO: newRaft 2 [peers: [1,2,3], term: 0, commit: 0, applied: 0, lastindex: 0, lastterm: 0]
+raft2026/11/05 23:08:41 INFO: 3 switched to configuration voters=(1 2 3)
+raft2026/11/05 23:08:41 INFO: 3 became follower at term 0
+raft2026/11/05 23:08:41 INFO: newRaft 3 [peers: [1,2,3], term: 0, commit: 0, applied: 0, lastindex: 0, lastterm: 0]
+raft2026/11/05 23:08:41 INFO: 2 is starting a new election at term 0
+raft2026/11/05 23:08:41 INFO: 2 became candidate at term 1
+raft2026/11/05 23:08:41 INFO: 2 [logterm: 0, index: 0] sent MsgVote request to 1 at term 1
+raft2026/11/05 23:08:41 INFO: 2 [logterm: 0, index: 0] sent MsgVote request to 3 at term 1
+raft2026/11/05 23:08:41 INFO: 2 received MsgVoteResp from 2 at term 1
+raft2026/11/05 23:08:41 INFO: 2 has received 1 MsgVoteResp votes and 0 vote rejections
+raft2026/11/05 23:08:41 INFO: 3 is starting a new election at term 0
+raft2026/11/05 23:08:41 INFO: 3 became candidate at term 1
+raft2026/11/05 23:08:41 INFO: 3 [logterm: 0, index: 0] sent MsgVote request to 1 at term 1
+raft2026/11/05 23:08:41 INFO: 3 [logterm: 0, index: 0] sent MsgVote request to 2 at term 1
+raft2026/11/05 23:08:41 INFO: 3 received MsgVoteResp from 3 at term 1
+raft2026/11/05 23:08:41 INFO: 3 has received 1 MsgVoteResp votes and 0 vote rejections
+raft2026/11/05 23:08:41 INFO: 1 [term: 0] received a MsgVote message with higher term from 2 [term: 1]
+raft2026/11/05 23:08:41 INFO: 1 became follower at term 1
+raft2026/11/05 23:08:41 INFO: 1 [logterm: 0, index: 0, vote: 0] cast MsgVote for 2 [logterm: 0, index: 0] at term 1
+raft2026/11/05 23:08:41 INFO: 1 [logterm: 0, index: 0, vote: 2] cast MsgVote for 2 [logterm: 0, index: 0] at term 1
+raft2026/11/05 23:08:41 INFO: 2 received MsgVoteResp from 1 at term 1
+raft2026/11/05 23:08:41 INFO: 2 has received 2 MsgVoteResp votes and 0 vote rejections
+raft2026/11/05 23:08:41 INFO: 2 became leader at term 1
+raft2026/11/05 23:08:41 INFO: 1 switched to configuration voters=(1 2 3)
+raft2026/11/05 23:08:41 INFO: 1 became follower at term 0
+raft2026/11/05 23:08:41 INFO: newRaft 1 [peers: [1,2,3], term: 0, commit: 0, applied: 0, lastindex: 0, lastterm: 0]
+raft2026/11/05 23:08:41 INFO: 1 [term: 0] received a MsgVote message with higher term from 3 [term: 1]
+raft2026/11/05 23:08:41 INFO: 1 became follower at term 1
+raft2026/11/05 23:08:41 INFO: 1 [logterm: 0, index: 0, vote: 0] cast MsgVote for 3 [logterm: 0, index: 0] at term 1
+raft2026/11/05 23:08:41 INFO: 3 received MsgVoteResp from 1 at term 1
+raft2026/11/05 23:08:41 INFO: 3 has received 2 MsgVoteResp votes and 0 vote rejections
+raft2026/11/05 23:08:41 INFO: 3 became leader at term 1
+raft2026/11/05 23:08:41 INFO: 1 switched to configuration voters=(1 2 3)
+raft2026/11/05 23:08:41 INFO: 1 became follower at term 0
+raft2026/11/05 23:08:41 INFO: newRaft 1 [peers: [1,2,3], term: 0, commit: 0, applied: 0, lastindex: 0, lastterm: 0]
+raft2026/11/05 23:08:41 INFO: 2 switched to configuration voters=(1 2 3)
+raft2026/11/05 23:08:41 INFO: 2 became follower at term 0
+raft2026/11/05 23:08:41 INFO: newRaft 2 [peers: [1,2,3], term: 0, commit: 0, applied: 0, lastindex: 0, lastterm: 0]
+raft2026/11/05 23:08:41 INFO: 3 switched to configuration voters=(1 2 3)
+raft2026/11/05 23:08:41 INFO: 3 became follower at term 0
+raft2026/11/05 23:08:41 INFO: newRaft 3 [peers: [1,2,3], term: 0, commit: 0, applied: 0, lastindex: 0, lastterm: 0]
+raft2026/11/05 23:08:41 INFO: 2 is starting a new election at term 0
+raft2026/11/05 23:08:41 INFO: 2 became candidate at term 1
+raft2026/11/05 23:08:41 INFO: 2 [logterm: 0, index: 0] sent MsgVote request to 1 at term 1
+raft2026/11/05 23:08:41 INFO: 2 [logterm: 0, index: 0] sent MsgVote request to 3 at term 1
+raft2026/11/05 23:08:41 INFO: 2 received MsgVoteResp from 2 at term 1
+raft2026/11/05 23:08:41 INFO: 2 has received 1 MsgVoteResp votes and 0 vote rejections
+raft2026/11/05 23:08:41 INFO: 3 is starting a new election at term 0
+raft2026/11/05 23:08:41 INFO: 3 became candidate at term 1
+raft2026/11/05 23:08:41 INFO: 3 [logterm: 0, index: 0] sent MsgVote request to 1 at term 1
+raft2026/11/05 23:08:41 INFO: 3 [logterm: 0, index: 0] sent MsgVote request to 2 at term 1
+raft2026/11/05 23:08:41 INFO: 3 received MsgVoteResp from 3 at term 1
+raft2026/11/05 23:08:41 INFO: 3 has received 1 MsgVoteResp votes and 0 vote rejections
+raft2026/11/05 23:08:41 INFO: 1 [term: 0] received a MsgVote message with higher term from 2 [term: 1]
+raft2026/11/05 23:08:41 INFO: 1 became follower at term 1
+raft2026/11/05 23:08:41 INFO: 1 [logterm: 0, index: 0, vote: 0] cast MsgVote for 2 [logterm: 0, index: 0] at term 1
+raft2026/11/05 23:08:41 INFO: 1 [logterm: 0, index: 0, vote: 2] cast MsgVote for 2 [logterm: 0, index: 0] at term 1
+raft2026/11/05 23:08:41 INFO: 2 received MsgVoteResp from 1 at term 1
+raft2026/11/05 23:08:41 INFO: 2 has received 2 MsgVoteResp votes and 0 vote rejections
+raft2026/11/05 23:08:41 INFO: 2 became leader at term 1
+raft2026/11/05 23:08:41 INFO: 1 switched to configuration voters=(1 2 3)
+raft2026/11/05 23:08:41 INFO: 1 became follower at term 0
+raft2026/11/05 23:08:41 INFO: newRaft 1 [peers: [1,2,3], term: 0, commit: 0, applied: 0, lastindex: 0, lastterm: 0]
+raft2026/11/05 23:08:41 INFO: 1 [term: 0] received a MsgVote message with higher term from 3 [term: 1]
+raft2026/11/05 23:08:41 INFO: 1 became follower at term 1
+raft2026/11/05 23:08:41 INFO: 1 [logterm: 0, index: 0, vote: 0] cast MsgVote for 3 [logterm: 0, index: 0] at term 1
+raft2026/11/05 23:08:41 INFO: 3 received MsgVoteResp from 1 at term 1
+raft2026/11/05 23:08:41 INFO: 3 has received 2 MsgVoteResp votes and 0 vote rejections
+raft2026/11/05 23:08:41 INFO: 3 became leader at term 1
+--- FAIL: TestRegressionDuplicateVoteAcrossCrash (0.00s)
+    --- FAIL: TestRegressionDuplicateVoteAcrossCrash/plain (0.00s)
+        safety_regression_test.go:105: 
+            	Error Trace:	/workspace/raft-original/safety_regression_test.go:105
+            	Error:      	Should be false
+            	Test:       	TestRegressionDuplicateVoteAcrossCrash/plain
+            	Messages:   	two leaders in term 1
+    --- FAIL: TestRegressionDuplicateVoteAcrossCrash/quorum (0.00s)
+        safety_regression_test.go:105: 
+            	Error Trace:	/workspace/raft-original/safety_regression_test.go:105
+            	Error:      	Should be false
+            	Test:       	TestRegressionDuplicateVoteAcrossCrash/quorum
+            	Messages:   	two leaders in term 1
+raft2026/11/05 23:08:41 INFO: 1 switched to configuration voters=(1 2 3)
+raft2026/11/05 23:08:41 INFO: 1 became follower at term 0
+raft2026/11/05 23:08:41 INFO: newRaft 1 [peers: [1,2,3], term: 0, commit: 0, applied: 0, lastindex: 0, lastterm: 0]
+raft2026/11/05 23:08:41 INFO: 1 [term: 0] received a MsgApp message with higher term from 2 [term: 1]
+raft2026/11/05 23:08:41 INFO: 1 became follower at term 1
+--- FAIL: TestRegressionDuplicateAppendDurability (0.00s)
+    safety_regression_test.go:118: 
+        	Error Trace:	/workspace/raft-original/safety_regression_test.go:118
+        	Error:      	Expected nil, but got: &raftpb.Message{state:impl.MessageState{NoUnkeyedLiterals:pragma.NoUnkeyedLiterals{}, DoNotCompare:pragma.DoNotCompare{}, DoNotCopy:pragma.DoNotCopy{}, atomicMessageInfo:(*impl.MessageInfo)(nil)}, Type:(*raftpb.MessageType)(0x44474f385cf0), To:(*uint64)(0x44474f385c10), From:(*uint64)(0x44474f385d00), Term:(*uint64)(0x44474f385d08), LogTerm:(*uint64)(nil), Index:(*uint64)(0x44474f385cf8), Entries:[]*raftpb.Entry(nil), Commit:(*uint64)(nil), Vote:(*uint64)(nil), Snapshot:(*raftpb.Snapshot)(nil), Reject:(*bool)(nil), RejectHint:(*uint64)(nil), Context:[]uint8(nil), Responses:[]*raftpb.Message(nil), unknownFields:[]uint8(nil), sizeCache:0}
+        	Test:       	TestRegressionDuplicateAppendDurability
+        	Messages:   	acknowledged an entry whose append thread is paused
+raft2026/11/05 23:08:41 INFO: 1 switched to configuration voters=(1)
+raft2026/11/05 23:08:41 INFO: 1 became follower at term 0
+raft2026/11/05 23:08:41 INFO: newRaft 1 [peers: [1], term: 0, commit: 0, applied: 0, lastindex: 0, lastterm: 0]
+raft2026/11/05 23:08:41 INFO: 1 is starting a new election at term 0
+raft2026/11/05 23:08:41 INFO: 1 became pre-candidate at term 0
+--- FAIL: TestRegressionAsyncSingletonPreVote (0.00s)
+    safety_regression_test.go:150: 
+        	Error Trace:	/workspace/raft-original/safety_regression_test.go:150
+        	Error:      	Not equal: 
+        	            	expected: 0x2
+        	            	actual  : 0x3
+        	Test:       	TestRegressionAsyncSingletonPreVote
+raft2026/11/05 23:08:41 INFO: 1 switched to configuration voters=(1 2 3)
+raft2026/11/05 23:08:41 INFO: 1 became follower at term 0
+raft2026/11/05 23:08:41 INFO: newRaft 1 [peers: [1,2,3], term: 0, commit: 0, applied: 0, lastindex: 0, lastterm: 0]
+raft2026/11/05 23:08:41 INFO: 1 [term: 0] received a MsgApp message with higher term from 2 [term: 1]
+raft2026/11/05 23:08:41 INFO: 1 became follower at term 1
+--- FAIL: TestRegressionApplyResponseOnlyAcknowledgesItsBatch (0.00s)
+    safety_regression_test.go:203: 
+        	Error Trace:	/workspace/raft-original/safety_regression_test.go:203
+        	Error:      	Not equal: 
+        	            	expected: 0x1
+        	            	actual  : 0x2
+        	Test:       	TestRegressionApplyResponseOnlyAcknowledgesItsBatch
+        	Messages:   	second batch has not run
+raft2026/11/05 23:08:41 INFO: 1 switched to configuration voters=(1 2 3)
+raft2026/11/05 23:08:41 INFO: 1 became follower at term 0
+raft2026/11/05 23:08:41 INFO: newRaft 1 [peers: [1,2,3], term: 0, commit: 0, applied: 0, lastindex: 0, lastterm: 0]
+raft2026/11/05 23:08:41 INFO: 1 [term: 0] received a MsgApp message with higher term from 2 [term: 1]
+raft2026/11/05 23:08:41 INFO: 1 became follower at term 1
+raft2026/11/05 23:08:41 INFO: log [committed=2, applied=0, applying=2, unstable.offset=3, unstable.offsetInProgress=3, len(unstable.Entries)=0] starts to restore snapshot [index: 3, term: 1]
+raft2026/11/05 23:08:41 INFO: 1 switched to configuration voters=(1 2 3)
+raft2026/11/05 23:08:41 INFO: 1 [commit: 3, lastindex: 3, lastterm: 1] restored snapshot [index: 3, term: 1]
+raft2026/11/05 23:08:41 INFO: 1 [commit: 3] restored snapshot [index: 3, term: 1]
+--- FAIL: TestRegressionSnapshotWaitsForApply (0.00s)
+    safety_regression_test.go:237: 
+        	Error Trace:	/workspace/raft-original/safety_regression_test.go:237
+        	Error:      	Not equal: 
+        	            	expected: []uint64{0x1, 0x2, 0x3}
+        	            	actual  : []uint64{0x3, 0x1, 0x2}
+        	            	
+        	            	Diff:
+        	            	--- Expected
+        	            	+++ Actual
+        	            	@@ -1,5 +1,5 @@
+        	            	 ([]uint64) (len=3) {
+        	            	+ (uint64) 3,
+        	            	  (uint64) 1,
+        	            	- (uint64) 2,
+        	            	- (uint64) 3
+        	            	+ (uint64) 2
+        	            	 }
+        	Test:       	TestRegressionSnapshotWaitsForApply
+        	Messages:   	snapshot must follow all older entry application
+raft2026/11/05 23:08:41 INFO: 1 switched to configuration voters=(1 2)
+raft2026/11/05 23:08:41 INFO: 1 became follower at term 0
+raft2026/11/05 23:08:41 INFO: newRaft 1 [peers: [1,2], term: 0, commit: 0, applied: 0, lastindex: 0, lastterm: 0]
+raft2026/11/05 23:08:41 INFO: 1 [term: 0] received a MsgApp message with higher term from 2 [term: 1]
+raft2026/11/05 23:08:41 INFO: 1 became follower at term 1
+raft2026/11/05 23:08:41 INFO: log [committed=1, applied=0, applying=1, unstable.offset=2, unstable.offsetInProgress=2, len(unstable.Entries)=0] starts to restore snapshot [index: 2, term: 1]
+raft2026/11/05 23:08:41 INFO: 1 switched to configuration voters=(1 2)
+raft2026/11/05 23:08:41 INFO: 1 [commit: 2, lastindex: 2, lastterm: 1] restored snapshot [index: 2, term: 1]
+raft2026/11/05 23:08:41 INFO: 1 [commit: 2] restored snapshot [index: 2, term: 1]
+raft2026/11/05 23:08:41 INFO: 1 switched to configuration voters=(1 2 3)
+--- FAIL: TestRegressionSnapshotConfigurationAfterQueuedConfChange (0.00s)
+    safety_regression_test.go:271: 
+        	Error Trace:	/workspace/raft-original/safety_regression_test.go:271
+        	Error:      	Not equal: 
+        	            	expected: []uint64{0x1, 0x2}
+        	            	actual  : []uint64{0x1, 0x2, 0x3}
+        	            	
+        	            	Diff:
+        	            	--- Expected
+        	            	+++ Actual
+        	            	@@ -1,4 +1,5 @@
+        	            	-([]uint64) (len=2) {
+        	            	+([]uint64) (len=3) {
+        	            	  (uint64) 1,
+        	            	- (uint64) 2
+        	            	+ (uint64) 2,
+        	            	+ (uint64) 3
+        	            	 }
+        	Test:       	TestRegressionSnapshotConfigurationAfterQueuedConfChange
+raft2026/11/05 23:08:41 INFO: 1 switched to configuration voters=(1 2 3)
+raft2026/11/05 23:08:41 INFO: 1 became follower at term 0
+raft2026/11/05 23:08:41 INFO: newRaft 1 [peers: [1,2,3], term: 0, commit: 0, applied: 0, lastindex: 0, lastterm: 0]
+raft2026/11/05 23:08:41 INFO: 1 [term: 0] received a MsgApp message with higher term from 2 [term: 1]
+raft2026/11/05 23:08:41 INFO: 1 became follower at term 1
+raft2026/11/05 23:08:41 INFO: 1 is starting a new election at term 1
+raft2026/11/05 23:08:41 INFO: 1 became candidate at term 2
+raft2026/11/05 23:08:41 INFO: 1 [logterm: 1, index: 2] sent MsgVote request to 2 at term 2
+raft2026/11/05 23:08:41 INFO: 1 [logterm: 1, index: 2] sent MsgVote request to 3 at term 2
+--- FAIL: TestRegressionCampaignWaitsForQueuedConfiguration (0.00s)
+    safety_regression_test.go:279: 
+        	Error Trace:	/workspace/raft-original/safety_regression_test.go:279
+        	Error:      	Not equal: 
+        	            	expected: 0x0
+        	            	actual  : 0x1
+        	Test:       	TestRegressionCampaignWaitsForQueuedConfiguration
+        	Messages:   	campaigned with an unapplied committed configuration
+raft2026/11/05 23:08:41 INFO: 1 switched to configuration voters=(1 2 3)
+raft2026/11/05 23:08:41 INFO: 1 became follower at term 0
+raft2026/11/05 23:08:41 INFO: newRaft 1 [peers: [1,2,3], term: 0, commit: 0, applied: 0, lastindex: 0, lastterm: 0]
+raft2026/11/05 23:08:41 INFO: 2 switched to configuration voters=(1 2 3)
+raft2026/11/05 23:08:41 INFO: 2 became follower at term 0
+raft2026/11/05 23:08:41 INFO: newRaft 2 [peers: [1,2,3], term: 0, commit: 0, applied: 0, lastindex: 0, lastterm: 0]
+raft2026/11/05 23:08:41 INFO: 3 switched to configuration voters=(1 2 3)
+raft2026/11/05 23:08:41 INFO: 3 became follower at term 0
+raft2026/11/05 23:08:41 INFO: newRaft 3 [peers: [1,2,3], term: 0, commit: 0, applied: 0, lastindex: 0, lastterm: 0]
+raft2026/11/05 23:08:41 INFO: 2 is starting a new election at term 0
+raft2026/11/05 23:08:41 INFO: 2 became candidate at term 1
+raft2026/11/05 23:08:41 INFO: 2 [logterm: 0, index: 0] sent MsgVote request to 1 at term 1
+raft2026/11/05 23:08:41 INFO: 2 [logterm: 0, index: 0] sent MsgVote request to 3 at term 1
+raft2026/11/05 23:08:41 INFO: 2 received MsgVoteResp from 2 at term 1
+raft2026/11/05 23:08:41 INFO: 2 has received 1 MsgVoteResp votes and 0 vote rejections
+raft2026/11/05 23:08:41 INFO: 3 is starting a new election at term 0
+raft2026/11/05 23:08:41 INFO: 3 became candidate at term 1
+raft2026/11/05 23:08:41 INFO: 3 [logterm: 0, index: 0] sent MsgVote request to 1 at term 1
+raft2026/11/05 23:08:41 INFO: 3 [logterm: 0, index: 0] sent MsgVote request to 2 at term 1
+raft2026/11/05 23:08:41 INFO: 3 received MsgVoteResp from 3 at term 1
+raft2026/11/05 23:08:41 INFO: 3 has received 1 MsgVoteResp votes and 0 vote rejections
+raft2026/11/05 23:08:41 INFO: 1 [term: 0] received a MsgVote message with higher term from 2 [term: 1]
+raft2026/11/05 23:08:41 INFO: 1 became follower at term 1
+raft2026/11/05 23:08:41 INFO: 1 [logterm: 0, index: 0, vote: 0] cast MsgVote for 2 [logterm: 0, index: 0] at term 1
+raft2026/11/05 23:08:41 INFO: 1 [logterm: 0, index: 0, vote: 2] cast MsgVote for 2 [logterm: 0, index: 0] at term 1
+raft2026/11/05 23:08:41 INFO: 2 received MsgVoteResp from 1 at term 1
+raft2026/11/05 23:08:41 INFO: 2 has received 2 MsgVoteResp votes and 0 vote rejections
+raft2026/11/05 23:08:41 INFO: 2 became leader at term 1
+raft2026/11/05 23:08:41 INFO: 1 switched to configuration voters=(1 2 3)
+raft2026/11/05 23:08:41 INFO: 1 became follower at term 0
+raft2026/11/05 23:08:41 INFO: newRaft 1 [peers: [1,2,3], term: 0, commit: 0, applied: 0, lastindex: 0, lastterm: 0]
+raft2026/11/05 23:08:41 INFO: 1 [term: 0] received a MsgVote message with higher term from 3 [term: 1]
+raft2026/11/05 23:08:41 INFO: 1 became follower at term 1
+raft2026/11/05 23:08:41 INFO: 1 [logterm: 0, index: 0, vote: 0] cast MsgVote for 3 [logterm: 0, index: 0] at term 1
+raft2026/11/05 23:08:41 INFO: 3 received MsgVoteResp from 1 at term 1
+raft2026/11/05 23:08:41 INFO: 3 has received 2 MsgVoteResp votes and 0 vote rejections
+raft2026/11/05 23:08:41 INFO: 3 became leader at term 1
+--- FAIL: TestRegressionSplitLeadersApplyAndRead (0.00s)
+    safety_regression_test.go:426: 
+        	Error Trace:	/workspace/raft-original/safety_regression_test.go:426
+        	Error:      	Should be false
+        	Test:       	TestRegressionSplitLeadersApplyAndRead
+        	Messages:   	different entries applied at one index: true; stale ReadState: true
+FAIL
+exit status 1
+FAIL	go.etcd.io/raft/v3	0.004s

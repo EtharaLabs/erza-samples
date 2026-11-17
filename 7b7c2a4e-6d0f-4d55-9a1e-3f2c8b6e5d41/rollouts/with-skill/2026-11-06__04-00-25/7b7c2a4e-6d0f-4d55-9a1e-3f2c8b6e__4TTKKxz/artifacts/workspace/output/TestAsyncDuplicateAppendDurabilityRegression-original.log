@@ -1,0 +1,21 @@
+--- FAIL: TestAsyncDuplicateAppendDurabilityRegression (0.00s)
+    safety_regression_test.go:78: 
+        	Error Trace:	/workspace/raft/safety_regression_test.go:78
+        	            				/workspace/raft/safety_regression_test.go:145
+        	            				/workspace/raft/safety_regression_test.go:532
+        	            				/workspace/raft/safety_regression_test.go:349
+        	Error:      	Not equal: 
+        	            	expected: "2/0/6c6f7374"
+        	            	actual  : "3/0/"
+        	            	
+        	            	Diff:
+        	            	--- Expected
+        	            	+++ Actual
+        	            	@@ -1 +1 @@
+        	            	-2/0/6c6f7374
+        	            	+3/0/
+        	Test:       	TestAsyncDuplicateAppendDurabilityRegression
+        	Messages:   	conflicting application at 3
+FAIL
+exit status 1
+FAIL	go.etcd.io/raft/v3	0.004s

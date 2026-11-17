@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<article class="article">
+  <header class="article-header">
+    <p class="eyebrow">{% for category in post.categories %}<a href="/category-{{ category|term_slug }}.html">{{ category }}</a>{% if not loop.last %}<span> / </span>{% endif %}{% endfor %}</p>
+    <h1>{{ post.title }}</h1>
+    {% if post.summary or post.description %}<p class="article-dek">{{ post.summary or post.description }}</p>{% endif %}
+    <div class="article-meta"><time datetime="{{ post.date.isoformat() }}">Published {{ post.date|date }}</time>{% if post.updated %}<span>Updated {{ post.updated|date }}</span>{% endif %}<span>{{ post.reading_time }} min read</span>{% if post.is_preview %}<span class="status-pill">Preview</span>{% endif %}</div>
+  </header>
+  {% if post.image %}<img class="article-image" src="{{ post.image }}" alt="" loading="eager">{% endif %}
+  <div class="prose">{{ post.html }}</div>
+  {% if post.tags %}<footer class="article-footer"><h2>Filed under</h2><div class="taxonomy-row">{% for tag in post.tags %}<a class="tag" href="/tag-{{ tag|term_slug }}.html">#{{ tag }}</a>{% endfor %}</div></footer>{% endif %}
+</article>
+{% endblock %}

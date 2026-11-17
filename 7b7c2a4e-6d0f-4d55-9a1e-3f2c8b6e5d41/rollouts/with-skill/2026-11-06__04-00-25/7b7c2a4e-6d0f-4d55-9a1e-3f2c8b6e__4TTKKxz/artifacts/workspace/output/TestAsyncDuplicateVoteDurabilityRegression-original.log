@@ -1,0 +1,11 @@
+--- FAIL: TestAsyncDuplicateVoteDurabilityRegression (0.00s)
+    safety_regression_test.go:68: 
+        	Error Trace:	/workspace/raft/safety_regression_test.go:68
+        	            				/workspace/raft/safety_regression_test.go:172
+        	            				/workspace/raft/safety_regression_test.go:310
+        	Error:      	Should be true
+        	Test:       	TestAsyncDuplicateVoteDurabilityRegression
+        	Messages:   	two leaders in term 2: 1 and 3
+FAIL
+exit status 1
+FAIL	go.etcd.io/raft/v3	0.004s

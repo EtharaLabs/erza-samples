@@ -1,0 +1,26 @@
+{
+    "task": {
+        "path": "tasks/0ddf264f-938b-4b5c-817c-45766d0dcf81"
+    },
+    "trial_name": "0ddf264f-938b-4b5c-817c-45766d0d__2HW7cFR",
+    "trials_dir": "jobs/2026-11-14__09-06-45",
+    "agent": {
+        "name": "codex",
+        "model_name": "openai/gpt-6.1-sol",
+        "skills": [
+            "tasks/0ddf264f-938b-4b5c-817c-45766d0dcf81/environment/skills/build-chain-triage"
+        ],
+        "extra_allowed_hosts": [
+            "host.docker.internal"
+        ],
+        "kwargs": {
+            "reasoning_effort": "high",
+            "reasoning_summary": "detailed"
+        },
+        "env": {
+            "OPENAI_BASE_URL": "http://host.docker.internal:8766/v1",
+            "OPENAI_API_KEY": "WRmm****kJQ"
+        }
+    },
+    "job_id": "b8e1d6f2-fb3d-4f88-b640-24ee3fdb648b"
+}

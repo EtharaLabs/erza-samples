@@ -1,0 +1,42 @@
+diff -ruN a/src/pagecraft/builder.py b/src/pagecraft/builder.py
+--- a/src/pagecraft/builder.py	2026-11-03 18:58:37
++++ b/src/pagecraft/builder.py	2026-11-03 18:58:37
+@@ -108,7 +108,7 @@
+             manifest = json.loads(self.manifest_path.read_text(encoding="utf-8"))
+         except (json.JSONDecodeError, OSError):
+             return {"schema": MANIFEST_SCHEMA, "outputs": {}, "assets": {}}
+-        if manifest.get("version") != MANIFEST_SCHEMA:
++        if manifest.get("schema") != MANIFEST_SCHEMA:
+             return {"schema": MANIFEST_SCHEMA, "outputs": {}, "assets": {}}
+         manifest.setdefault("outputs", {})
+         manifest.setdefault("assets", {})
+@@ -349,7 +349,7 @@
+             outputs[self.config.feed_filename] = build_rss(items, self.config)
+ 
+         if self.config.sitemap_enabled and not self.config.is_placeholder_url:
+-            latest = max((post.date for post in self.published_posts), default=None)
++            latest = max((post.updated or post.date for post in self.published_posts), default=None)
+             sitemap_entries = [{"url": _absolute(self.config.url, "/"), "lastmod": latest}]
+             for page in self.published_posts + self.published_pages:
+                 sitemap_entries.append({"url": _absolute(self.config.url, page.url), "lastmod": page.updated or (page.date if page.kind == "post" or page.dated else None)})
+@@ -387,7 +387,7 @@
+                     target = urljoin("/" + output, target)
+                 if not target or not target.startswith("/"):
+                     continue
+-                relative = "index.html" if target == "/" else target.lstrip("/")
++                relative = "index.html" if target == "/" else route_to_output(target)
+                 if relative not in available:
+                     issues.append(f"{output}: internal link '{href}' does not resolve to generated output or an asset.")
+         return sorted(set(issues))
+diff -ruN a/src/pagecraft/rss.py b/src/pagecraft/rss.py
+--- a/src/pagecraft/rss.py	2026-11-03 18:58:37
++++ b/src/pagecraft/rss.py	2026-11-03 18:58:37
+@@ -13,7 +13,7 @@
+ 
+ def build_rss(items: list[dict], site_config) -> str:
+     """Build a standards-friendly RSS 2.0 document from published post items."""
+-    newest = max((item["date"] for item in items), default=datetime.now())
++    newest = max((item.get("updated") or item["date"] for item in items), default=datetime.now())
+     rss = Element("rss", version="2.0")
+     rss.set("xmlns:atom", "http://www.w3.org/2005/Atom")
+     rss.set("xmlns:content", "http://purl.org/rss/1.0/modules/content/")

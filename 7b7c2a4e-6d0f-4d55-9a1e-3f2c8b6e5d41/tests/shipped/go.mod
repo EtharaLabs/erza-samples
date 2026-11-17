@@ -1,0 +1,16 @@
+module go.etcd.io/raft/v3
+
+go 1.26
+
+toolchain go1.26.10
+
+require (
+	github.com/cockroachdb/datadriven v1.0.3
+	github.com/stretchr/testify v1.12.1
+	google.golang.org/protobuf v1.36.12
+)
+
+require (
+	github.com/pmezard/go-difflib v1.0.0 // indirect
+	go.yaml.in/yaml/v3 v3.0.5 // indirect
+)

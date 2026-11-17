@@ -1,0 +1,146 @@
+{
+  "reward": {
+    "kind": "group",
+    "score": 0.6857,
+    "aggregation": "weighted-mean",
+    "components": [
+      {
+        "name": "judge",
+        "weight": 10.0,
+        "detail": {
+          "score": 0.4,
+          "criteria": [
+            {
+              "id": "J1",
+              "name": "J1",
+              "value": 0.0,
+              "raw": "no",
+              "weight": 3.0,
+              "description": "/workspace/output/REPAIR_REPORT.md gives, for every cause listed in the reference answer, a sequence of message deliveries, crashes, or storage-thread steps under which the library as shipped violates a stated property.",
+              "reasoning": "The report gives schedules for reference causes 3 (its \u00a71, needStorageAppendMsg), 5 (its \u00a72), 2 (its \u00a73), and 4 (its \u00a74). It never describes reference cause 1: a candidate's own MsgVote leaving before its term/self-vote is durable under AsyncStorageWrites, with the candidate crashing, restarting at the old term, and re-winning the same term. Its \u00a71 schedules involve a follower's duplicate vote/append response escaping, which is cause 3, and its \u00a75 (mixed PreVote/CheckQuorum options) is not a reference cause. So not every reference cause has a sequence."
+            },
+            {
+              "id": "J2",
+              "name": "J2",
+              "value": 0.0,
+              "raw": "no",
+              "weight": 1.0,
+              "description": "/workspace/output/REPAIR_REPORT.md names, for every cause listed in the reference answer, the stated property that cause violates.",
+              "reasoning": "Properties are correctly named for reference causes 3 (election/state machine safety), 5 (linearizable reads), 2 and 4 (apply once/in order), but reference cause 1 (vote requests sent before candidate state is durable) is not identified at all, so no property is named for it."
+            },
+            {
+              "id": "J3",
+              "name": "J3",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 1.0,
+              "description": "/workspace/output/REPAIR_REPORT.md marks each of its claims as verified by running code or as inferred without running code.",
+              "reasoning": "Each cause section is headed 'Verified by running code' (with mode qualifiers), the dependency section states its conclusions follow from code and reproduced schedules and are not a formal proof, and the validation section is explicitly split into 'Verified by running code' and 'Inferred without exhaustive execution'. The labeling is systematic across the report's claims."
+            },
+            {
+              "id": "J4",
+              "name": "J4",
+              "value": 0.0,
+              "raw": "no",
+              "weight": 1.0,
+              "description": "/workspace/output/REPAIR_REPORT.md states, for the causes listed in the reference answer, which of them must be repaired together for a stated property to hold.",
+              "reasoning": "The report correctly states that its causes 3 and 4 (reference 2 and 4) must be repaired together, with a partial-repair experiment. However, it never identifies reference cause 1, so it cannot and does not state that reference causes 1 and 3 must be repaired together, which the reference requires. It also wrongly ties linearizable reads (reference 5) to its cause 1."
+            },
+            {
+              "id": "J5",
+              "name": "J5",
+              "value": 1.0,
+              "raw": "no",
+              "weight": 3.0,
+              "description": "/workspace/output/REPAIR_REPORT.md attributes a violation that the reference answer lists to a cause that the reference answer does not list for that violation.",
+              "reasoning": "The election/state machine safety violations are attributed to the needStorageAppendMsg routing bug (reference cause 3), the read violation to append responses confirming reads (reference cause 5), and the apply-order violations to snapshot/apply-thread ordering and the apply-response watermark (reference causes 2 and 4). The report's \u00a75 (mixed election options) is attributed only to a progress property that the reference does not list, so no listed violation is attributed to an unlisted cause.",
+              "negate": true
+            },
+            {
+              "id": "J6",
+              "name": "J6",
+              "value": 0.0,
+              "raw": "yes",
+              "weight": 1.0,
+              "description": "/workspace/output/REPAIR_REPORT.md states a dependence or independence between causes that the reference answer contradicts.",
+              "reasoning": "The report states 'Linearizable reads require cause 2's fresh quorum evidence and the election/log safety preserved by cause 1', i.e., a dependence between reference cause 5 and reference cause 3. The reference states that cause 5 is independent of the others, which contradicts this claimed dependence.",
+              "negate": true
+            }
+          ],
+          "kind": "llm",
+          "judge": {
+            "model": "anthropic/claude-fable-5-1",
+            "reasoning_effort": "medium",
+            "timeout": 300,
+            "files": [
+              "/workspace/output/REPAIR_REPORT.md"
+            ],
+            "atif_trajectory": null,
+            "reference": "/opt/grader/reference/REFERENCE.md",
+            "mode": "batched"
+          },
+          "judge_output": "{\"J1\":{\"score\":\"no\",\"reasoning\":\"The report gives schedules for reference causes 3 (its \u00a71, needStorageAppendMsg), 5 (its \u00a72), 2 (its \u00a73), and 4 (its \u00a74). It never describes reference cause 1: a candidate's own MsgVote leaving before its term/self-vote is durable under AsyncStorageWrites, with the candidate crashing, restarting at the old term, and re-winning the same term. Its \u00a71 schedules involve a follower's duplicate vote/append response escaping, which is cause 3, and its \u00a75 (mixed PreVote/CheckQuorum options) is not a reference cause. So not every reference cause has a sequence.\"},\"J2\":{\"score\":\"no\",\"reasoning\":\"Properties are correctly named for reference causes 3 (election/state machine safety), 5 (linearizable reads), 2 and 4 (apply once/in order), but reference cause 1 (vote requests sent before candidate state is durable) is not identified at all, so no property is named for it.\"},\"J3\":{\"score\":\"yes\",\"reasoning\":\"Each cause section is headed 'Verified by running code' (with mode qualifiers), the dependency section states its conclusions follow from code and reproduced schedules and are not a formal proof, and the validation section is explicitly split into 'Verified by running code' and 'Inferred without exhaustive execution'. The labeling is systematic across the report's claims.\"},\"J4\":{\"score\":\"no\",\"reasoning\":\"The report correctly states that its causes 3 and 4 (reference 2 and 4) must be repaired together, with a partial-repair experiment. However, it never identifies reference cause 1, so it cannot and does not state that reference causes 1 and 3 must be repaired together, which the reference requires. It also wrongly ties linearizable reads (reference 5) to its cause 1.\"},\"J5\":{\"score\":\"no\",\"reasoning\":\"The election/state machine safety violations are attributed to the needStorageAppendMsg routing bug (reference cause 3), the read violation to append responses confirming reads (reference cause 5), and the apply-order violations to snapshot/apply-thread ordering and the apply-response watermark (reference causes 2 and 4). The report's \u00a75 (mixed election options) is attributed only to a progress property that the reference does not list, so no listed violation is attributed to an unlisted cause.\"},\"J6\":{\"score\":\"yes\",\"reasoning\":\"The report states 'Linearizable reads require cause 2's fresh quorum evidence and the election/log safety preserved by cause 1', i.e., a dependence between reference cause 5 and reference cause 3. The reference states that cause 5 is independent of the others, which contradicts this claimed dependence.\"}}"
+        }
+      },
+      {
+        "name": "test_output",
+        "weight": 25.0,
+        "detail": {
+          "score": 0.8,
+          "criteria": [
+            {
+              "name": "K1",
+              "value": 0.0,
+              "raw": false,
+              "weight": 5.0,
+              "description": "holds"
+            },
+            {
+              "name": "K2",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "holds"
+            },
+            {
+              "name": "K3",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "holds"
+            },
+            {
+              "name": "K4",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "holds"
+            },
+            {
+              "name": "K5",
+              "value": 1.0,
+              "raw": true,
+              "weight": 1.0,
+              "description": "holds"
+            },
+            {
+              "name": "K6",
+              "value": 1.0,
+              "raw": true,
+              "weight": 1.0,
+              "description": "holds"
+            },
+            {
+              "name": "K7",
+              "value": 1.0,
+              "raw": true,
+              "weight": 3.0,
+              "description": "holds"
+            }
+          ],
+          "kind": "programmatic"
+        }
+      }
+    ]
+  }
+}

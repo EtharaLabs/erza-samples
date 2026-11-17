@@ -1,0 +1,6 @@
+{
+  "broken_project": "heldout_broken",
+  "main_project": "heldout_site",
+  "tag_rename": {"file": "posts/reflowing-a-cold-joint.md", "from": "soldering", "to": "rework"},
+  "updated_variant": {"file": "posts/oscilloscope-probe-compensation.md", "after_line": "date: 2025-01-14", "insert": "updated: 2025-05-19"}
+}

@@ -1,0 +1,209 @@
+{
+  "reward": {
+    "kind": "group",
+    "score": 0.6316,
+    "aggregation": "weighted-mean",
+    "components": [
+      {
+        "name": "judge",
+        "weight": 26.0,
+        "detail": {
+          "score": 0.4231,
+          "criteria": [
+            {
+              "id": "J01",
+              "name": "J01",
+              "value": 0.0,
+              "raw": "no",
+              "weight": 5.0,
+              "description": "/workspace/output/ROOT_CAUSE.md states, for each of the six causes F1 to F6, a cause matching an accepted cause in the reference answer and tied to the section 22.2 step the reference names; it passes only when all six causes F1 to F6 are identified. A further cause the note reports that matches an accepted further cause in the reference answer neither passes nor fails this criterion.",
+              "reasoning": "The note identifies F1 (single ampersand dropping the preceding operand), F2 (negated classes lacking MayContainStrings validation, empty/singleton \\q strings), F4 (duplicate-name references lowered to alternatives), and F5 (EnterLoop resetting iteration state, tied to RepeatMatcher). It does not identify F3 as described in the reference (a nested negated class such as [[^k]] inverted before case closure); its complement-before-folding finding is about \\W and \\P operands, which the reference lists as a separate further cause. It does not identify F6 at all (EndCaptureGroup writing a capture end without an undo entry). Not all six causes are present."
+            },
+            {
+              "id": "J02",
+              "name": "J02",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 1.0,
+              "description": "/workspace/output/ROOT_CAUSE.md explains why the crate's own tests passed through a reason matching an accepted reason in the reference answer.",
+              "reasoning": "Section 2 states the offending paths require combinations such as duplicate-name references, sibling disjunctions, empty class strings, or folding before set subtraction, and that simpler examples do not exercise those paths \u2014 this matches the accepted reason that the tests did not exercise these shapes."
+            },
+            {
+              "id": "J03",
+              "name": "J03",
+              "value": 0.0,
+              "raw": "no",
+              "weight": 3.0,
+              "description": "/workspace/output/ROOT_CAUSE.md names other affected patterns matching an accepted pattern class in the reference answer for at least each cause the note identifies. A further cause outside F1 to F6 needs none.",
+              "reasoning": "Section 3 lists mechanism families for most identified causes (duplicate names, nested quantified bodies, case-equivalent operands, singleton \\q alternatives, empty strings, string-bearing negated operands, mixed punctuation, backspace), but names no other pattern class for the identified single-ampersand cause (F1); 'mixed reserved punctuation' refers to the double-punctuator cause, not single &. Not every identified cause has an affected-pattern class."
+            },
+            {
+              "id": "J04",
+              "name": "J04",
+              "value": 0.0,
+              "raw": "no",
+              "weight": 5.0,
+              "description": "/workspace/output/ROOT_CAUSE.md describes a repair matching an accepted repair statement in the reference answer for every cause F1 to F6. A further cause the note reports outside F1 to F6 neither passes nor fails this criterion.",
+              "reasoning": "Repairs are described for F1, F2, F4, and F5 (concatenated references, MayContainStrings tracking, empty strings retained and ordered last, singleton normalization, ampersand fix, loop restoration data). No repair is described for F6 (restoring a capture's end on backtrack) and no repair for F3 proper (closing a nested negated class under case before inverting); the folding-before-complement repair is scoped to \\W and \\P operands. The reference requires a repair for every cause F1 to F6."
+            },
+            {
+              "id": "J05",
+              "name": "J05",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 1.0,
+              "description": "/workspace/output/ROOT_CAUSE.md names unchanged behaviours matching the accepted unchanged set in the reference answer.",
+              "reasoning": "Section 5 and section 4 state that public signatures, budget accounting, capture numbering, greedy/lazy ordering, and the input indexers (UTF-16 APIs) are unchanged, and that the existing tests pass \u2014 matching the accepted unchanged set (public API, budget API, UTF-16 entry points, existing tests)."
+            },
+            {
+              "id": "J06",
+              "name": "J06",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 3.0,
+              "description": "/workspace/output/ROOT_CAUSE.md describes how the correct results were determined through a method matching an accepted method class in the reference answer.",
+              "reasoning": "Section 6 names the local ecma262-2025 specification as the oracle, citing the pattern grammar and early errors, MayContainStrings, RepeatMatcher, named-reference compilation, Canonicalize, CompileToCharSet, and string ordering, with expected results derived directly from these rules and no external engine used \u2014 matching the accepted method class of reading the section 22.2 algorithms and applying them by hand."
+            },
+            {
+              "id": "J07",
+              "name": "J07",
+              "value": 0.0,
+              "raw": "no",
+              "weight": 1.0,
+              "description": "/workspace/output/ROOT_CAUSE.md describes a check for each cause matching an accepted check class in the reference answer.",
+              "reasoning": "Section 7 describes regression checks for the causes the note identified (duplicate references, sibling names, nested quantified body under budget, folded set algebra, singleton strings, empty strings, negated-string rejection, ampersand, backspace, hex errors), but there is no check for F6 (backreference after backtracking across a group end) and no check for the nested negated class under iv of F3; the 'nested property complements' check is listed as not executed. A check for each cause is not described."
+            },
+            {
+              "id": "J08",
+              "name": "J08",
+              "value": 0.0,
+              "raw": "no",
+              "weight": 1.0,
+              "description": "/workspace/output/ROOT_CAUSE.md describes interactions among the causes matching an accepted interaction statement in the reference answer.",
+              "reasoning": "The interactions given (duplicate names depending on mutual-exclusion validation, singleton normalization preserving MayContainStrings, folding before complement and set algebra, loop rollback and capture rollback coexisting on the backtracking stack) do not match an accepted interaction statement. The closest, 'loop rollback and capture rollback coexist on the same backtracking stack', does not state that both F5 and F6 omit undo-log entries \u2014 the note never identifies F6 as a fault \u2014 and the F4 statement is about mutual exclusion rather than unset backreferences matching empty."
+            },
+            {
+              "id": "J09",
+              "name": "J09",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 1.0,
+              "description": "/workspace/output/ROOT_CAUSE.md names a behaviour its evidence does not establish matching an accepted limitation class in the reference answer.",
+              "reasoning": "Section 9 states the evidence does not establish that every valid pattern finishes within the 1,000,000-backtrack budget and that general catastrophic backtracking is not eliminated \u2014 this falls under the accepted 'performance' limitation class."
+            },
+            {
+              "id": "J10",
+              "name": "J10",
+              "value": 1.0,
+              "raw": "no",
+              "weight": 5.0,
+              "description": "/workspace/output/ROOT_CAUSE.md makes a causal claim matching a rejected claim class in the reference answer.",
+              "reasoning": "The note makes no rejected causal claim: it does not appeal to Python re, PCRE, or another engine; does not attribute the hang to budget size; does not claim [x&] is an error or & alone is an operator; does not say [^\\q{xy}] should compile; does not justify duplicate names by first-declared group; does not advocate complement over all code points under iv; and does not blame Unicode tables, the decoder, or the optimizer.",
+              "negate": true
+            }
+          ],
+          "kind": "llm",
+          "judge": {
+            "model": "anthropic/claude-fable-5-1",
+            "reasoning_effort": "medium",
+            "timeout": 300,
+            "files": [
+              "/workspace/output/ROOT_CAUSE.md"
+            ],
+            "atif_trajectory": null,
+            "reference": "/opt/grader/reference/ROOT_CAUSE.md",
+            "mode": "batched"
+          },
+          "judge_output": "{\"J01\":{\"score\":\"no\",\"reasoning\":\"The note identifies F1 (single ampersand dropping the preceding operand), F2 (negated classes lacking MayContainStrings validation, empty/singleton \\\\q strings), F4 (duplicate-name references lowered to alternatives), and F5 (EnterLoop resetting iteration state, tied to RepeatMatcher). It does not identify F3 as described in the reference (a nested negated class such as [[^k]] inverted before case closure); its complement-before-folding finding is about \\\\W and \\\\P operands, which the reference lists as a separate further cause. It does not identify F6 at all (EndCaptureGroup writing a capture end without an undo entry). Not all six causes are present.\"},\"J02\":{\"score\":\"yes\",\"reasoning\":\"Section 2 states the offending paths require combinations such as duplicate-name references, sibling disjunctions, empty class strings, or folding before set subtraction, and that simpler examples do not exercise those paths \u2014 this matches the accepted reason that the tests did not exercise these shapes.\"},\"J03\":{\"score\":\"no\",\"reasoning\":\"Section 3 lists mechanism families for most identified causes (duplicate names, nested quantified bodies, case-equivalent operands, singleton \\\\q alternatives, empty strings, string-bearing negated operands, mixed punctuation, backspace), but names no other pattern class for the identified single-ampersand cause (F1); 'mixed reserved punctuation' refers to the double-punctuator cause, not single &. Not every identified cause has an affected-pattern class.\"},\"J04\":{\"score\":\"no\",\"reasoning\":\"Repairs are described for F1, F2, F4, and F5 (concatenated references, MayContainStrings tracking, empty strings retained and ordered last, singleton normalization, ampersand fix, loop restoration data). No repair is described for F6 (restoring a capture's end on backtrack) and no repair for F3 proper (closing a nested negated class under case before inverting); the folding-before-complement repair is scoped to \\\\W and \\\\P operands. The reference requires a repair for every cause F1 to F6.\"},\"J05\":{\"score\":\"yes\",\"reasoning\":\"Section 5 and section 4 state that public signatures, budget accounting, capture numbering, greedy/lazy ordering, and the input indexers (UTF-16 APIs) are unchanged, and that the existing tests pass \u2014 matching the accepted unchanged set (public API, budget API, UTF-16 entry points, existing tests).\"},\"J06\":{\"score\":\"yes\",\"reasoning\":\"Section 6 names the local ecma262-2025 specification as the oracle, citing the pattern grammar and early errors, MayContainStrings, RepeatMatcher, named-reference compilation, Canonicalize, CompileToCharSet, and string ordering, with expected results derived directly from these rules and no external engine used \u2014 matching the accepted method class of reading the section 22.2 algorithms and applying them by hand.\"},\"J07\":{\"score\":\"no\",\"reasoning\":\"Section 7 describes regression checks for the causes the note identified (duplicate references, sibling names, nested quantified body under budget, folded set algebra, singleton strings, empty strings, negated-string rejection, ampersand, backspace, hex errors), but there is no check for F6 (backreference after backtracking across a group end) and no check for the nested negated class under iv of F3; the 'nested property complements' check is listed as not executed. A check for each cause is not described.\"},\"J08\":{\"score\":\"no\",\"reasoning\":\"The interactions given (duplicate names depending on mutual-exclusion validation, singleton normalization preserving MayContainStrings, folding before complement and set algebra, loop rollback and capture rollback coexisting on the backtracking stack) do not match an accepted interaction statement. The closest, 'loop rollback and capture rollback coexist on the same backtracking stack', does not state that both F5 and F6 omit undo-log entries \u2014 the note never identifies F6 as a fault \u2014 and the F4 statement is about mutual exclusion rather than unset backreferences matching empty.\"},\"J09\":{\"score\":\"yes\",\"reasoning\":\"Section 9 states the evidence does not establish that every valid pattern finishes within the 1,000,000-backtrack budget and that general catastrophic backtracking is not eliminated \u2014 this falls under the accepted 'performance' limitation class.\"},\"J10\":{\"score\":\"no\",\"reasoning\":\"The note makes no rejected causal claim: it does not appeal to Python re, PCRE, or another engine; does not attribute the hang to budget size; does not claim [x&] is an error or & alone is an operator; does not say [^\\\\q{xy}] should compile; does not justify duplicate names by first-declared group; does not advocate complement over all code points under iv; and does not blame Unicode tables, the decoder, or the optimizer.\"}}"
+        }
+      },
+      {
+        "name": "test_output",
+        "weight": 31.0,
+        "detail": {
+          "score": 0.8065,
+          "criteria": [
+            {
+              "name": "C01",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "C02",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "C03",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "C04",
+              "value": 0.0,
+              "raw": false,
+              "weight": 5.0,
+              "description": "conforms"
+            },
+            {
+              "name": "C05",
+              "value": 1.0,
+              "raw": true,
+              "weight": 1.0,
+              "description": "conforms"
+            },
+            {
+              "name": "C06",
+              "value": 1.0,
+              "raw": true,
+              "weight": 3.0,
+              "description": "conforms"
+            },
+            {
+              "name": "C07",
+              "value": 1.0,
+              "raw": true,
+              "weight": 3.0,
+              "description": "conforms"
+            },
+            {
+              "name": "C08",
+              "value": 0.0,
+              "raw": false,
+              "weight": 1.0,
+              "description": "conforms"
+            },
+            {
+              "name": "C09",
+              "value": 1.0,
+              "raw": true,
+              "weight": 1.0,
+              "description": "shipped_tests_pass"
+            },
+            {
+              "name": "C10",
+              "value": 1.0,
+              "raw": true,
+              "weight": 1.0,
+              "description": "conforms"
+            },
+            {
+              "name": "C11",
+              "value": 1.0,
+              "raw": true,
+              "weight": 1.0,
+              "description": "conforms"
+            }
+          ],
+          "kind": "programmatic"
+        }
+      }
+    ]
+  }
+}

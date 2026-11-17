@@ -1,0 +1,146 @@
+{
+  "reward": {
+    "kind": "group",
+    "score": 0.3143,
+    "aggregation": "weighted-mean",
+    "components": [
+      {
+        "name": "judge",
+        "weight": 10.0,
+        "detail": {
+          "score": 0.1,
+          "criteria": [
+            {
+              "id": "J1",
+              "name": "J1",
+              "value": 0.0,
+              "raw": "no",
+              "weight": 3.0,
+              "description": "/workspace/output/REPAIR_REPORT.md gives, for every cause listed in the reference answer, a sequence of message deliveries, crashes, or storage-thread steps under which the library as shipped violates a stated property.",
+              "reasoning": "The report's causes map to reference causes 3 (needStorageAppendMsg fast path), 4 (apply response advancing to the whole applying frontier), and 2 (snapshot overtaking queued application; the report's cause 5 is a finer-grained aspect of the same). It gives no sequence for reference cause 1 (a candidate's own MsgVote sent before its term/self-vote is durable) nor for reference cause 5 (append acknowledgements counted as ReadOnlySafe read confirmations). The report's cause 2 (self-directed pre-vote responses dropped) is a progress issue, not a reference cause. Since two of the five reference causes have no violating sequence, the criterion is not met."
+            },
+            {
+              "id": "J2",
+              "name": "J2",
+              "value": 0.0,
+              "raw": "no",
+              "weight": 1.0,
+              "description": "/workspace/output/REPAIR_REPORT.md names, for every cause listed in the reference answer, the stated property that cause violates.",
+              "reasoning": "Because reference causes 1 and 5 are absent from the report, the report cannot name the property each violates. For the causes it does cover it names properties, but the criterion requires all five."
+            },
+            {
+              "id": "J3",
+              "name": "J3",
+              "value": 0.0,
+              "raw": "no",
+              "weight": 1.0,
+              "description": "/workspace/output/REPAIR_REPORT.md marks each of its claims as verified by running code or as inferred without running code.",
+              "reasoning": "Most sections carry explicit 'Verified' or 'Inferred' labels and the report states a blanket rule that unexecuted consequences are marked inferred. However, the 'Repairs that must hold together' section makes substantive claims (e.g., that fixing only vote grants leaves the append failure, that a snapshot gate on the original applied frontier can open while a batch is queued, that changing the read algorithm alone would not fix the stale read) without any verified/inferred marking, and no partial-fix experiments are reported that would make them verified. Not every claim is marked."
+            },
+            {
+              "id": "J4",
+              "name": "J4",
+              "value": 0.0,
+              "raw": "no",
+              "weight": 1.0,
+              "description": "/workspace/output/REPAIR_REPORT.md states, for the causes listed in the reference answer, which of them must be repaired together for a stated property to hold.",
+              "reasoning": "The report does state that snapshot/application ordering requires its causes 3, 4, 5 together, which corresponds to the reference's 2-and-4 coupling. But the reference's other coupling, causes 1 and 3 (candidate MsgVote before durability together with the nothing-to-write Ready fast path), cannot be and is not stated because reference cause 1 is not identified at all. The criterion requires coverage of the reference's co-repair sets for all listed causes."
+            },
+            {
+              "id": "J5",
+              "name": "J5",
+              "value": 0.0,
+              "raw": "yes",
+              "weight": 3.0,
+              "description": "/workspace/output/REPAIR_REPORT.md attributes a violation that the reference answer lists to a cause that the reference answer does not list for that violation.",
+              "reasoning": "The report attributes the linearizable-reads violation to its cause 1 (the needStorageAppendMsg fast path, reference cause 3) and says the stale read is eliminated by repairing the split-election cause, whereas the reference lists only cause 5 (append acks counted as read confirmations) for linearizable reads and lists cause 3 only for state machine/election safety. The report also attributes election/state machine safety violations to the apply-response cause (reference cause 4), which the reference lists only for apply-once-in-order. These are attributions of listed violations to causes the reference does not list for them.",
+              "negate": true
+            },
+            {
+              "id": "J6",
+              "name": "J6",
+              "value": 1.0,
+              "raw": "no",
+              "weight": 1.0,
+              "description": "/workspace/output/REPAIR_REPORT.md states a dependence or independence between causes that the reference answer contradicts.",
+              "reasoning": "The report's stated couplings (snapshot ordering requires the apply-response fix together with the snapshot deferral, corresponding to reference 2 and 4; the vote and append response barriers must hold together within the same fast-path cause) are consistent with the reference. The report does not name reference causes 1 or 5, so it makes no dependence/independence statement about them that the reference contradicts. Its additional claims (e.g., election safety also needing the apply-response fix) are not directly contradicted by the reference's stated dependencies.",
+              "negate": true
+            }
+          ],
+          "kind": "llm",
+          "judge": {
+            "model": "anthropic/claude-fable-5-1",
+            "reasoning_effort": "medium",
+            "timeout": 300,
+            "files": [
+              "/workspace/output/REPAIR_REPORT.md"
+            ],
+            "atif_trajectory": null,
+            "reference": "/opt/grader/reference/REFERENCE.md",
+            "mode": "batched"
+          },
+          "judge_output": "{\"J1\":{\"score\":\"no\",\"reasoning\":\"The report's causes map to reference causes 3 (needStorageAppendMsg fast path), 4 (apply response advancing to the whole applying frontier), and 2 (snapshot overtaking queued application; the report's cause 5 is a finer-grained aspect of the same). It gives no sequence for reference cause 1 (a candidate's own MsgVote sent before its term/self-vote is durable) nor for reference cause 5 (append acknowledgements counted as ReadOnlySafe read confirmations). The report's cause 2 (self-directed pre-vote responses dropped) is a progress issue, not a reference cause. Since two of the five reference causes have no violating sequence, the criterion is not met.\"},\"J2\":{\"score\":\"no\",\"reasoning\":\"Because reference causes 1 and 5 are absent from the report, the report cannot name the property each violates. For the causes it does cover it names properties, but the criterion requires all five.\"},\"J3\":{\"score\":\"no\",\"reasoning\":\"Most sections carry explicit 'Verified' or 'Inferred' labels and the report states a blanket rule that unexecuted consequences are marked inferred. However, the 'Repairs that must hold together' section makes substantive claims (e.g., that fixing only vote grants leaves the append failure, that a snapshot gate on the original applied frontier can open while a batch is queued, that changing the read algorithm alone would not fix the stale read) without any verified/inferred marking, and no partial-fix experiments are reported that would make them verified. Not every claim is marked.\"},\"J4\":{\"score\":\"no\",\"reasoning\":\"The report does state that snapshot/application ordering requires its causes 3, 4, 5 together, which corresponds to the reference's 2-and-4 coupling. But the reference's other coupling, causes 1 and 3 (candidate MsgVote before durability together with the nothing-to-write Ready fast path), cannot be and is not stated because reference cause 1 is not identified at all. The criterion requires coverage of the reference's co-repair sets for all listed causes.\"},\"J5\":{\"score\":\"yes\",\"reasoning\":\"The report attributes the linearizable-reads violation to its cause 1 (the needStorageAppendMsg fast path, reference cause 3) and says the stale read is eliminated by repairing the split-election cause, whereas the reference lists only cause 5 (append acks counted as read confirmations) for linearizable reads and lists cause 3 only for state machine/election safety. The report also attributes election/state machine safety violations to the apply-response cause (reference cause 4), which the reference lists only for apply-once-in-order. These are attributions of listed violations to causes the reference does not list for them.\"},\"J6\":{\"score\":\"no\",\"reasoning\":\"The report's stated couplings (snapshot ordering requires the apply-response fix together with the snapshot deferral, corresponding to reference 2 and 4; the vote and append response barriers must hold together within the same fast-path cause) are consistent with the reference. The report does not name reference causes 1 or 5, so it makes no dependence/independence statement about them that the reference contradicts. Its additional claims (e.g., election safety also needing the apply-response fix) are not directly contradicted by the reference's stated dependencies.\"}}"
+        }
+      },
+      {
+        "name": "test_output",
+        "weight": 25.0,
+        "detail": {
+          "score": 0.4,
+          "criteria": [
+            {
+              "name": "K1",
+              "value": 0.0,
+              "raw": false,
+              "weight": 5.0,
+              "description": "holds"
+            },
+            {
+              "name": "K2",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "holds"
+            },
+            {
+              "name": "K3",
+              "value": 0.0,
+              "raw": false,
+              "weight": 5.0,
+              "description": "holds"
+            },
+            {
+              "name": "K4",
+              "value": 0.0,
+              "raw": false,
+              "weight": 5.0,
+              "description": "holds"
+            },
+            {
+              "name": "K5",
+              "value": 1.0,
+              "raw": true,
+              "weight": 1.0,
+              "description": "holds"
+            },
+            {
+              "name": "K6",
+              "value": 1.0,
+              "raw": true,
+              "weight": 1.0,
+              "description": "holds"
+            },
+            {
+              "name": "K7",
+              "value": 1.0,
+              "raw": true,
+              "weight": 3.0,
+              "description": "holds"
+            }
+          ],
+          "kind": "programmatic"
+        }
+      }
+    ]
+  }
+}

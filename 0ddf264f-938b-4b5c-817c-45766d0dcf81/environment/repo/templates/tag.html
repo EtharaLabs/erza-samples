@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="listing-page"><p class="eyebrow">Tag</p><h1>#{{ tag.name }}</h1><p class="article-dek">{{ tag.count }} published post{% if tag.count != 1 %}s{% endif %} filed under this tag.</p>
+  <div class="post-list">{% for post in posts %}{% include "postcard.html" %}{% endfor %}</div>
+</section>
+{% endblock %}

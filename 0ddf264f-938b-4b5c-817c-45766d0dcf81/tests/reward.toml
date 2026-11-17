@@ -1,0 +1,6 @@
+# Root aggregate: weighted mean over both components, each weighted by the total
+# item weight it carries (compiled 62, judged 59; compiled share 62/121 = 0.512 >= 0.5).
+[[reward]]
+name = "reward"
+aggregation = "weighted-mean"
+weights = { test_output = 62, judge = 59 }

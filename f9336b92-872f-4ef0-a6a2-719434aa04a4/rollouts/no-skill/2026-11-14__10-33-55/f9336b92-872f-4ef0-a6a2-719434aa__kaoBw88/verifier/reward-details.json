@@ -1,0 +1,168 @@
+{
+  "reward": {
+    "kind": "group",
+    "score": 0.5192,
+    "aggregation": "weighted-mean",
+    "components": [
+      {
+        "name": "judge",
+        "weight": 13.0,
+        "detail": {
+          "score": 0.6154,
+          "criteria": [
+            {
+              "id": "J01",
+              "name": "J01",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 5.0,
+              "description": "At least one cause that /workspace/output/NOTES.md reports is the same defect as a cause in the reference answer.",
+              "reasoning": "Cause 1 (negative BYSETPOS reversing days but not times, in rrule._iter) is the same defect as reference C-P2, and the BYMONTHDAY=0 portion of cause 2 (constructor range check admitting 0, no month-day filter) is reference C-B1."
+            },
+            {
+              "id": "J02",
+              "name": "J02",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 1.0,
+              "description": "For every cause in /workspace/output/NOTES.md that matches a reference cause, the note gives the RFC 5545 section and quotes the wording of the clause the reference answer gives for that cause.",
+              "reasoning": "Both matching causes cite RFC 5545 \u00a73.3.10 and quote the clause wording: for C-P2 the BYSETPOS positive/negative and 'nth occurrence ... within the set' text, and for C-B1 the exact 'Valid values are 1 to 31 or -31 to -1' wording the reference gives."
+            },
+            {
+              "id": "J03",
+              "name": "J03",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 1.0,
+              "description": "For every cause in /workspace/output/NOTES.md that matches a reference cause, the note names the function or code path in src/dateutil/rrule.py where the reference answer places that cause.",
+              "reasoning": "Cause 1 is placed in rrule._iter candidate construction (reference: the candidate walk in rrule._iter); cause 2 is placed in rrule.__init__ (reference: the constructor's range check)."
+            },
+            {
+              "id": "J04",
+              "name": "J04",
+              "value": 0.0,
+              "raw": "no",
+              "weight": 1.0,
+              "description": "For every cause in /workspace/output/NOTES.md that matches a reference cause, the note shows a rule whose instance lists before and after the change exhibit that cause.",
+              "reasoning": "Cause 1 shows a concrete rule with before (Jan 2 and 3 at 09:00) and after (Jan 1 and 2 at 17:00) instances. For the C-B1 match, however, the note only says BYMONTHDAY=0 'acted as no filter' and now raises ValueError; no rule with its before instance list is shown, so not every matching cause has before/after instance lists."
+            },
+            {
+              "id": "J05",
+              "name": "J05",
+              "value": 1.0,
+              "raw": "yes",
+              "weight": 1.0,
+              "description": "For every cause /workspace/output/NOTES.md reports, the note marks its evidence and its result as verified by running something or as inferred without running anything.",
+              "reasoning": "Each cause marks the original behaviour as 'inferred from original code'/'inferred from constructor' and the repaired result as 'verified by regression'/'verified by parametrized regression'; the interaction claims are explicitly marked as inferred from the code."
+            },
+            {
+              "id": "J06",
+              "name": "J06",
+              "value": 0.0,
+              "raw": "no",
+              "weight": 3.0,
+              "description": "/workspace/output/NOTES.md names an input that the reference answer lists as wrong only because two causes act on it, and says what that input returns when only one of the two is repaired.",
+              "reasoning": "The note does not name any of the reference's two-cause inputs (e.g. MONTHLY;BYDAY=MO,-1FR;BYHOUR=9,17;BYSETPOS=-1 or YEARLY;BYDAY=FR,20MO); its only interaction remark is a generic statement about invalid parts masking the BYSETPOS error."
+            },
+            {
+              "id": "J07",
+              "name": "J07",
+              "value": 0.0,
+              "raw": "yes",
+              "weight": 1.0,
+              "description": "/workspace/output/NOTES.md makes a causal claim that falls in one of the rejected claim classes of the reference answer.",
+              "reasoning": "Cause 2 asserts defects none of the reference causes describe: that the constructor accepted BYMONTH=13, BYYEARDAY=0/367, BYWEEKNO=0/54 and lacked BYHOUR/BYMINUTE checks, and it builds an interaction claim on them. The reference lists only BYMONTHDAY=0 as the validation cause, so this falls under rejected class R5.",
+              "negate": true
+            }
+          ],
+          "kind": "llm",
+          "judge": {
+            "model": "anthropic/claude-fable-5-1",
+            "reasoning_effort": "medium",
+            "timeout": 300,
+            "files": [
+              "/workspace/output/NOTES.md"
+            ],
+            "atif_trajectory": null,
+            "reference": "/opt/grader/reference/REFERENCE.md",
+            "mode": "batched"
+          },
+          "judge_output": "{\"J01\":{\"score\":\"yes\",\"reasoning\":\"Cause 1 (negative BYSETPOS reversing days but not times, in rrule._iter) is the same defect as reference C-P2, and the BYMONTHDAY=0 portion of cause 2 (constructor range check admitting 0, no month-day filter) is reference C-B1.\"},\"J02\":{\"score\":\"yes\",\"reasoning\":\"Both matching causes cite RFC 5545 \u00a73.3.10 and quote the clause wording: for C-P2 the BYSETPOS positive/negative and 'nth occurrence ... within the set' text, and for C-B1 the exact 'Valid values are 1 to 31 or -31 to -1' wording the reference gives.\"},\"J03\":{\"score\":\"yes\",\"reasoning\":\"Cause 1 is placed in rrule._iter candidate construction (reference: the candidate walk in rrule._iter); cause 2 is placed in rrule.__init__ (reference: the constructor's range check).\"},\"J04\":{\"score\":\"no\",\"reasoning\":\"Cause 1 shows a concrete rule with before (Jan 2 and 3 at 09:00) and after (Jan 1 and 2 at 17:00) instances. For the C-B1 match, however, the note only says BYMONTHDAY=0 'acted as no filter' and now raises ValueError; no rule with its before instance list is shown, so not every matching cause has before/after instance lists.\"},\"J05\":{\"score\":\"yes\",\"reasoning\":\"Each cause marks the original behaviour as 'inferred from original code'/'inferred from constructor' and the repaired result as 'verified by regression'/'verified by parametrized regression'; the interaction claims are explicitly marked as inferred from the code.\"},\"J06\":{\"score\":\"no\",\"reasoning\":\"The note does not name any of the reference's two-cause inputs (e.g. MONTHLY;BYDAY=MO,-1FR;BYHOUR=9,17;BYSETPOS=-1 or YEARLY;BYDAY=FR,20MO); its only interaction remark is a generic statement about invalid parts masking the BYSETPOS error.\"},\"J07\":{\"score\":\"yes\",\"reasoning\":\"Cause 2 asserts defects none of the reference causes describe: that the constructor accepted BYMONTH=13, BYYEARDAY=0/367, BYWEEKNO=0/54 and lacked BYHOUR/BYMINUTE checks, and it builds an interaction claim on them. The reference lists only BYMONTHDAY=0 as the validation cause, so this falls under rejected class R5.\"}}"
+        }
+      },
+      {
+        "name": "test_output",
+        "weight": 39.0,
+        "detail": {
+          "score": 0.4872,
+          "criteria": [
+            {
+              "name": "C01",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "C01: every case of its category matches the reference"
+            },
+            {
+              "name": "C02",
+              "value": 0.0,
+              "raw": false,
+              "weight": 5.0,
+              "description": "C02: every case of its category matches the reference"
+            },
+            {
+              "name": "C03",
+              "value": 0.0,
+              "raw": false,
+              "weight": 5.0,
+              "description": "C03: every case of its category matches the reference"
+            },
+            {
+              "name": "C04",
+              "value": 0.0,
+              "raw": false,
+              "weight": 5.0,
+              "description": "C04: every case of its category matches the reference"
+            },
+            {
+              "name": "C05",
+              "value": 0.0,
+              "raw": false,
+              "weight": 5.0,
+              "description": "C05: every case of its category matches the reference"
+            },
+            {
+              "name": "C06",
+              "value": 1.0,
+              "raw": true,
+              "weight": 5.0,
+              "description": "C06: the check passes"
+            },
+            {
+              "name": "C07",
+              "value": 1.0,
+              "raw": true,
+              "weight": 3.0,
+              "description": "C07: the check passes"
+            },
+            {
+              "name": "C08",
+              "value": 1.0,
+              "raw": true,
+              "weight": 3.0,
+              "description": "C08: the prohibited change is absent"
+            },
+            {
+              "name": "C09",
+              "value": 1.0,
+              "raw": true,
+              "weight": 3.0,
+              "description": "C09: the prohibited change is absent"
+            }
+          ],
+          "kind": "programmatic"
+        }
+      }
+    ]
+  }
+}

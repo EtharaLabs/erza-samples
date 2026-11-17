@@ -1,0 +1,11 @@
+# Scoring when the LLM judge returns no result (no judge credentials, or the judge failing on every
+# attempt): the reward is the compiled items alone, so a submission that passes every compiled check
+# scores 1.0. The judge_unavailable marker and fallback_cause = judge-unavailable record that this
+# path was taken. Gated causes (unrepaired, missing note, ...) still use ../fallback, scoring 0 there.
+[[reward]]
+name = "reward"
+aggregation = "weighted-mean"
+weights = { test_output = 1.0 }
+
+[scoring.test_output]
+aggregation = "weighted-mean"

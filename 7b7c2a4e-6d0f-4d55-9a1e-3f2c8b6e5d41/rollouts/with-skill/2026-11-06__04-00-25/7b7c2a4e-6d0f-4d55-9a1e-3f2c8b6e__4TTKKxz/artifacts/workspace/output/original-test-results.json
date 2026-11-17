@@ -1,0 +1,52 @@
+[
+  {
+    "test": "TestAsyncDuplicateVoteDurabilityRegression",
+    "original_exit": 1,
+    "seconds_including_build": 1.333
+  },
+  {
+    "test": "TestAsyncDuplicateAppendDurabilityRegression",
+    "original_exit": 1,
+    "seconds_including_build": 0.291
+  },
+  {
+    "test": "TestDelayedAppendCannotConfirmReadRegression",
+    "original_exit": 1,
+    "seconds_including_build": 0.275
+  },
+  {
+    "test": "TestApplyResponseTracksCompletedBatchRegression",
+    "original_exit": 1,
+    "seconds_including_build": 0.279
+  },
+  {
+    "test": "TestSnapshotWaitsForApplyThreadRegression",
+    "original_exit": 1,
+    "seconds_including_build": 0.281
+  },
+  {
+    "test": "TestSnapshotWaitsForExactApplyCompletionRegression",
+    "original_exit": 1,
+    "seconds_including_build": 0.283
+  },
+  {
+    "test": "TestAdversarialSchedulesRegression",
+    "original_exit": 1,
+    "seconds_including_build": 1.166
+  },
+  {
+    "test": "TestCompactedSnapshotRetryRegression",
+    "original_exit": 1,
+    "seconds_including_build": 0.267
+  },
+  {
+    "test": "TestAsyncSingletonPreVoteProgressRegression",
+    "original_exit": 1,
+    "seconds_including_build": 0.284
+  },
+  {
+    "test": "TestMixedElectionOptionsCatchUpRegression",
+    "original_exit": 1,
+    "seconds_including_build": 0.288
+  }
+]

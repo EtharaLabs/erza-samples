@@ -1,0 +1,11 @@
+--- FAIL: TestAsyncSingletonPreVoteProgressRegression (0.00s)
+    safety_regression_test.go:222: 
+        	Error Trace:	/workspace/raft/safety_regression_test.go:222
+        	            				/workspace/raft/safety_regression_test.go:644
+        	Error:      	Not equal: 
+        	            	expected: 0x2
+        	            	actual  : 0x3
+        	Test:       	TestAsyncSingletonPreVoteProgressRegression
+FAIL
+exit status 1
+FAIL	go.etcd.io/raft/v3	0.003s

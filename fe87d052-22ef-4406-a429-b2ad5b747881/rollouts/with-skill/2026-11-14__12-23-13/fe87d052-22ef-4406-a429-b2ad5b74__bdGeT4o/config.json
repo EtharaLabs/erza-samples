@@ -1,0 +1,26 @@
+{
+    "task": {
+        "path": "tasks/fe87d052-22ef-4406-a429-b2ad5b747881"
+    },
+    "trial_name": "fe87d052-22ef-4406-a429-b2ad5b74__bdGeT4o",
+    "trials_dir": "jobs/2026-11-14__12-23-13",
+    "agent": {
+        "name": "codex",
+        "model_name": "openai/gpt-6.1-sol",
+        "skills": [
+            "tasks/fe87d052-22ef-4406-a429-b2ad5b747881/environment/skills/correctly-rounded-decimal-parsing"
+        ],
+        "extra_allowed_hosts": [
+            "host.docker.internal"
+        ],
+        "kwargs": {
+            "reasoning_effort": "medium",
+            "reasoning_summary": "detailed"
+        },
+        "env": {
+            "OPENAI_BASE_URL": "http://host.docker.internal:8766/v1",
+            "OPENAI_API_KEY": "WRmm****kJQ"
+        }
+    },
+    "job_id": "5543d0db-91e2-4eb8-8f1a-dbaac6393c7d"
+}

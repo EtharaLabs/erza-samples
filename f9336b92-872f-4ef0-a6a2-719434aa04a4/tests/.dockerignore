@@ -1,0 +1,13 @@
+*
+!requirements.lock
+!test.sh
+!reward.toml
+!test_output.py
+!judge.toml
+!judge/prompt.md
+!__grader__
+__grader__/selftest
+**/__pycache__
+**/*.pyc
+**/.pytest_cache
+**/.hypothesis

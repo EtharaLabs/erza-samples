@@ -1,0 +1,12 @@
+{
+  "seeds": 1000,
+  "template_instances": 24,
+  "categories": {
+    "CA": {"templates": ["candidate-crash", "retransmit-ack"], "random": ["async", "asynccrash", "asyncslow", "async5"]},
+    "CB": {"templates": ["snapshot-during-apply", "snapshot-after-batch"], "random": ["asyncsnap", "asyncsnap2"]},
+    "CRA": {"templates": ["stale-ack-read-async"], "random": ["asyncreads"]},
+    "CR": {"templates": ["stale-ack-read"], "random": ["reads", "reads5"]},
+    "CS": {"templates": [], "random": ["repl", "repl5", "snap", "prevote"]}
+  },
+  "items": {"K1": "CA", "K2": "CB", "K3": "CRA", "K4": "CR", "K5": "CS"}
+}

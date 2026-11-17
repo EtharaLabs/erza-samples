@@ -1,0 +1,66 @@
+schema_version = "1.4"
+artifacts = [
+  { source = "/workspace/fast_float", exclude = ["build"] },
+  "/workspace/output",
+  "/workspace/spec",
+]
+
+reward_type = "bounded_continuous"
+
+[task]
+name = "ethara/fe87d052-22ef-4406-a429-b2ad5b747881"
+version = "1.0.0"
+description = "Bring the decimal-to-binary parser of a copy of the C++ library fast_float into conformance with round-to-nearest, ties-to-even and its from_chars contract for float and double, and write a repair report."
+authors = [{ name = "shraiy.khaddar", email = "shraiy.khaddar@ethara.ai" }]
+keywords = ["debugging", "cpp", "floating-point", "ieee-754", "number-parsing", "specification-conformance"]
+
+[metadata]
+difficulty = "hard"
+category = "software-engineering"
+subcategory = "debugging"
+task_type = ["debugging", "repair"]
+modality = ["source-code", "structured-text"]
+interface = ["terminal", "cpp"]
+skill_type = ["debugging-heuristic", "specification-reading"]
+tags = ["fast-float", "ieee-754", "correct-rounding", "from-chars", "eisel-lemire", "cpp"]
+null_floor = 0.0
+discrimination_weight = 0.5
+platforms = ["linux/amd64", "linux/arm64"]
+
+[verifier]
+timeout_sec = 3600.0
+user = "root"
+network_mode = "allowlist"
+allowed_hosts = ["api.anthropic.com", "api.openai.com", "host.docker.internal"]
+environment_mode = "separate"
+
+[verifier.env]
+ANTHROPIC_API_BASE = "${ANTHROPIC_API_BASE:-https://api.anthropic.com}"
+ANTHROPIC_API_KEY = "${ANTHROPIC_API_KEY:-}"
+OPENAI_API_KEY = "${OPENAI_API_KEY:-}"
+OPENAI_BASE_URL = "${OPENAI_BASE_URL:-https://api.openai.com/v1}"
+
+[verifier.environment]
+network_mode = "allowlist"
+allowed_hosts = ["api.anthropic.com", "api.openai.com", "host.docker.internal"]
+build_timeout_sec = 3600.0
+cpus = 2
+memory_mb = 4096
+storage_mb = 10240
+gpus = 0
+
+[agent]
+timeout_sec = 10800.0
+user = "1000:1000"
+network_mode = "allowlist"
+allowed_hosts = ["api.openai.com", "api.anthropic.com"]
+
+[environment]
+network_mode = "no-network"
+build_timeout_sec = 3600.0
+cpus = 2
+memory_mb = 4096
+storage_mb = 10240
+gpus = 0
+workdir = "/workspace"
+skills_dir = "/harbor/skills"

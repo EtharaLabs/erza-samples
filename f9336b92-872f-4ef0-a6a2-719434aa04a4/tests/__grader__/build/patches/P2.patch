@@ -1,0 +1,13 @@
+diff --git a/src/dateutil/rrule.py b/src/dateutil/rrule.py
+index 2c80256..c23d5c3 100644
+--- a/src/dateutil/rrule.py
++++ b/src/dateutil/rrule.py
+@@ -890,7 +890,7 @@ class rrule(rrulebase):
+                 for i in dayset[start:end][::step]:
+                     if i is not None:
+                         date = datetime.date.fromordinal(ii.yearordinal + i)
+-                        for time in timeset[::step]:
++                        for time in timeset:
+                             res = datetime.datetime.combine(date, time)
+                             if exists is None or exists(res):
+                                 candidates.append(res)

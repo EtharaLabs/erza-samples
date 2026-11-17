@@ -1,0 +1,13 @@
+diff --git a/src/dateutil/rrule.py b/src/dateutil/rrule.py
+index a61d20e..fee3d30 100644
+--- a/src/dateutil/rrule.py
++++ b/src/dateutil/rrule.py
+@@ -460,6 +460,8 @@ class rrule(rrulebase):
+         self._dtstart = dtstart
+         self._tzinfo = dtstart.tzinfo
+         self._freq = freq
++        if interval == 0:
++            raise ValueError("interval must be nonzero")
+         self._interval = interval
+         self._count = count
+ 

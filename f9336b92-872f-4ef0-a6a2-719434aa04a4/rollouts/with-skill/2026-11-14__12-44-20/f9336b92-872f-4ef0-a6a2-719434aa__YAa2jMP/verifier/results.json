@@ -1,0 +1,88 @@
+{
+ "C06": {
+  "first_suite_failures": [],
+  "passed": true,
+  "suite_failures": 0
+ },
+ "C07": {
+  "new_tests": 2,
+  "passed": true,
+  "required": 1
+ },
+ "C08": {
+  "changed": [],
+  "violated": false
+ },
+ "C09": {
+  "first_lost_tests": [],
+  "lost_tests": 0,
+  "signatures_equal": true,
+  "violated": false
+ },
+ "K1": {
+  "cases": 2000,
+  "failures": 46,
+  "first_failures": [
+   "K1-00076",
+   "K1-00117",
+   "K1-00162",
+   "K1-00290",
+   "K1-00293"
+  ],
+  "passed": false,
+  "reason": "mismatch"
+ },
+ "K2": {
+  "cases": 2000,
+  "failures": 1893,
+  "first_failures": [
+   "K2-00003",
+   "K2-00006",
+   "K2-00007",
+   "K2-00011",
+   "K2-00015"
+  ],
+  "passed": false,
+  "reason": "budget"
+ },
+ "K3": {
+  "cases": 2000,
+  "failures": 259,
+  "first_failures": [
+   "K3-00009",
+   "K3-00020",
+   "K3-00023",
+   "K3-00026",
+   "K3-00032"
+  ],
+  "passed": false,
+  "reason": "mismatch"
+ },
+ "K4": {
+  "cases": 2000,
+  "failures": 2000,
+  "first_failures": [
+   "K4-00001",
+   "K4-00002",
+   "K4-00003",
+   "K4-00004",
+   "K4-00005"
+  ],
+  "passed": false,
+  "reason": "budget"
+ },
+ "K5": {
+  "cases": 2000,
+  "failures": 0,
+  "first_failures": [],
+  "passed": true,
+  "reason": "ok"
+ },
+ "K6": {
+  "cases": 2000,
+  "failures": 0,
+  "first_failures": [],
+  "passed": true,
+  "reason": "ok"
+ }
+}

@@ -1,0 +1,27 @@
+{
+    "task": {
+        "path": "tasks/7b7c2a4e-6d0f-4d55-9a1e-3f2c8b6e5d41"
+    },
+    "trial_name": "7b7c2a4e-6d0f-4d55-9a1e-3f2c8b6e__4TTKKxz",
+    "trials_dir": "jobs/2026-11-06__04-00-25",
+    "agent": {
+        "name": "codex",
+        "model_name": "openai/gpt-6.1-sol",
+        "skills": [
+            "tasks/7b7c2a4e-6d0f-4d55-9a1e-3f2c8b6e5d41/environment/skills/persistence-ordering-audit",
+            "tasks/7b7c2a4e-6d0f-4d55-9a1e-3f2c8b6e5d41/environment/skills/raft-safety-simulation"
+        ],
+        "extra_allowed_hosts": [
+            "host.docker.internal"
+        ],
+        "kwargs": {
+            "reasoning_effort": "high",
+            "reasoning_summary": "detailed"
+        },
+        "env": {
+            "OPENAI_BASE_URL": "http://host.docker.internal:8766/v1",
+            "OPENAI_API_KEY": "${OPENAI_API_KEY}"
+        }
+    },
+    "job_id": "2bf58bc2-b55d-48ff-924a-a98352e58944"
+}
