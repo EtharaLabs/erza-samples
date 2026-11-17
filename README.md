@@ -4,9 +4,9 @@
 
 <p align="center"><b>Five sample tasks from Erza SkillsBench, a Harbor benchmark that measures whether curated Agent Skills improve an autonomous agent.</b></p>
 
-<p align="center"><a href="#summary"><img src="https://img.shields.io/badge/tasks-5-845EF7" alt="tasks: 5"></a> <a href="#summary"><img src="https://img.shields.io/badge/harbor_schema-1.4-845EF7" alt="harbor schema: 1.4"></a> <a href="#rollouts"><img src="https://img.shields.io/badge/skills_uplift-%2B0.2093-845EF7" alt="skills uplift: +0.2093"></a></p>
+<p align="center"><a href="#summary"><img src="https://img.shields.io/badge/tasks-5-845EF7" alt="tasks: 5"></a> <a href="#summary"><img src="https://img.shields.io/badge/harbor_schema-1.4-845EF7" alt="harbor schema: 1.4"></a> <a href="#trials"><img src="https://img.shields.io/badge/skills_uplift-%2B0.2093-845EF7" alt="skills uplift: +0.2093"></a></p>
 
-<p align="center"><sub><a href="#abstract">Abstract</a> | <a href="#summary">Summary</a> | <a href="#tasks">Tasks</a> | <a href="#rollouts">Rollouts</a> | <a href="#coverage">Coverage</a> | <a href="#dataset-structure">Dataset structure</a> | <a href="#reproduction">Reproduction</a> | <a href="#cite">Cite</a> | <a href="#contact">Contact</a></sub></p>
+<p align="center"><sub><a href="#abstract">Abstract</a> | <a href="#summary">Summary</a> | <a href="#tasks">Tasks</a> | <a href="#trials">Trials</a> | <a href="#coverage">Coverage</a> | <a href="#dataset-structure">Dataset structure</a> | <a href="#reproduction">Reproduction</a> | <a href="#cite">Cite</a> | <a href="#contact">Contact</a></sub></p>
 
 ## Abstract
 
@@ -44,17 +44,17 @@ This repository holds the five-task sample. All five are software engineering ta
 | [`fdc50914`](fdc50914-fdba-4675-a017-31f808f4cf2a/) | regress 0.12.0 | Rust | Repair the ECMAScript regular-expression engine so class sets, case-insensitive matching, duplicate named groups, backreferences, and quantifier backtracking follow ECMA-262 2025 section 22.2, and write a root-cause note. | backtracking-engine-testing, ecma262-algorithm-reading |
 | [`fe87d052`](fe87d052-22ef-4406-a429-b2ad5b747881/) | fast_float 8.3.3 | C++ | Bring the decimal-to-binary parser into conformance with round-to-nearest, ties-to-even and its `from_chars` contract for `float` and `double`, and write a repair report. | correctly-rounded-decimal-parsing |
 
-## Rollouts
+## Trials
 
-Each task was run once without Skills (`no-skill`) and once with its Skills mounted (`with-skill`), under identical conditions, using Codex CLI 0.166.0 with `gpt-6.1-sol`, and scored by the task's own verifier. Rollouts are stored in each task's `rollouts/gpt-6.1-sol/<arm>/<job>/<trial>/`.
+Each task was run once without Skills (`no-skill`) and once with its Skills mounted (`with-skill`), under identical conditions, using Codex CLI 0.166.0 with `gpt-6.1-sol`, and scored by the task's own verifier. Trials are stored in each task's `trials/gpt-6.1-sol/<arm>/<job>/<trial>/`.
 
 | Task | Reward<br/>no-skill | Reward<br/>with-skill | Uplift | Cost (USD)<br/>no-skill / with-skill | Agent time<br/>no-skill / with-skill |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| [`0ddf264f-938b-4b5c-817c-45766d0dcf81`](0ddf264f-938b-4b5c-817c-45766d0dcf81/rollouts/gpt-6.1-sol/) | 0.6364 | 0.9752 | +0.3388 | 0.20 / 0.22 | 3m 27s / 4m 36s |
-| [`7b7c2a4e-6d0f-4d55-9a1e-3f2c8b6e5d41`](7b7c2a4e-6d0f-4d55-9a1e-3f2c8b6e5d41/rollouts/gpt-6.1-sol/) | 0.3143 | 0.6857 | +0.3714 | 0.48 / 0.67 | 10m 51s / 13m 5s |
-| [`f9336b92-872f-4ef0-a6a2-719434aa04a4`](f9336b92-872f-4ef0-a6a2-719434aa04a4/rollouts/gpt-6.1-sol/) | 0.5192 | 0.5577 | +0.0385 | 0.06 / 0.06 | 1m 17s / 1m 20s |
-| [`fdc50914-fdba-4675-a017-31f808f4cf2a`](fdc50914-fdba-4675-a017-31f808f4cf2a/rollouts/gpt-6.1-sol/) | 0.6316 | 0.7544 | +0.1228 | 0.28 / 0.58 | 5m 35s / 10m 6s |
-| [`fe87d052-22ef-4406-a429-b2ad5b747881`](fe87d052-22ef-4406-a429-b2ad5b747881/rollouts/gpt-6.1-sol/) | 0.6788 | 0.8540 | +0.1752 | 0.17 / 0.22 | 3m 43s / 5m 57s |
+| [`0ddf264f-938b-4b5c-817c-45766d0dcf81`](0ddf264f-938b-4b5c-817c-45766d0dcf81/trials/gpt-6.1-sol/) | 0.6364 | 0.9752 | +0.3388 | 0.20 / 0.22 | 3m 27s / 4m 36s |
+| [`7b7c2a4e-6d0f-4d55-9a1e-3f2c8b6e5d41`](7b7c2a4e-6d0f-4d55-9a1e-3f2c8b6e5d41/trials/gpt-6.1-sol/) | 0.3143 | 0.6857 | +0.3714 | 0.48 / 0.67 | 10m 51s / 13m 5s |
+| [`f9336b92-872f-4ef0-a6a2-719434aa04a4`](f9336b92-872f-4ef0-a6a2-719434aa04a4/trials/gpt-6.1-sol/) | 0.5192 | 0.5577 | +0.0385 | 0.06 / 0.06 | 1m 17s / 1m 20s |
+| [`fdc50914-fdba-4675-a017-31f808f4cf2a`](fdc50914-fdba-4675-a017-31f808f4cf2a/trials/gpt-6.1-sol/) | 0.6316 | 0.7544 | +0.1228 | 0.28 / 0.58 | 5m 35s / 10m 6s |
+| [`fe87d052-22ef-4406-a429-b2ad5b747881`](fe87d052-22ef-4406-a429-b2ad5b747881/trials/gpt-6.1-sol/) | 0.6788 | 0.8540 | +0.1752 | 0.17 / 0.22 | 3m 43s / 5m 57s |
 | **mean** | **0.5561** | **0.7654** | **+0.2093** | **0.24 / 0.35** | **4m 59s / 7m 1s** |
 
 The Skills mounted in each task's `with-skill` arm are listed in the [Tasks](#tasks) table.
@@ -116,7 +116,7 @@ Each task is one Harbor task in a directory named by its uuid.
 ├── environment/      sandbox image, with the task's Skills in skills/
 ├── tests/            verifier, hidden from the agent
 ├── solution/         reference solution
-└── rollouts/
+└── trials/
     └── gpt-6.1-sol/      agent model
         ├── no-skill/     <job>/<trial>/ run without Skills
         └── with-skill/   <job>/<trial>/ run with Skills
@@ -124,7 +124,7 @@ Each task is one Harbor task in a directory named by its uuid.
 
 ## Reproduction
 
-Each task directory is a complete Harbor task: `task.toml` is the runner manifest, `instruction.md` the objective, `environment/` the sandbox image with the task's Skills under `environment/skills/`, `tests/` the verifier, and `solution/` the reference solution. The rollouts above were produced with:
+Each task directory is a complete Harbor task: `task.toml` is the runner manifest, `instruction.md` the objective, `environment/` the sandbox image with the task's Skills under `environment/skills/`, `tests/` the verifier, and `solution/` the reference solution. The trials above were produced with:
 
 ```bash
 harbor run -a codex -m openai/gpt-6.1-sol
