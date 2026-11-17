@@ -46,15 +46,15 @@ This repository holds the five-task sample. All five are software engineering ta
 
 ## Rollouts
 
-Each task was run once without Skills (`no-skill`) and once with its Skills mounted (`with-skill`), under identical conditions, using Codex CLI 0.166.0 with `gpt-6.1-sol`, and scored by the task's own verifier. Rollouts are stored in each task's `rollouts/<arm>/<job>/<trial>/`.
+Each task was run once without Skills (`no-skill`) and once with its Skills mounted (`with-skill`), under identical conditions, using Codex CLI 0.166.0 with `gpt-6.1-sol`, and scored by the task's own verifier. Rollouts are stored in each task's `rollouts/gpt-6.1-sol/<arm>/<job>/<trial>/`.
 
 | Task | Reward<br/>no-skill | Reward<br/>with-skill | Uplift | Cost (USD)<br/>no-skill / with-skill | Agent time<br/>no-skill / with-skill |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| [`0ddf264f-938b-4b5c-817c-45766d0dcf81`](0ddf264f-938b-4b5c-817c-45766d0dcf81/rollouts/) | 0.6364 | 0.9752 | +0.3388 | 0.20 / 0.22 | 3m 27s / 4m 36s |
-| [`7b7c2a4e-6d0f-4d55-9a1e-3f2c8b6e5d41`](7b7c2a4e-6d0f-4d55-9a1e-3f2c8b6e5d41/rollouts/) | 0.3143 | 0.6857 | +0.3714 | 0.48 / 0.67 | 10m 51s / 13m 5s |
-| [`f9336b92-872f-4ef0-a6a2-719434aa04a4`](f9336b92-872f-4ef0-a6a2-719434aa04a4/rollouts/) | 0.5192 | 0.5577 | +0.0385 | 0.06 / 0.06 | 1m 17s / 1m 20s |
-| [`fdc50914-fdba-4675-a017-31f808f4cf2a`](fdc50914-fdba-4675-a017-31f808f4cf2a/rollouts/) | 0.6316 | 0.7544 | +0.1228 | 0.28 / 0.58 | 5m 35s / 10m 6s |
-| [`fe87d052-22ef-4406-a429-b2ad5b747881`](fe87d052-22ef-4406-a429-b2ad5b747881/rollouts/) | 0.6788 | 0.8540 | +0.1752 | 0.17 / 0.22 | 3m 43s / 5m 57s |
+| [`0ddf264f-938b-4b5c-817c-45766d0dcf81`](0ddf264f-938b-4b5c-817c-45766d0dcf81/rollouts/gpt-6.1-sol/) | 0.6364 | 0.9752 | +0.3388 | 0.20 / 0.22 | 3m 27s / 4m 36s |
+| [`7b7c2a4e-6d0f-4d55-9a1e-3f2c8b6e5d41`](7b7c2a4e-6d0f-4d55-9a1e-3f2c8b6e5d41/rollouts/gpt-6.1-sol/) | 0.3143 | 0.6857 | +0.3714 | 0.48 / 0.67 | 10m 51s / 13m 5s |
+| [`f9336b92-872f-4ef0-a6a2-719434aa04a4`](f9336b92-872f-4ef0-a6a2-719434aa04a4/rollouts/gpt-6.1-sol/) | 0.5192 | 0.5577 | +0.0385 | 0.06 / 0.06 | 1m 17s / 1m 20s |
+| [`fdc50914-fdba-4675-a017-31f808f4cf2a`](fdc50914-fdba-4675-a017-31f808f4cf2a/rollouts/gpt-6.1-sol/) | 0.6316 | 0.7544 | +0.1228 | 0.28 / 0.58 | 5m 35s / 10m 6s |
+| [`fe87d052-22ef-4406-a429-b2ad5b747881`](fe87d052-22ef-4406-a429-b2ad5b747881/rollouts/gpt-6.1-sol/) | 0.6788 | 0.8540 | +0.1752 | 0.17 / 0.22 | 3m 43s / 5m 57s |
 | **mean** | **0.5561** | **0.7654** | **+0.2093** | **0.24 / 0.35** | **4m 59s / 7m 1s** |
 
 The Skills mounted in each task's `with-skill` arm are listed in the [Tasks](#tasks) table.
@@ -65,7 +65,7 @@ Each trial folder is Harbor's trial output:
 | --- | --- |
 | `config.json`, `lock.json` | Trial configuration and resolved run settings |
 | `result.json` | Agent, model, token usage, cost, timings, and verifier reward |
-| `agent/` | Agent trajectory (`trajectory.json`), session transcript, and setup output |
+| `agent/` | Agent trajectory (`trajectory.json`), Codex session transcript (`sessions/`), and agent output (`codex.txt`) |
 | `verifier/` | `reward.json`, `reward.txt`, `reward-details.json`, and test output |
 | `artifacts/` | Files the agent produced, collected from the paths declared in `task.toml` |
 
@@ -117,8 +117,9 @@ Each task is one Harbor task in a directory named by its uuid.
 ├── tests/            verifier, hidden from the agent
 ├── solution/         reference solution
 └── rollouts/
-    ├── no-skill/     <job>/<trial>/ run without Skills
-    └── with-skill/   <job>/<trial>/ run with Skills
+    └── gpt-6.1-sol/      agent model
+        ├── no-skill/     <job>/<trial>/ run without Skills
+        └── with-skill/   <job>/<trial>/ run with Skills
 ```
 
 ## Reproduction
