@@ -144,6 +144,6 @@ Run each task once without Skills and once with the Skills in `environment/skill
 
 ## Contact
 
-Erza SkillsBench is built by [Ethara.AI](https://github.com/Ethara-Ai).
+Erza SkillsBench is built by [Ethara.AI](https://github.com/Ethara-Ai). For questions about the benchmark or dataset, contact [research@ethara.ai](mailto:research@ethara.ai).
 
 Copyright (c) 2026 Green Rider Technology LLP (Ethara AI). All rights reserved.
