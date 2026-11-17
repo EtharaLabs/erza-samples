@@ -6,7 +6,7 @@
 
 <p align="center"><a href="#summary"><img src="https://img.shields.io/badge/tasks-5-845EF7" alt="tasks: 5"></a> <a href="#summary"><img src="https://img.shields.io/badge/harbor_schema-1.4-845EF7" alt="harbor schema: 1.4"></a> <a href="#rollouts"><img src="https://img.shields.io/badge/skills_uplift-%2B0.2093-845EF7" alt="skills uplift: +0.2093"></a></p>
 
-<p align="center"><sub><a href="#abstract">Abstract</a> | <a href="#summary">Summary</a> | <a href="#tasks">Tasks</a> | <a href="#rollouts">Rollouts</a> | <a href="#coverage">Coverage</a> | <a href="#dataset-structure">Dataset structure</a> | <a href="#reproduction">Reproduction</a> | <a href="#cite">Cite</a> | <a href="#license">License</a> | <a href="#contact">Contact</a></sub></p>
+<p align="center"><sub><a href="#abstract">Abstract</a> | <a href="#summary">Summary</a> | <a href="#tasks">Tasks</a> | <a href="#rollouts">Rollouts</a> | <a href="#coverage">Coverage</a> | <a href="#dataset-structure">Dataset structure</a> | <a href="#reproduction">Reproduction</a> | <a href="#cite">Cite</a> | <a href="#contact">Contact</a></sub></p>
 
 ## Abstract
 
@@ -26,6 +26,7 @@ This repository holds the five-task sample. All five are software engineering ta
 | Format | Harbor task, schema 1.4 |
 | Platforms | linux/amd64, linux/arm64 |
 | Skills per task | 1 or 2 |
+| Average handling time (AHT) | 780 minutes per task |
 | Agent | Codex CLI 0.166.0 with `gpt-6.1-sol` |
 | Judge | Claude Fable 5.1 |
 | Runs per condition | 1 per task |
@@ -45,31 +46,18 @@ This repository holds the five-task sample. All five are software engineering ta
 
 ## Rollouts
 
-Each task was run once without Skills (`no-skill`) and once with its Skills mounted (`with-skill`), under identical conditions, and scored by the task's own verifier. Rollouts are stored in each task's `rollouts/<condition>/<job>/<trial>/`.
+Each task was run once without Skills (`no-skill`) and once with its Skills mounted (`with-skill`), under identical conditions, using Codex CLI 0.166.0 with `gpt-6.1-sol`, and scored by the task's own verifier. Rollouts are stored in each task's `rollouts/<arm>/<job>/<trial>/`.
 
-| Task | Condition | Skills | Model | Agent | Reward | Cost (USD) | Agent time |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| 0ddf264f-938b-4b5c-817c-45766d0dcf81 | no-skill | - | gpt-6.1-sol | codex 0.166.0 | 0.6364 | 0.20 | 3m 27s |
-| 0ddf264f-938b-4b5c-817c-45766d0dcf81 | with-skill | build-chain-triage | gpt-6.1-sol | codex 0.166.0 | 0.9752 | 0.22 | 4m 36s |
-| 7b7c2a4e-6d0f-4d55-9a1e-3f2c8b6e5d41 | no-skill | - | gpt-6.1-sol | codex 0.166.0 | 0.3143 | 0.48 | 10m 51s |
-| 7b7c2a4e-6d0f-4d55-9a1e-3f2c8b6e5d41 | with-skill | persistence-ordering-audit, raft-safety-simulation | gpt-6.1-sol | codex 0.166.0 | 0.6857 | 0.67 | 13m 5s |
-| f9336b92-872f-4ef0-a6a2-719434aa04a4 | no-skill | - | gpt-6.1-sol | codex 0.166.0 | 0.5192 | 0.06 | 1m 17s |
-| f9336b92-872f-4ef0-a6a2-719434aa04a4 | with-skill | rfc5545-recurrence-derivation | gpt-6.1-sol | codex 0.166.0 | 0.5577 | 0.06 | 1m 20s |
-| fdc50914-fdba-4675-a017-31f808f4cf2a | no-skill | - | gpt-6.1-sol | codex 0.166.0 | 0.6316 | 0.28 | 5m 35s |
-| fdc50914-fdba-4675-a017-31f808f4cf2a | with-skill | backtracking-engine-testing, ecma262-algorithm-reading | gpt-6.1-sol | codex 0.166.0 | 0.7544 | 0.58 | 10m 6s |
-| fe87d052-22ef-4406-a429-b2ad5b747881 | no-skill | - | gpt-6.1-sol | codex 0.166.0 | 0.6788 | 0.17 | 3m 43s |
-| fe87d052-22ef-4406-a429-b2ad5b747881 | with-skill | correctly-rounded-decimal-parsing | gpt-6.1-sol | codex 0.166.0 | 0.8540 | 0.22 | 5m 57s |
+| Task | Reward<br/>no-skill | Reward<br/>with-skill | Uplift | Cost (USD)<br/>no-skill / with-skill | Agent time<br/>no-skill / with-skill |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| [`0ddf264f-938b-4b5c-817c-45766d0dcf81`](0ddf264f-938b-4b5c-817c-45766d0dcf81/rollouts/) | 0.6364 | 0.9752 | +0.3388 | 0.20 / 0.22 | 3m 27s / 4m 36s |
+| [`7b7c2a4e-6d0f-4d55-9a1e-3f2c8b6e5d41`](7b7c2a4e-6d0f-4d55-9a1e-3f2c8b6e5d41/rollouts/) | 0.3143 | 0.6857 | +0.3714 | 0.48 / 0.67 | 10m 51s / 13m 5s |
+| [`f9336b92-872f-4ef0-a6a2-719434aa04a4`](f9336b92-872f-4ef0-a6a2-719434aa04a4/rollouts/) | 0.5192 | 0.5577 | +0.0385 | 0.06 / 0.06 | 1m 17s / 1m 20s |
+| [`fdc50914-fdba-4675-a017-31f808f4cf2a`](fdc50914-fdba-4675-a017-31f808f4cf2a/rollouts/) | 0.6316 | 0.7544 | +0.1228 | 0.28 / 0.58 | 5m 35s / 10m 6s |
+| [`fe87d052-22ef-4406-a429-b2ad5b747881`](fe87d052-22ef-4406-a429-b2ad5b747881/rollouts/) | 0.6788 | 0.8540 | +0.1752 | 0.17 / 0.22 | 3m 43s / 5m 57s |
+| **mean** | **0.5561** | **0.7654** | **+0.2093** | **0.24 / 0.35** | **4m 59s / 7m 1s** |
 
-Paired reward per task:
-
-| Task | no-skill | with-skill | Uplift |
-| --- | --- | --- | --- |
-| 0ddf264f-938b-4b5c-817c-45766d0dcf81 | 0.6364 | 0.9752 | +0.3388 |
-| 7b7c2a4e-6d0f-4d55-9a1e-3f2c8b6e5d41 | 0.3143 | 0.6857 | +0.3714 |
-| f9336b92-872f-4ef0-a6a2-719434aa04a4 | 0.5192 | 0.5577 | +0.0385 |
-| fdc50914-fdba-4675-a017-31f808f4cf2a | 0.6316 | 0.7544 | +0.1228 |
-| fe87d052-22ef-4406-a429-b2ad5b747881 | 0.6788 | 0.8540 | +0.1752 |
-| **mean** | **0.5561** | **0.7654** | **+0.2093** |
+The Skills mounted in each task's `with-skill` arm are listed in the [Tasks](#tasks) table.
 
 Each trial folder is Harbor's trial output:
 
@@ -152,10 +140,6 @@ Run each task once without Skills and once with the Skills in `environment/skill
   year         = {2026}
 }
 ```
-
-## License
-
-Released under the MIT License. Benchmarks, datasets, and task bundles produced through this project retain their own original licences. Copyright (c) 2026 Green Rider Technology LLP (Ethara AI). All rights reserved.
 
 ## Contact
 
